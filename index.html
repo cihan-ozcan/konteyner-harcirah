@@ -399,11 +399,17 @@
             fill: white;
         }
 
-        /* Ayarlar Butonu */
-        .settings-btn {
+        /* Header Butonları */
+        .header-buttons {
             position: fixed;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 50;
+        }
+
+        .header-btn {
             width: 40px;
             height: 40px;
             background: rgba(255,255,255,0.2);
@@ -413,13 +419,162 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 50;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
-        .settings-btn svg {
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .header-btn svg {
             width: 20px;
             height: 20px;
             fill: white;
+        }
+
+        .header-btn-label {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .header-btn:hover .header-btn-label {
+            opacity: 1;
+        }
+
+        /* Fiyat Tarifesi Modal */
+        .tarife-modal .modal-content {
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .tarife-header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tarife-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .tarife-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .tarife-content {
+            padding: 20px;
+        }
+
+        .tarife-item {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #0ea5e9;
+            transition: transform 0.2s;
+        }
+
+        .tarife-item:hover {
+            transform: translateX(5px);
+            background: #f1f5f9;
+        }
+
+        .tarife-bolge {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .tarife-fiyat {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0ea5e9;
+        }
+
+        .tarife-notlar {
+            background: #fef3c7;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #fcd34d;
+        }
+
+        .tarife-notlar h4 {
+            color: #92400e;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tarife-notlar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tarife-notlar li {
+            color: #78350f;
+            font-size: 0.85rem;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tarife-notlar li:before {
+            content: "•";
+            color: #f59e0b;
+            font-weight: bold;
+            position: absolute;
+            left: 5px;
+        }
+
+        .tarife-close {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-tarife-kapat {
+            width: 100%;
+            padding: 14px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-tarife-kapat:hover {
+            background: #e2e8f0;
         }
 
         /* Arama ve Filtre */
@@ -484,15 +639,45 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Fiyat hesaplama yardımcı */
+        .fiyat-hesapla-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .fiyat-hesapla-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .fiyat-hesapla-btn:active {
+            transform: scale(0.95);
+        }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
     <div class="container">
-        <!-- Ayarlar Butonu -->
-        <button class="settings-btn" onclick="openSettings()">
-            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        </button>
+        <!-- Header Butonları -->
+        <div class="header-buttons">
+            <button class="header-btn" onclick="openTarife()">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
+                <span class="header-btn-label">Fiyat Tarifesi</span>
+            </button>
+            <button class="header-btn" onclick="openSettings()">
+                <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <span class="header-btn-label">Ayarlar</span>
+            </button>
+        </div>
 
         <h1>🚛 Harcırah Takip</h1>
         
@@ -532,6 +717,7 @@
             <div class="form-group">
                 <label for="amount">Harcırah (₺)</label>
                 <input type="number" id="amount" placeholder="600" required>
+                <button type="button" class="fiyat-hesapla-btn" onclick="openTarife()">💰 Fiyat Tarifesine Bak</button>
             </div>
             
             <button class="btn-primary" onclick="addEntry()"><span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet</button>
@@ -570,7 +756,7 @@
         <div>PDF hazirlaniyor...</div>
     </div>
 
-    <!-- PDF Modal - GÜNCELLENMİŞ VERSİYON -->
+    <!-- PDF Modal -->
     <div class="modal" id="pdfModal">
         <div class="modal-content">
             <div class="modal-icon" style="background: #e3f2fd;">
@@ -589,6 +775,72 @@
             <div style="background: #f5f5f5; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.8rem; color: #666; line-height: 1.4;">
                 💡 <strong>İpucu:</strong> PDF "İndirilenler" klasöründe.<br>
                 Dosya adı: <strong>Harcirah_YYYY-AA-GG.pdf</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fiyat Tarifesi Modal - YENİ -->
+    <div class="modal tarife-modal" id="tarifeModal">
+        <div class="modal-content">
+            <div class="tarife-header">
+                <h2>💰 2026 Harcırah Fiyat Tarifesi</h2>
+                <p>Konteyner Taşımacılık Ücretleri</p>
+            </div>
+            
+            <div class="tarife-content">
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Acıbadem-Göztepe-Fikirtepe-Kozyatağı-Beykoz-Paşabahçe-Kavacık-Çekmeköy-Dudullu-Ümraniye-Kadıköy-İçerenköy-Kartal-Yakacık-Cevizli-Pendik-Kurtköy-Dolayoba-Samandıra-Sancaktepe-Sultanbeyli-Sarıgazi-Alemdağ</div>
+                    <div class="tarife-fiyat">₺700,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Avcılar-Esenyurt-Gürpınar-Büyükçekmece-Beylikdüzü-Arnavutköy-Hadımköy-Haramidere-Yakuplu-Kıraç-Çatalca-Silivri-Selimpaşa</div>
+                    <div class="tarife-fiyat">₺500,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Bağcılar-Başakşehir-İkitelli-Mahmutbey-Halkalı-Küçükçekmece-Sefaköy-Yenibosna-Habibler-Güneşli-Şirinevler-Yeşilköy</div>
+                    <div class="tarife-fiyat">₺600,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Alibeyköy-Kağıthane-Ayazağa-Aksaray-Kemerburgaz-Bakırköy-Güngören-Bayrampaşa-Esenler-Beşiktaş-Seyrantepe-Eminönü-Karaköy-Etiler-Levent-Eyüp-Gaziosmanpaşa-Sultangazi-Küçükköy-Sarıyer-Maslak-Gayrettepe-Şişli-Tarabya-Merter-Zeytinburnu-Topkapı-Rami-Topçular-Sultançiftliği-Okmeydanı-Kasımpaşa-Mecidiyeköy</div>
+                    <div class="tarife-fiyat">₺600,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Çerkezköy-Çorlu-Saray-Ergene-Kınalı</div>
+                    <div class="tarife-fiyat">₺600,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Tekirdağ-Vize-Muratlı</div>
+                    <div class="tarife-fiyat">₺650,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Edirne-Kırklareli-Malkara-Lüleburgaz</div>
+                    <div class="tarife-fiyat">₺750,00</div>
+                </div>
+
+                <div class="tarife-item">
+                    <div class="tarife-bolge">Tuzla-Tepeören-Ömerli-Aydınlıköy-Şekerpınar-Çayırova-Gebze</div>
+                    <div class="tarife-fiyat">₺750,00</div>
+                </div>
+
+                <div class="tarife-notlar">
+                    <h4>⚠️ Önemli Notlar</h4>
+                    <ul>
+                        <li>Boş/Dolu Aktarmalar = <strong>300 TL</strong></li>
+                        <li>Beklemeler 7 saat dolduğunda = <strong>350 TL</strong></li>
+                        <li>Ambarlı'dan Gebze'ye veya Gebze'den Ambarlı'ya boş veya dolu aktarmalar bir tam harcırahın yarısıdır</li>
+                        <li>ATS Farkı = <strong>100 TL</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tarife-close">
+                <button class="btn-tarife-kapat" onclick="closeModal('tarifeModal')">Kapat</button>
             </div>
         </div>
     </div>
@@ -803,6 +1055,11 @@
             renderEntries(filtered);
         }
 
+        // YENİ: Fiyat tarifesi modalını aç
+        function openTarife() {
+            document.getElementById('tarifeModal').classList.add('active');
+        }
+
         // PDF olusturma - Turkce karakter sorununu cozen versiyon
         function generatePDF() {
             if (entries.length === 0) {
@@ -935,7 +1192,6 @@
             }
         }
 
-        // GÜNCELLENMİŞ WhatsApp Fonksiyonu
         function shareWhatsApp() {
             // PDF zaten indirildi, kullanıcıya manuel ekleme talimatı ver
             const total = entries.reduce((a, b) => a + b.amount, 0);
