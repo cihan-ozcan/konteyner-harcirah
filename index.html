@@ -14,12 +14,19 @@
      body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-image: url('backg.png');
-    background-size: 100% auto; /* Genişliği %100, yükseklik otomatik */
+    background-size: 100% auto;
     background-position: top center;
-    background-repeat: repeat-y; /* Dikeyde tekrar et */
+    background-repeat: repeat-y;
+    background-color: #0284c7;
     min-height: 100vh;
     padding: 10px;
     color: #333;
+    transition: background-image 0.5s ease;
+}
+
+body.theme-solid {
+    background-image: none;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
 }
 
         .container {
@@ -872,7 +879,7 @@
                     <span class="header-btn-label">Ayarlar</span>
                 </button>
             </div>
-            <h1>🚛 Trakya Garajı Harcırah Takip</h1>
+            <h1>🚛 1848 Harcırah Takip</h1>
         </div>
         
         <!-- Giriş Formu -->
@@ -2041,6 +2048,34 @@ async function generatePDF() {
             musicStarted = false;
             isPlaying = false;
             updateMusicButton();
+        }
+
+        // Tema kontrolü
+        let isImageTheme = true;
+
+        function toggleTheme() {
+            const body = document.body;
+            const iconImg = document.getElementById('themeIconImg');
+            const iconColor = document.getElementById('themeIconColor');
+            const label = document.getElementById('themeLabel');
+
+            if (isImageTheme) {
+                // Resim modundan düz renge geç
+                body.classList.add('theme-solid');
+                iconImg.style.display = 'none';
+                iconColor.style.display = 'block';
+                label.textContent = 'Renk Modu';
+                showNotification('🎨 Düz renk moduna geçildi');
+            } else {
+                // Düz renkten resim moduna geç
+                body.classList.remove('theme-solid');
+                iconImg.style.display = 'block';
+                iconColor.style.display = 'none';
+                label.textContent = 'Resim Modu';
+                showNotification('🖼️ Resim moduna geçildi');
+            }
+
+            isImageTheme = !isImageTheme;
         }
 
         function toggleMusic() {
