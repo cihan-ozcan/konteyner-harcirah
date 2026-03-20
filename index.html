@@ -162,7 +162,7 @@
 
         /* Fiyat Hesapla Butonu */
         .fiyat-hesapla-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%);
             color: white;
             border: none;
             padding: 10px 16px;
@@ -962,92 +962,116 @@
     </div>
 
     <!-- Fiyat Hesaplama Modal - YENİ -->
-    <div class="modal hesap-modal" id="hesapModal">
-        <div class="modal-content">
-            <div class="hesap-header">
-                <h3>🧮 Fiyat Hesapla</h3>
-                <p>Bölge ve ek hizmetleri seçin</p>
+    <div class="modal hesap-modal" id="hesapModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: flex-end; justify-content: center; padding: 0; margin: 0;">
+        <div class="modal-content" style="background: white; border-radius: 20px 20px 0 0; width: 100%; max-width: 480px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; margin: 0 auto; animation: slideUp 0.3s ease-out;">
+
+            <!-- Header - Fixed -->
+            <div class="hesap-header" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 20px; text-align: center; flex-shrink: 0; border-radius: 20px 20px 0 0;">
+                <h3 style="margin: 0; font-size: 1.3rem; font-weight: 700;">🧮 Fiyat Hesapla</h3>
+                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 0.9rem;">Bölge ve ek hizmetleri seçin</p>
             </div>
-            
-            <div class="hesap-body">
-                <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 8px; font-weight: 600;">Gidilecek Bölge</label>
-                <select id="bolgeSelect" class="hesap-select" onchange="updateTotalPrice()">
-                    <option value="0">Bölge seçin...</option>
-                    <option value="700" data-name="Acıbadem-Göztepe-Fikirtepe-Kozyatağı-Beykoz-Paşabahçe-Kavacık-Çekmeköy-Dudullu-Ümraniye-Kadıköy-İçerenköy-Kartal-Yakacık-Cevizli-Pendik-Kurtköy-Dolayoba-Samandıra-Sancaktepe-Sultanbeyli-Sarıgazi-Alemdağ">Acıbadem-Göztepe-Kadıköy (₺700)</option>
-                    <option value="500" data-name="Avcılar-Esenyurt-Gürpınar-Büyükçekmece-Beylikdüzü-Arnavutköy-Hadımköy-Haramidere-Yakuplu-Kıraç-Çatalca-Silivri-Selimpaşa">Avcılar-Esenyurt-Beylikdüzü (₺500)</option>
-                    <option value="600" data-name="Bağcılar-Başakşehir-İkitelli-Mahmutbey-Halkalı-Küçükçekmece-Sefaköy-Yenibosna-Habibler-Güneşli-Şirinevler-Yeşilköy">Bağcılar-Başakşehir-İkitelli (₺600)</option>
-                    <option value="600" data-name="Alibeyköy-Kağıthane-Ayazağa-Aksaray-Kemerburgaz-Bakırköy-Güngören-Bayrampaşa-Esenler-Beşiktaş-Seyrantepe-Eminönü-Karaköy-Etiler-Levent-Eyüp-Gaziosmanpaşa-Sultangazi-Küçükköy-Sarıyer-Maslak-Gayrettepe-Şişli-Tarabya-Merter-Zeytinburnu-Topkapı-Rami-Topçular-Sultançiftliği-Okmeydanı-Kasımpaşa-Mecidiyeköy">Alibeyköy-Kağıthane-Şişli (₺600)</option>
-                    <option value="600" data-name="Çerkezköy-Çorlu-Saray-Ergene-Kınalı">Çerkezköy-Çorlu (₺600)</option>
-                    <option value="650" data-name="Tekirdağ-Vize-Muratlı">Tekirdağ-Vize (₺650)</option>
-                    <option value="750" data-name="Edirne-Kırklareli-Malkara-Lüleburgaz">Edirne-Kırklareli (₺750)</option>
-                    <option value="750" data-name="Tuzla-Tepeören-Ömerli-Aydınlıköy-Şekerpınar-Çayırova-Gebze">Tuzla-Gebze (₺750)</option>
-                </select>
 
-                <div class="hesap-checkboxes">
-                    <label class="hesap-checkbox">
-                        <input type="checkbox" id="aktarmaCheck" onchange="updateTotalPrice()">
-                        <span class="hesap-checkbox-label">
-                            <span class="hesap-checkbox-title">Boş/Dolu Aktarma</span>
-                            <span class="hesap-checkbox-price">+ ₺300</span>
-                        </span>
-                    </label>
+            <!-- Scrollable Body -->
+            <div class="hesap-body" style="overflow-y: auto; flex: 1; padding: 20px; background: #f8fafc;">
 
-                    <div style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 12px; padding: 15px; margin-bottom: 12px;">
-                    <label style="display: block; font-size: 0.85rem; color: #059669; margin-bottom: 10px; font-weight: 600;">
+                <!-- Bölge Seçimi -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.85rem; color: #475569; margin-bottom: 6px; font-weight: 600;">📍 Gidilecek Bölge</label>
+                    <select id="bolgeSelect" onchange="updateTotalPrice()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 0.95rem; background: white; color: #334155; cursor: pointer;">
+                        <option value="0">Bölge seçin...</option>
+                        <option value="700" data-name="Acıbadem-Göztepe-Fikirtepe-Kozyatağı-Beykoz-Paşabahçe-Kavacık-Çekmeköy-Dudullu-Ümraniye-Kadıköy-İçerenköy-Kartal-Yakacık-Cevizli-Pendik-Kurtköy-Dolayoba-Samandıra-Sancaktepe-Sultanbeyli-Sarıgazi-Alemdağ">Acıbadem-Göztepe-Kadıköy (₺700)</option>
+                        <option value="500" data-name="Avcılar-Esenyurt-Gürpınar-Büyükçekmece-Beylikdüzü-Arnavutköy-Hadımköy-Haramidere-Yakuplu-Kıraç-Çatalca-Silivri-Selimpaşa">Avcılar-Esenyurt-Beylikdüzü (₺500)</option>
+                        <option value="600" data-name="Bağcılar-Başakşehir-İkitelli-Mahmutbey-Halkalı-Küçükçekmece-Sefaköy-Yenibosna-Habibler-Güneşli-Şirinevler-Yeşilköy">Bağcılar-Başakşehir-İkitelli (₺600)</option>
+                        <option value="600" data-name="Alibeyköy-Kağıthane-Ayazağa-Aksaray-Kemerburgaz-Bakırköy-Güngören-Bayrampaşa-Esenler-Beşiktaş-Seyrantepe-Eminönü-Karaköy-Etiler-Levent-Eyüp-Gaziosmanpaşa-Sultangazi-Küçükköy-Sarıyer-Maslak-Gayrettepe-Şişli-Tarabya-Merter-Zeytinburnu-Topkapı-Rami-Topçular-Sultançiftliği-Okmeydanı-Kasımpaşa-Mecidiyeköy">Alibeyköy-Kağıthane-Şişli (₺600)</option>
+                        <option value="600" data-name="Çerkezköy-Çorlu-Saray-Ergene-Kınalı">Çerkezköy-Çorlu (₺600)</option>
+                        <option value="650" data-name="Tekirdağ-Vize-Muratlı">Tekirdağ-Vize (₺650)</option>
+                        <option value="750" data-name="Edirne-Kırklareli-Malkara-Lüleburgaz">Edirne-Kırklareli (₺750)</option>
+                        <option value="750" data-name="Tuzla-Tepeören-Ömerli-Aydınlıköy-Şekerpınar-Çayırova-Gebze">Tuzla-Gebze (₺750)</option>
+                    </select>
+                </div>
+
+                <!-- Bekleme Süresi - Blue Theme -->
+                <div style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); border: 2px solid #0ea5e9; border-radius: 12px; padding: 15px; margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.85rem; color: #0369a1; margin-bottom: 10px; font-weight: 700;">
                         ⏱️ Bekleme Süresi Hesapla
                     </label>
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                         <div>
-                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Giriş Tarihi</label>
-                            <input type="date" id="girisTarih" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;" onchange="calculateWaitingTime()">
+                            <label style="font-size: 0.75rem; color: #475569; margin-bottom: 3px; display: block; font-weight: 500;">Giriş Tarihi</label>
+                            <input type="date" id="girisTarih" onchange="calculateWaitingTime()" style="width: 100%; padding: 10px; border: 2px solid #bae6fd; border-radius: 8px; font-size: 0.9rem; background: white;">
                         </div>
                         <div>
-                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Giriş Saati (24h)</label>
-                            <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace;" oninput="formatTimeInput(this); calculateWaitingTime()">
+                            <label style="font-size: 0.75rem; color: #475569; margin-bottom: 3px; display: block; font-weight: 500;">Giriş Saati (24h)</label>
+                            <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" oninput="formatTimeInput(this); calculateWaitingTime()" style="width: 100%; padding: 10px; border: 2px solid #bae6fd; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace; background: white;">
                         </div>
                     </div>
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                         <div>
-                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Çıkış Tarihi</label>
-                            <input type="date" id="cikisTarih" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;" onchange="calculateWaitingTime()">
+                            <label style="font-size: 0.75rem; color: #475569; margin-bottom: 3px; display: block; font-weight: 500;">Çıkış Tarihi</label>
+                            <input type="date" id="cikisTarih" onchange="calculateWaitingTime()" style="width: 100%; padding: 10px; border: 2px solid #bae6fd; border-radius: 8px; font-size: 0.9rem; background: white;">
                         </div>
                         <div>
-                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Çıkış Saati (24h)</label>
-                            <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace;" oninput="formatTimeInput(this); calculateWaitingTime()">
+                            <label style="font-size: 0.75rem; color: #475569; margin-bottom: 3px; display: block; font-weight: 500;">Çıkış Saati (24h)</label>
+                            <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" oninput="formatTimeInput(this); calculateWaitingTime()" style="width: 100%; padding: 10px; border: 2px solid #bae6fd; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace; background: white;">
                         </div>
                     </div>
-                    <div style="font-size: 0.75rem; color: #059669; margin-bottom: 10px; text-align: center;">
-                        💡 Saat formatı: SS:DD (örnek: 09:00, 16:30, 23:45)
+
+                    <div style="font-size: 0.75rem; color: #0284c7; margin-bottom: 10px; text-align: center; font-weight: 500;">
+                        💡 Format: SS:DD (örnek: 09:00, 16:30, 23:45)
                     </div>
-                    <div id="beklemeSonuc" style="background: white; padding: 12px; border-radius: 8px; text-align: center; display: none;">
-                        <div style="font-size: 1.1rem; font-weight: 700; color: #10b981;" id="beklemeText">0 bekleme</div>
-                        <div style="font-size: 0.8rem; color: #666; margin-top: 4px;" id="toplamSaatText">Toplam: 0 saat</div>
+
+                    <div id="beklemeSonuc" style="background: white; padding: 12px; border-radius: 8px; text-align: center; display: none; border: 2px solid #0ea5e9;">
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #0284c7;" id="beklemeText">0 bekleme</div>
+                        <div style="font-size: 0.8rem; color: #64748b; margin-top: 4px;" id="toplamSaatText">Toplam: 0 saat</div>
                     </div>
                 </div>
 
-                    <label class="hesap-checkbox">
-                        <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()">
-                        <span class="hesap-checkbox-label">
-                            <span class="hesap-checkbox-title">ATS Farkı</span>
-                            <span class="hesap-checkbox-price">+ ₺100</span>
+                <!-- Ek Hizmetler - Blue Theme -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.85rem; color: #475569; margin-bottom: 8px; font-weight: 600;">➕ Ek Hizmetler</label>
+
+                    <label style="display: flex; align-items: center; padding: 12px; background: white; border-radius: 10px; margin-bottom: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.2s;" onmouseover="this.style.borderColor='#0ea5e9'" onmouseout="this.style.borderColor='#e2e8f0'">
+                        <input type="checkbox" id="aktarmaCheck" onchange="updateTotalPrice()" style="width: 20px; height: 20px; margin-right: 12px; cursor: pointer; accent-color: #0ea5e9;">
+                        <span style="display: flex; flex-direction: column; flex: 1;">
+                            <span style="font-size: 0.95rem; font-weight: 600; color: #334155;">Boş/Dolu Aktarma</span>
+                            <span style="font-size: 0.85rem; color: #0ea5e9; font-weight: 700;">+ ₺300</span>
+                        </span>
+                    </label>
+
+                    <label style="display: flex; align-items: center; padding: 12px; background: white; border-radius: 10px; margin-bottom: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.2s;" onmouseover="this.style.borderColor='#0ea5e9'" onmouseout="this.style.borderColor='#e2e8f0'">
+                        <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()" style="width: 20px; height: 20px; margin-right: 12px; cursor: pointer; accent-color: #0ea5e9;">
+                        <span style="display: flex; flex-direction: column; flex: 1;">
+                            <span style="font-size: 0.95rem; font-weight: 600; color: #334155;">ATS Farkı</span>
+                            <span style="font-size: 0.85rem; color: #0ea5e9; font-weight: 700;">+ ₺100</span>
                         </span>
                     </label>
                 </div>
 
-                <div class="hesap-sonuc">
-                    <div class="hesap-sonuc-label">Hesaplanan Tutar</div>
-                    <div class="hesap-sonuc-tutar" id="hesapSonuc">₺0</div>
-                    <div class="hesap-detay" id="hesapDetay">Bölge seçin</div>
+                <!-- Sonuç - Blue Theme -->
+                <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 10px;">
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">Hesaplanan Tutar</div>
+                    <div style="font-size: 2rem; font-weight: 800;" id="hesapSonuc">₺0</div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 6px; margin-top: 10px; font-size: 0.8rem;" id="hesapDetay">Bölge seçin</div>
                 </div>
             </div>
 
-            <div class="hesap-footer">
-                <button class="btn-hesapla" onclick="useCalculatedPrice()">💰 Bu Fiyatı Kullan</button>
-                <button class="btn-hesap-kapat" onclick="closeModal('hesapModal')">Kapat</button>
+            <!-- Fixed Footer with Buttons -->
+            <div style="flex-shrink: 0; padding: 20px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 10px;">
+                <button onclick="useCalculatedPrice()" style="flex: 2; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">💰 Bu Fiyatı Kullan</button>
+                <button onclick="closeModal('hesapModal')" style="flex: 1; background: #f1f5f9; color: #475569; border: none; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;">Kapat</button>
             </div>
         </div>
     </div>
 
+    <style>
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .hesap-modal.active { display: flex !important; }
+    </style>
     <!-- Fiyat Tarifesi Modal -->
     <div class="modal tarife-modal" id="tarifeModal">
         <div class="modal-content">
