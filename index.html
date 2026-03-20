@@ -859,12 +859,24 @@ body.theme-solid {
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="header-buttons">
+                <!-- TEMA BUTONU -->
+                <button class="header-btn" id="themeToggleBtn" onclick="toggleTheme()">
+                    <svg id="themeIconImg" viewBox="0 0 24 24" style="display: block;">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="white"/>
+                    </svg>
+                    <svg id="themeIconColor" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z" fill="white"/>
+                    </svg>
+                    <span class="header-btn-label" id="themeLabel">Resim Modu</span>
+                </button>
+
                 <button class="header-btn" id="musicToggleBtn" onclick="toggleMusic()" style="display: none;">
                     <svg id="musicIconOn" viewBox="0 0 24 24" style="display: none;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                     <svg id="musicIconOff" viewBox="0 0 24 24"><path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z"/></svg>
@@ -879,7 +891,7 @@ body.theme-solid {
                     <span class="header-btn-label">Ayarlar</span>
                 </button>
             </div>
-            <h1>🚛 aynen Harcırah Takip</h1>
+            <h1>🚛 Konteyner Harcırah Takip</h1>
         </div>
         
         <!-- Giriş Formu -->
