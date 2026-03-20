@@ -11,23 +11,13 @@
             box-sizing: border-box;
         }
 
-     body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-image: url('backg.png');
-    background-size: 100% auto;
-    background-position: top center;
-    background-repeat: repeat-y;
-    background-color: #0284c7;
-    min-height: 100vh;
-    padding: 10px;
-    color: #333;
-    transition: background-image 0.5s ease;
-}
-
-body.theme-solid {
-    background-image: none;
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: #333;
+        }
 
         .container {
             max-width: 480px;
@@ -108,14 +98,11 @@ body.theme-solid {
 
         /* Giriş Formu */
         .form-card {
-            background: rgba(255, 255, 255, 0.40);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: white;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .form-group {
@@ -125,27 +112,25 @@ body.theme-solid {
         label {
             display: block;
             font-size: 0.85rem;
-            color: #333;
+            color: #666;
             margin-bottom: 5px;
-            font-weight: 700;
-            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+            font-weight: 600;
         }
 
         input, select {
             width: 100%;
             padding: 14px;
-            border: 2px solid rgba(224, 224, 224, 0.6);
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.70);
+            background: #fafafa;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #0284c7;
-            background: rgba(255, 255, 255, 0.90);
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+            background: white;
         }
 
         .row {
@@ -858,31 +843,12 @@ body.theme-solid {
     </style>
 <base target="_blank">
 <base target="_blank">
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="header-buttons">
-                <!-- TEMA BUTONU -->
-                <button class="header-btn" id="themeToggleBtn" onclick="toggleTheme()">
-                    <svg id="themeIconImg" viewBox="0 0 24 24" style="display: block;">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="white"/>
-                    </svg>
-                    <svg id="themeIconColor" viewBox="0 0 24 24" style="display: none;">
-                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z" fill="white"/>
-                    </svg>
-                    <span class="header-btn-label" id="themeLabel">Resim Modu</span>
-                </button>
-
-                <button class="header-btn" id="musicToggleBtn" onclick="toggleMusic()" style="display: none;">
-                    <svg id="musicIconOn" viewBox="0 0 24 24" style="display: none;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                    <svg id="musicIconOff" viewBox="0 0 24 24"><path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z"/></svg>
-                    <span class="header-btn-label" id="musicLabel">Müzik Kapalı</span>
-                </button>
                 <button class="header-btn" onclick="openTarife()">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
                     <span class="header-btn-label">Fiyat Tarifesi</span>
@@ -892,7 +858,7 @@ body.theme-solid {
                     <span class="header-btn-label">Ayarlar</span>
                 </button>
             </div>
-            <h1>🚛 Konteyner Harcırah Takip</h1>
+            <h1>🚛 Öner Lojistik Harcırah Takip</h1>
         </div>
         
         <!-- Giriş Formu -->
@@ -1911,305 +1877,5 @@ async function generatePDF() {
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
-
-    <!-- Arka Plan Müziği -->
-    <audio id="bgMusic" loop>
-        <source src="sibel.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Ses İzni Modalı -->
-    <div id="musicPermissionModal" style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(5px);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        animation: fadeIn 0.3s ease;
-    ">
-        <div style="
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-            border-radius: 24px;
-            padding: 35px 30px;
-            max-width: 380px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            animation: slideUp 0.4s ease;
-            border: 2px solid rgba(255,255,255,0.3);
-        ">
-            <!-- Müzik İkonu -->
-            <div style="
-                width: 80px;
-                height: 80px;
-                background: rgba(255,255,255,0.2);
-                border-radius: 50%;
-                margin: 0 auto 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: pulse 2s infinite;
-            ">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
-            </div>
-
-            <h2 style="
-                color: white;
-                font-size: 1.4rem;
-                margin-bottom: 12px;
-                font-weight: 700;
-            ">🎵 Arka Plan Müziği</h2>
-
-            <p style="
-                color: rgba(255,255,255,0.9);
-                font-size: 1rem;
-                line-height: 1.5;
-                margin-bottom: 25px;
-            ">
-                Site deneyiminizi zenginleştirmek için arka plan müziği çalmak istiyoruz.
-            </p>
-
-            <div style="display: flex; gap: 12px; flex-direction: column;">
-                <button onclick="allowMusic()" style="
-                    width: 100%;
-                    padding: 16px;
-                    background: white;
-                    color: #0284c7;
-                    border: none;
-                    border-radius: 12px;
-                    font-size: 1.1rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                    🎶 Müziği Başlat
-                </button>
-
-                <button onclick="denyMusic()" style="
-                    width: 100%;
-                    padding: 14px;
-                    background: transparent;
-                    color: rgba(255,255,255,0.8);
-                    border: 2px solid rgba(255,255,255,0.3);
-                    border-radius: 12px;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                " onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
-                    🔇 Sessiz Devam Et
-                </button>
-            </div>
-
-            <p style="
-                color: rgba(255,255,255,0.6);
-                font-size: 0.8rem;
-                margin-top: 20px;
-            ">
-                ♪ Şimdi çalacak: <strong style="color: white;">Sibel</strong>
-            </p>
-        </div>
-    </div>
-
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-    </style>
-
-    <script>
-        // Müzik kontrolü - localStorage ile hatırlama
-        const music = document.getElementById('bgMusic');
-        music.volume = 0.3;
-
-        let musicStarted = false;
-        let isPlaying = false;
-
-        // localStorage'dan müzik tercihini oku
-        const savedMusicPref = localStorage.getItem('musicPreference');
-
-        function allowMusic() {
-            music.play().then(() => {
-                musicStarted = true;
-                isPlaying = true;
-                localStorage.setItem('musicPreference', 'enabled');
-                updateMusicButton();
-                closeMusicModal();
-                showNotification('🎵 Müzik başladı!');
-            }).catch(err => {
-                console.log('Müzik başlatılamadı:', err);
-                closeMusicModal();
-            });
-        }
-
-        function denyMusic() {
-            closeMusicModal();
-            musicStarted = false;
-            isPlaying = false;
-            localStorage.setItem('musicPreference', 'disabled');
-            updateMusicButton();
-        }
-
-        // Tema kontrolü - localStorage ile hatırlama
-        let isImageTheme = localStorage.getItem('themeMode') !== 'solid';
-
-        function applyTheme() {
-            const body = document.body;
-            const iconImg = document.getElementById('themeIconImg');
-            const iconColor = document.getElementById('themeIconColor');
-            const label = document.getElementById('themeLabel');
-
-            if (!isImageTheme) {
-                body.classList.add('theme-solid');
-                if (iconImg) iconImg.style.display = 'none';
-                if (iconColor) iconColor.style.display = 'block';
-                if (label) label.textContent = 'Renk Modu';
-            } else {
-                body.classList.remove('theme-solid');
-                if (iconImg) iconImg.style.display = 'block';
-                if (iconColor) iconColor.style.display = 'none';
-                if (label) label.textContent = 'Resim Modu';
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const iconImg = document.getElementById('themeIconImg');
-            const iconColor = document.getElementById('themeIconColor');
-            const label = document.getElementById('themeLabel');
-
-            if (isImageTheme) {
-                body.classList.add('theme-solid');
-                if (iconImg) iconImg.style.display = 'none';
-                if (iconColor) iconColor.style.display = 'block';
-                if (label) label.textContent = 'Renk Modu';
-                localStorage.setItem('themeMode', 'solid');
-                showNotification('🎨 Düz renk moduna geçildi');
-                isImageTheme = false;
-            } else {
-                body.classList.remove('theme-solid');
-                if (iconImg) iconImg.style.display = 'block';
-                if (iconColor) iconColor.style.display = 'none';
-                if (label) label.textContent = 'Resim Modu';
-                localStorage.setItem('themeMode', 'image');
-                showNotification('🖼️ Resim moduna geçildi');
-                isImageTheme = true;
-            }
-        }
-
-        function toggleMusic() {
-            if (!musicStarted) {
-                // İlk defa başlatılıyor
-                music.play().then(() => {
-                    musicStarted = true;
-                    isPlaying = true;
-                    localStorage.setItem('musicPreference', 'enabled');
-                    updateMusicButton();
-                    showNotification('🎵 Müzik başladı!');
-                });
-            } else {
-                // Toggle durumu
-                if (isPlaying) {
-                    music.pause();
-                    isPlaying = false;
-                    localStorage.setItem('musicPreference', 'disabled');
-                    showNotification('🔇 Müzik duraklatıldı');
-                } else {
-                    music.play();
-                    isPlaying = true;
-                    localStorage.setItem('musicPreference', 'enabled');
-                    showNotification('🎵 Müzik devam ediyor');
-                }
-                updateMusicButton();
-            }
-        }
-
-        function updateMusicButton() {
-            const btn = document.getElementById('musicToggleBtn');
-            const iconOn = document.getElementById('musicIconOn');
-            const iconOff = document.getElementById('musicIconOff');
-            const label = document.getElementById('musicLabel');
-
-            if (btn) btn.style.display = 'flex';
-
-            if (isPlaying) {
-                if (iconOn) iconOn.style.display = 'block';
-                if (iconOff) iconOff.style.display = 'none';
-                if (label) label.textContent = 'Müzik Açık';
-                btn.style.background = 'rgba(16, 185, 129, 0.3)';
-            } else {
-                if (iconOn) iconOn.style.display = 'none';
-                if (iconOff) iconOff.style.display = 'block';
-                if (label) label.textContent = 'Müzik Kapalı';
-                btn.style.background = 'rgba(255, 255, 255, 0.2)';
-            }
-        }
-
-        function closeMusicModal() {
-            const modal = document.getElementById('musicPermissionModal');
-            if (modal) {
-                modal.style.opacity = '0';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 300);
-            }
-        }
-
-        function showMusicModal() {
-            const modal = document.getElementById('musicPermissionModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.style.opacity = '1';
-            }
-        }
-
-        // Sayfa yüklenince müzik ve tema durumunu kontrol et
-        document.addEventListener('DOMContentLoaded', function() {
-            applyTheme(); // Kaydedilmiş temayı uygula
-
-            const musicPref = localStorage.getItem('musicPreference');
-
-            if (musicPref === 'enabled') {
-                // Kullanıcı daha önce müziği açmış, otomatik başlatmayı dene
-                music.play().then(() => {
-                    musicStarted = true;
-                    isPlaying = true;
-                    updateMusicButton();
-                    closeMusicModal();
-                }).catch(() => {
-                    // Otomatik başlatma engellendi, modal göster
-                    showMusicModal();
-                });
-            } else if (musicPref === 'disabled') {
-                // Kullanıcı sessiz modu seçmiş, modal gösterme
-                musicStarted = false;
-                isPlaying = false;
-                updateMusicButton();
-                closeMusicModal();
-            } else {
-                // İlk ziyaret, modal göster
-                showMusicModal();
-            }
-        });
-    </script>
-
 </body>
 </html>
