@@ -1889,32 +1889,170 @@ async function generatePDF() {
     <!-- Arka Plan Müziği -->
     <audio id="bgMusic" loop>
         <source src="sibel.mp3" type="audio/mpeg">
-        Tarayıcınız audio elementini desteklemiyor.
     </audio>
 
-    <script>
-        // Sayfa yüklenince müziği başlat (kullanıcı etkileşimi gerekli olabilir)
-        document.addEventListener('DOMContentLoaded', function() {
-            const music = document.getElementById('bgMusic');
-            music.volume = 0.3; // Ses seviyesi %30
+    <!-- Ses İzni Modalı -->
+    <div id="musicPermissionModal" style="
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeIn 0.3s ease;
+    ">
+        <div style="
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            border-radius: 24px;
+            padding: 35px 30px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: slideUp 0.4s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+        ">
+            <!-- Müzik İkonu -->
+            <div style="
+                width: 80px;
+                height: 80px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 50%;
+                margin: 0 auto 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: pulse 2s infinite;
+            ">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+            </div>
 
-            // Otomatik oynatmayı dene
+            <h2 style="
+                color: white;
+                font-size: 1.4rem;
+                margin-bottom: 12px;
+                font-weight: 700;
+            ">🎵 Arka Plan Müziği</h2>
+
+            <p style="
+                color: rgba(255,255,255,0.9);
+                font-size: 1rem;
+                line-height: 1.5;
+                margin-bottom: 25px;
+            ">
+                Site deneyiminizi zenginleştirmek için arka plan müziği çalmak istiyoruz.
+            </p>
+
+            <div style="display: flex; gap: 12px; flex-direction: column;">
+                <button onclick="allowMusic()" style="
+                    width: 100%;
+                    padding: 16px;
+                    background: white;
+                    color: #0284c7;
+                    border: none;
+                    border-radius: 12px;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    🎶 Müziği Başlat
+                </button>
+
+                <button onclick="denyMusic()" style="
+                    width: 100%;
+                    padding: 14px;
+                    background: transparent;
+                    color: rgba(255,255,255,0.8);
+                    border: 2px solid rgba(255,255,255,0.3);
+                    border-radius: 12px;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                " onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+                    🔇 Sessiz Devam Et
+                </button>
+            </div>
+
+            <p style="
+                color: rgba(255,255,255,0.6);
+                font-size: 0.8rem;
+                margin-top: 20px;
+            ">
+                ♪ Şimdi çalacak: <strong style="color: white;">Sibel</strong>
+            </p>
+        </div>
+    </div>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+
+    <script>
+        // Müzik kontrolü
+        const music = document.getElementById('bgMusic');
+        music.volume = 0.3;
+
+        let musicStarted = false;
+
+        function allowMusic() {
+            music.play().then(() => {
+                musicStarted = true;
+                closeMusicModal();
+                showNotification('🎵 Müzik başladı!');
+            }).catch(err => {
+                console.log('Müzik başlatılamadı:', err);
+                closeMusicModal();
+            });
+        }
+
+        function denyMusic() {
+            closeMusicModal();
+            // Kullanıcı daha sonra isterse başlatabilir
+        }
+
+        function closeMusicModal() {
+            const modal = document.getElementById('musicPermissionModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        // Sayfa yüklenince modalı göster
+        document.addEventListener('DOMContentLoaded', function() {
+            // Önce otomatik deneyelim, olmazsa modal göster
             const playPromise = music.play();
 
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // Otomatik oynatma engellendi, kullanıcı etkileşimi bekle
-                    console.log('Otomatik oynatma engellendi, kullanıcı etkileşimi bekleniyor...');
-
-                    // İlk tıklamada çalmaya başla
-                    const startMusic = function() {
-                        music.play();
-                        document.removeEventListener('click', startMusic);
-                        document.removeEventListener('touchstart', startMusic);
-                    };
-
-                    document.addEventListener('click', startMusic);
-                    document.addEventListener('touchstart', startMusic);
+                playPromise.then(() => {
+                    // Otomatik başladı, modalı gizle
+                    closeMusicModal();
+                    musicStarted = true;
+                }).catch(() => {
+                    // Otomatik başlamadı, modal zaten görünür durumda
+                    console.log('Otomatik oynatma engellendi, izin modalı gösteriliyor...');
                 });
             }
         });
