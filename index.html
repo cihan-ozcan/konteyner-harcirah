@@ -863,6 +863,17 @@ body.theme-solid {
 <base target="_blank">
 </head>
 <body>
+    <!-- Tema tercihi hemen uygula (flickering önlemi) -->
+    <script>
+        (function() {
+            try {
+                const savedTheme = localStorage.getItem('themeMode');
+                if (savedTheme === 'solid') {
+                    document.body.classList.add('theme-solid');
+                }
+            } catch(e) {}
+        })();
+    </script>
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -1192,6 +1203,56 @@ body.theme-solid {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
+        // ==================== THEME VARIABLES (En başta tanımlanmalı) ====================
+        let isImageTheme = true;
+
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('themeMode');
+            const body = document.body;
+            const iconImg = document.getElementById('themeIconImg');
+            const iconColor = document.getElementById('themeIconColor');
+            const label = document.getElementById('themeLabel');
+
+            if (savedTheme === 'solid') {
+                isImageTheme = false;
+                if (body) body.classList.add('theme-solid');
+                if (iconImg) iconImg.style.display = 'none';
+                if (iconColor) iconColor.style.display = 'block';
+                if (label) label.textContent = 'Renk Modu';
+            } else {
+                isImageTheme = true;
+                if (body) body.classList.remove('theme-solid');
+                if (iconImg) iconImg.style.display = 'block';
+                if (iconColor) iconColor.style.display = 'none';
+                if (label) label.textContent = 'Resim Modu';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const iconImg = document.getElementById('themeIconImg');
+            const iconColor = document.getElementById('themeIconColor');
+            const label = document.getElementById('themeLabel');
+
+            if (isImageTheme) {
+                if (body) body.classList.add('theme-solid');
+                if (iconImg) iconImg.style.display = 'none';
+                if (iconColor) iconColor.style.display = 'block';
+                if (label) label.textContent = 'Renk Modu';
+                localStorage.setItem('themeMode', 'solid');
+                isImageTheme = false;
+                showNotification('🎨 Düz renk moduna geçildi');
+            } else {
+                if (body) body.classList.remove('theme-solid');
+                if (iconImg) iconImg.style.display = 'block';
+                if (iconColor) iconColor.style.display = 'none';
+                if (label) label.textContent = 'Resim Modu';
+                localStorage.setItem('themeMode', 'image');
+                isImageTheme = true;
+                showNotification('🖼️ Resim moduna geçildi');
+            }
+        }
+
         // ==================== GLOBAL VARIABLES ====================
         let entries = [];
         let editingIndex = -1;
