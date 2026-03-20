@@ -24,10 +24,10 @@
             margin: 0 auto;
         }
 
-        /* Header Düzeni - DÜZELTİLMİŞ */
+        /* Header Düzeni */
         .header {
             position: relative;
-            padding-top: 60px; /* Butonlar için üst boşluk */
+            padding-top: 60px;
             margin-bottom: 15px;
         }
 
@@ -37,11 +37,11 @@
             font-size: 1.5rem;
             margin: 0;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            padding: 0 60px; /* Kenarlardan boşluk */
+            padding: 0 60px;
             line-height: 1.3;
         }
 
-        /* Header Butonları - DÜZELTİLMİŞ */
+        /* Header Butonları */
         .header-buttons {
             position: absolute;
             top: 10px;
@@ -158,6 +158,32 @@
 
         .btn-primary:active {
             transform: scale(0.98);
+        }
+
+        /* Fiyat Hesapla Butonu */
+        .fiyat-hesapla-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fiyat-hesapla-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .fiyat-hesapla-btn:active {
+            transform: scale(0.95);
         }
 
         /* Liste Bölümü */
@@ -417,6 +443,7 @@
             font-weight: 600;
             cursor: pointer;
             margin-bottom: 10px;
+            transition: all 0.2s;
         }
 
         .btn-whatsapp {
@@ -427,6 +454,10 @@
         .btn-close {
             background: #f5f5f5;
             color: #666;
+        }
+
+        .btn-close:hover {
+            background: #e0e0e0;
         }
 
         .btn-danger {
@@ -587,6 +618,166 @@
             background: #e2e8f0;
         }
 
+        /* Fiyat Hesaplama Modal - YENİ */
+        .hesap-modal .modal-content {
+            max-width: 450px;
+            text-align: left;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .hesap-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hesap-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .hesap-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .hesap-body {
+            padding: 20px;
+        }
+
+        .hesap-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafafa;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .hesap-select:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+        }
+
+        .hesap-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .hesap-checkbox {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .hesap-checkbox:hover {
+            background: #f1f5f9;
+            border-color: #10b981;
+        }
+
+        .hesap-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #10b981;
+        }
+
+        .hesap-checkbox-label {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .hesap-checkbox-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .hesap-checkbox-price {
+            font-size: 0.85rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .hesap-sonuc {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .hesap-sonuc-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .hesap-sonuc-tutar {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .hesap-detay {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .hesap-footer {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .btn-hesapla {
+            flex: 2;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-hesapla:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-hesap-kapat {
+            flex: 1;
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
         /* Arama ve Filtre */
         .search-box {
             background: white;
@@ -649,34 +840,13 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Fiyat hesaplama yardımcı */
-        .fiyat-hesapla-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
-
-        .fiyat-hesapla-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .fiyat-hesapla-btn:active {
-            transform: scale(0.95);
-        }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
     <div class="container">
-        <!-- Header - DÜZELTİLMİŞ -->
+        <!-- Header -->
         <div class="header">
             <div class="header-buttons">
                 <button class="header-btn" onclick="openTarife()">
@@ -727,7 +897,9 @@
             <div class="form-group">
                 <label for="amount">Harcırah (₺)</label>
                 <input type="number" id="amount" placeholder="600" required>
-                <button type="button" class="fiyat-hesapla-btn" onclick="openTarife()">💰 Fiyat Tarifesine Bak</button>
+                <button type="button" class="fiyat-hesapla-btn" onclick="openHesapModal()">
+                    🧮 Otomatik Fiyat Hesapla
+                </button>
             </div>
             
             <button class="btn-primary" onclick="addEntry()"><span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet</button>
@@ -785,6 +957,93 @@
             <div style="background: #f5f5f5; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.8rem; color: #666; line-height: 1.4;">
                 💡 <strong>İpucu:</strong> PDF "İndirilenler" klasöründe.<br>
                 Dosya adı: <strong>Harcirah_YYYY-AA-GG.pdf</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fiyat Hesaplama Modal - YENİ -->
+    <div class="modal hesap-modal" id="hesapModal">
+        <div class="modal-content">
+            <div class="hesap-header">
+                <h3>🧮 Fiyat Hesapla</h3>
+                <p>Bölge ve ek hizmetleri seçin</p>
+            </div>
+            
+            <div class="hesap-body">
+                <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 8px; font-weight: 600;">Gidilecek Bölge</label>
+                <select id="bolgeSelect" class="hesap-select" onchange="updateTotalPrice()">
+                    <option value="0">Bölge seçin...</option>
+                    <option value="700" data-name="Acıbadem-Göztepe-Fikirtepe-Kozyatağı-Beykoz-Paşabahçe-Kavacık-Çekmeköy-Dudullu-Ümraniye-Kadıköy-İçerenköy-Kartal-Yakacık-Cevizli-Pendik-Kurtköy-Dolayoba-Samandıra-Sancaktepe-Sultanbeyli-Sarıgazi-Alemdağ">Acıbadem-Göztepe-Kadıköy (₺700)</option>
+                    <option value="500" data-name="Avcılar-Esenyurt-Gürpınar-Büyükçekmece-Beylikdüzü-Arnavutköy-Hadımköy-Haramidere-Yakuplu-Kıraç-Çatalca-Silivri-Selimpaşa">Avcılar-Esenyurt-Beylikdüzü (₺500)</option>
+                    <option value="600" data-name="Bağcılar-Başakşehir-İkitelli-Mahmutbey-Halkalı-Küçükçekmece-Sefaköy-Yenibosna-Habibler-Güneşli-Şirinevler-Yeşilköy">Bağcılar-Başakşehir-İkitelli (₺600)</option>
+                    <option value="600" data-name="Alibeyköy-Kağıthane-Ayazağa-Aksaray-Kemerburgaz-Bakırköy-Güngören-Bayrampaşa-Esenler-Beşiktaş-Seyrantepe-Eminönü-Karaköy-Etiler-Levent-Eyüp-Gaziosmanpaşa-Sultangazi-Küçükköy-Sarıyer-Maslak-Gayrettepe-Şişli-Tarabya-Merter-Zeytinburnu-Topkapı-Rami-Topçular-Sultançiftliği-Okmeydanı-Kasımpaşa-Mecidiyeköy">Alibeyköy-Kağıthane-Şişli (₺600)</option>
+                    <option value="600" data-name="Çerkezköy-Çorlu-Saray-Ergene-Kınalı">Çerkezköy-Çorlu (₺600)</option>
+                    <option value="650" data-name="Tekirdağ-Vize-Muratlı">Tekirdağ-Vize (₺650)</option>
+                    <option value="750" data-name="Edirne-Kırklareli-Malkara-Lüleburgaz">Edirne-Kırklareli (₺750)</option>
+                    <option value="750" data-name="Tuzla-Tepeören-Ömerli-Aydınlıköy-Şekerpınar-Çayırova-Gebze">Tuzla-Gebze (₺750)</option>
+                </select>
+
+                <div class="hesap-checkboxes">
+                    <label class="hesap-checkbox">
+                        <input type="checkbox" id="aktarmaCheck" onchange="updateTotalPrice()">
+                        <span class="hesap-checkbox-label">
+                            <span class="hesap-checkbox-title">Boş/Dolu Aktarma</span>
+                            <span class="hesap-checkbox-price">+ ₺300</span>
+                        </span>
+                    </label>
+
+                    <div style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 12px; padding: 15px; margin-bottom: 12px;">
+                    <label style="display: block; font-size: 0.85rem; color: #059669; margin-bottom: 10px; font-weight: 600;">
+                        ⏱️ Bekleme Süresi Hesapla
+                    </label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <div>
+                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Giriş Tarihi</label>
+                            <input type="date" id="girisTarih" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;" onchange="calculateWaitingTime()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Giriş Saati (24h)</label>
+                            <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace;" oninput="formatTimeInput(this); calculateWaitingTime()">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <div>
+                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Çıkış Tarihi</label>
+                            <input type="date" id="cikisTarih" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem;" onchange="calculateWaitingTime()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; color: #666; margin-bottom: 4px; display: block;">Çıkış Saati (24h)</label>
+                            <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; text-align: center; font-family: monospace;" oninput="formatTimeInput(this); calculateWaitingTime()">
+                        </div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #059669; margin-bottom: 10px; text-align: center;">
+                        💡 Saat formatı: SS:DD (örnek: 09:00, 16:30, 23:45)
+                    </div>
+                    <div id="beklemeSonuc" style="background: white; padding: 12px; border-radius: 8px; text-align: center; display: none;">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #10b981;" id="beklemeText">0 bekleme</div>
+                        <div style="font-size: 0.8rem; color: #666; margin-top: 4px;" id="toplamSaatText">Toplam: 0 saat</div>
+                    </div>
+                </div>
+
+                    <label class="hesap-checkbox">
+                        <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()">
+                        <span class="hesap-checkbox-label">
+                            <span class="hesap-checkbox-title">ATS Farkı</span>
+                            <span class="hesap-checkbox-price">+ ₺100</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="hesap-sonuc">
+                    <div class="hesap-sonuc-label">Hesaplanan Tutar</div>
+                    <div class="hesap-sonuc-tutar" id="hesapSonuc">₺0</div>
+                    <div class="hesap-detay" id="hesapDetay">Bölge seçin</div>
+                </div>
+            </div>
+
+            <div class="hesap-footer">
+                <button class="btn-hesapla" onclick="useCalculatedPrice()">💰 Bu Fiyatı Kullan</button>
+                <button class="btn-hesap-kapat" onclick="closeModal('hesapModal')">Kapat</button>
             </div>
         </div>
     </div>
@@ -875,10 +1134,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
+        // ==================== GLOBAL VARIABLES ====================
         let entries = [];
         let editingIndex = -1;
+        let currentCalculatedPrice = 0;
+        let currentWaitingCount = 0;
+        let currentWaitingPrice = 0;
 
-        // Turkce karakterleri normalize eden fonksiyon (en guvenli yontem)
+        // ==================== UTILITY FUNCTIONS ====================
         function toEnglishChars(text) {
             if (!text) return '';
             const charMap = {
@@ -892,13 +1155,31 @@
             return text.replace(/[çÇğĞıİöÖşŞüÜ]/g, char => charMap[char] || char);
         }
 
-        // Sayfa yuklendiginde verileri cek
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split('-');
+            return day + '.' + month + '.' + year;
+        }
+
+        function formatTimeString(timeStr) {
+            if (!timeStr || !timeStr.includes(':')) return null;
+            const parts = timeStr.split(':');
+            if (parts.length !== 2) return null;
+            let hours = parseInt(parts[0]);
+            let minutes = parseInt(parts[1]);
+            if (isNaN(hours) || isNaN(minutes)) return null;
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+            return { hours, minutes };
+        }
+
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
             loadEntries();
-            document.getElementById('date').valueAsDate = new Date();
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                dateInput.valueAsDate = new Date();
+            }
         });
 
-        // LocalStorage'dan verileri yukle
         function loadEntries() {
             const saved = localStorage.getItem('harcirah_entries');
             if (saved) {
@@ -907,11 +1188,256 @@
             }
         }
 
-        // LocalStorage'a kaydet
         function saveEntries() {
             localStorage.setItem('harcirah_entries', JSON.stringify(entries));
         }
 
+        // ==================== PRICE CALCULATION ====================
+        function updateTotalPrice() {
+            const bolgeSelect = document.getElementById('bolgeSelect');
+            const aktarmaCheck = document.getElementById('aktarmaCheck');
+            const atsCheck = document.getElementById('atsCheck');
+
+            if (!bolgeSelect) return;
+
+            // Get base price
+            const bolgeFiyat = parseInt(bolgeSelect.value) || 0;
+            const selectedOption = bolgeSelect.options[bolgeSelect.selectedIndex];
+            const bolgeAdi = selectedOption ? (selectedOption.getAttribute('data-name') || '') : '';
+
+            // Get additional services
+            const aktarma = aktarmaCheck && aktarmaCheck.checked ? 300 : 0;
+            const ats = atsCheck && atsCheck.checked ? 100 : 0;
+            const bekleme = currentWaitingPrice || 0;
+
+            // Calculate total
+            currentCalculatedPrice = bolgeFiyat + aktarma + bekleme + ats;
+
+            // Update display
+            const sonucEl = document.getElementById('hesapSonuc');
+            const detayEl = document.getElementById('hesapDetay');
+
+            if (sonucEl) {
+                sonucEl.textContent = '₺' + currentCalculatedPrice.toLocaleString('tr-TR');
+            }
+
+            // Build detail text
+            let detayParts = [];
+            if (bolgeFiyat > 0) {
+                const kisaBolge = bolgeAdi.split('-')[0] + (bolgeAdi.split('-').length > 1 ? ' ve civarı' : '');
+                detayParts.push('Bölge: ₺' + bolgeFiyat);
+            }
+            if (aktarma > 0) detayParts.push('Aktarma: ₺300');
+            if (bekleme > 0) detayParts.push('Bekleme (' + currentWaitingCount + 'x): ₺' + bekleme);
+            if (ats > 0) detayParts.push('ATS: ₺100');
+
+            const detayText = detayParts.length > 0 ? detayParts.join(' + ') : 'Bölge seçin';
+            if (detayEl) {
+                detayEl.textContent = detayText;
+            }
+        }
+
+        // ==================== WAITING TIME CALCULATION ====================
+        // Backward compatibility alias
+        function calculatePrice() {
+            updateTotalPrice();
+        }
+
+        function formatTimeInput(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+
+            if (value.length >= 2) {
+                let hours = value.substring(0, 2);
+                let minutes = value.substring(2, 4);
+
+                if (parseInt(hours) > 23) hours = '23';
+                if (parseInt(hours) < 0) hours = '00';
+
+                if (minutes) {
+                    if (parseInt(minutes) > 59) minutes = '59';
+                }
+
+                if (value.length >= 3) {
+                    input.value = hours + ':' + minutes;
+                } else {
+                    input.value = hours;
+                }
+            } else {
+                input.value = value;
+            }
+        }
+
+        function calculateWaitingTime() {
+            const girisTarih = document.getElementById('girisTarih');
+            const girisSaat = document.getElementById('girisSaat');
+            const cikisTarih = document.getElementById('cikisTarih');
+            const cikisSaat = document.getElementById('cikisSaat');
+            const beklemeSonuc = document.getElementById('beklemeSonuc');
+            const beklemeText = document.getElementById('beklemeText');
+            const toplamSaatText = document.getElementById('toplamSaatText');
+
+            if (!girisTarih || !girisSaat || !cikisTarih || !cikisSaat) return;
+
+            const gTarih = girisTarih.value;
+            const gSaatStr = girisSaat.value;
+            const cTarih = cikisTarih.value;
+            const cSaatStr = cikisSaat.value;
+
+            const gSaat = formatTimeString(gSaatStr);
+            const cSaat = formatTimeString(cSaatStr);
+
+            if (!gTarih || !gSaat || !cTarih || !cSaat) {
+                if (beklemeSonuc) beklemeSonuc.style.display = 'none';
+                currentWaitingCount = 0;
+                currentWaitingPrice = 0;
+                updateTotalPrice();
+                return;
+            }
+
+            const girisDateTime = new Date(gTarih + 'T' + 
+                String(gSaat.hours).padStart(2, '0') + ':' + 
+                String(gSaat.minutes).padStart(2, '0') + ':00');
+            const cikisDateTime = new Date(cTarih + 'T' + 
+                String(cSaat.hours).padStart(2, '0') + ':' + 
+                String(cSaat.minutes).padStart(2, '0') + ':00');
+
+            const diffMs = cikisDateTime - girisDateTime;
+
+            if (diffMs < 0) {
+                if (beklemeText) {
+                    beklemeText.textContent = '⚠️ Çıkış girişten önce';
+                    beklemeText.style.color = '#ef4444';
+                }
+                if (toplamSaatText) toplamSaatText.textContent = 'Lütfen tarihleri kontrol edin';
+                if (beklemeSonuc) beklemeSonuc.style.display = 'block';
+                currentWaitingCount = 0;
+                currentWaitingPrice = 0;
+                updateTotalPrice();
+                return;
+            }
+
+            const diffHours = diffMs / (1000 * 60 * 60);
+            const diffDays = Math.floor(diffHours / 24);
+            const remainingHours = Math.floor(diffHours % 24);
+
+            currentWaitingCount = Math.floor(diffHours / 7);
+            currentWaitingPrice = currentWaitingCount * 350;
+
+            let beklemeDisplay = currentWaitingCount + ' bekleme';
+            if (currentWaitingCount === 0) beklemeDisplay = 'Bekleme yok';
+            else if (currentWaitingCount === 1) beklemeDisplay = '1 bekleme';
+
+            let saatDisplay = 'Toplam: ';
+            if (diffDays > 0) saatDisplay += diffDays + ' gün ';
+            saatDisplay += remainingHours + ' saat (' + Math.floor(diffHours) + ' saat toplam)';
+
+            if (beklemeText) {
+                beklemeText.textContent = beklemeDisplay + ' = ₺' + currentWaitingPrice.toLocaleString('tr-TR');
+                beklemeText.style.color = currentWaitingCount > 0 ? '#10b981' : '#666';
+            }
+            if (toplamSaatText) toplamSaatText.textContent = saatDisplay;
+            if (beklemeSonuc) beklemeSonuc.style.display = 'block';
+
+            updateTotalPrice();
+        }
+
+        // ==================== MODAL FUNCTIONS ====================
+        function openHesapModal() {
+            const modal = document.getElementById('hesapModal');
+            if (modal) modal.classList.add('active');
+
+            const today = new Date().toISOString().split('T')[0];
+            const girisTarih = document.getElementById('girisTarih');
+            const cikisTarih = document.getElementById('cikisTarih');
+
+            if (girisTarih && !girisTarih.value) girisTarih.value = today;
+            if (cikisTarih && !cikisTarih.value) cikisTarih.value = today;
+
+            // Reset waiting calculation
+            currentWaitingCount = 0;
+            currentWaitingPrice = 0;
+            const beklemeSonuc = document.getElementById('beklemeSonuc');
+            if (beklemeSonuc) beklemeSonuc.style.display = 'none';
+
+            updateTotalPrice();
+        }
+
+        function openTarife() {
+            const modal = document.getElementById('tarifeModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function openSettings() {
+            const modal = document.getElementById('settingsModal');
+            const entryCount = document.getElementById('entryCount');
+            if (entryCount) entryCount.textContent = entries.length;
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('active');
+        }
+
+        function useCalculatedPrice() {
+            if (currentCalculatedPrice === 0) {
+                showNotification('Lütfen önce bir bölge seçin', 'error');
+                return;
+            }
+
+            const amountInput = document.getElementById('amount');
+            if (amountInput) amountInput.value = currentCalculatedPrice;
+
+            closeModal('hesapModal');
+            showNotification('Fiyat formaya aktarıldı: ₺' + currentCalculatedPrice.toLocaleString('tr-TR'));
+
+            // Update description
+            const descInput = document.getElementById('description');
+            const eklemeler = [];
+            const aktarmaCheck = document.getElementById('aktarmaCheck');
+            const atsCheck = document.getElementById('atsCheck');
+
+            if (aktarmaCheck && aktarmaCheck.checked) eklemeler.push('aktarma');
+            if (currentWaitingCount > 0) eklemeler.push(currentWaitingCount + ' bekleme');
+            if (atsCheck && atsCheck.checked) eklemeler.push('ATS');
+
+            if (eklemeler.length > 0 && descInput) {
+                const mevcutDesc = descInput.value ? descInput.value + ', ' : '';
+                const eklemelerStr = eklemeler.join(', ');
+                if (!descInput.value.includes(eklemelerStr)) {
+                    descInput.value = mevcutDesc + eklemelerStr;
+                }
+            }
+
+            // Update time field
+            const girisTarih = document.getElementById('girisTarih');
+            const girisSaat = document.getElementById('girisSaat');
+            const cikisTarih = document.getElementById('cikisTarih');
+            const cikisSaat = document.getElementById('cikisSaat');
+            const timeInput = document.getElementById('time');
+
+            if (girisTarih && girisSaat && cikisTarih && cikisSaat && timeInput) {
+                const gSaat = formatTimeString(girisSaat.value);
+                const cSaat = formatTimeString(cikisSaat.value);
+
+                if (gSaat && cSaat) {
+                    const formatDateTR = (dateStr) => {
+                        const [y, m, d] = dateStr.split('-');
+                        return d + '.' + m + '.' + y;
+                    };
+
+                    const formatTimeTR = (timeObj) => {
+                        return String(timeObj.hours).padStart(2, '0') + ':' + String(timeObj.minutes).padStart(2, '0');
+                    };
+
+                    const timeText = formatDateTR(girisTarih.value) + ' ' + formatTimeTR(gSaat) + 
+                                   ' - ' + formatDateTR(cikisTarih.value) + ' ' + formatTimeTR(cSaat);
+                    timeInput.value = timeText;
+                }
+            }
+        }
+
+        // ==================== ENTRY MANAGEMENT ====================
         function addEntry() {
             const date = document.getElementById('date').value;
             const container = document.getElementById('container').value;
@@ -922,7 +1448,7 @@
             const amount = parseFloat(document.getElementById('amount').value);
 
             if (!date || !container || !factory || !location || !time || !description || !amount) {
-                showNotification('Lutfen tum alanlari doldurun', 'error');
+                showNotification('Lütfen tüm alanları doldurun', 'error');
                 return;
             }
 
@@ -941,11 +1467,12 @@
             if (editingIndex >= 0) {
                 entries[editingIndex] = { ...entries[editingIndex], ...entry };
                 editingIndex = -1;
-                document.querySelector('.btn-primary').innerHTML = '<span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet';
-                showNotification('Kayit guncellendi!');
+                const btn = document.querySelector('.btn-primary');
+                if (btn) btn.innerHTML = '<span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet';
+                showNotification('Kayıt güncellendi!');
             } else {
                 entries.unshift(entry);
-                showNotification('Yeni kayit eklendi!');
+                showNotification('Yeni kayıt eklendi!');
             }
 
             saveEntries();
@@ -954,40 +1481,46 @@
         }
 
         function clearForm() {
-            document.getElementById('date').valueAsDate = new Date();
-            document.getElementById('container').value = '';
-            document.getElementById('factory').value = '';
-            document.getElementById('location').value = '';
-            document.getElementById('time').value = '';
-            document.getElementById('description').value = '';
-            document.getElementById('amount').value = '';
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.valueAsDate = new Date();
+
+            const fields = ['container', 'factory', 'location', 'time', 'description', 'amount'];
+            fields.forEach(field => {
+                const el = document.getElementById(field);
+                if (el) el.value = '';
+            });
         }
 
         function renderEntries(filteredEntries = null) {
             const list = document.getElementById('entriesList');
             const totalEl = document.getElementById('totalAmount');
             const displayEntries = filteredEntries || entries;
-            
+
+            if (!list) return;
+
             if (displayEntries.length === 0) {
                 list.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24"><path d="M9 2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2h6v-2h2v-2h-2v-2h2v-2h-2v-2h2v-2h-2v-2h2V8h-2V6h2V4h-2V2H9zm2 2h2v2h-2V4zm0 4h2v2h-2V8zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"/></svg>
-                        <p>${filteredEntries ? 'Arama sonucu bulunamadi' : 'Henüz kayit yok'}</p>
+                        <p>${filteredEntries ? 'Arama sonucu bulunamadı' : 'Henüz kayıt yok'}</p>
                     </div>
                 `;
-                totalEl.textContent = entries.reduce((a, b) => a + b.amount, 0).toLocaleString('tr-TR');
+                if (totalEl) {
+                    const total = entries.reduce((a, b) => a + (b.amount || 0), 0);
+                    totalEl.textContent = total.toLocaleString('tr-TR');
+                }
                 return;
             }
 
-            let total = entries.reduce((a, b) => a + b.amount, 0);
-            
+            let total = entries.reduce((a, b) => a + (b.amount || 0), 0);
+
             list.innerHTML = displayEntries.map((entry, index) => {
                 const actualIndex = entries.indexOf(entry);
                 return `
                     <div class="entry-card">
                         <div class="entry-header">
                             <span class="entry-date">${formatDate(entry.date)}</span>
-                            <span class="entry-amount">${entry.amount.toLocaleString('tr-TR')}₺</span>
+                            <span class="entry-amount">${(entry.amount || 0).toLocaleString('tr-TR')}₺</span>
                         </div>
                         <div class="entry-details">
                             <div class="entry-detail">
@@ -999,7 +1532,7 @@
                                 ${entry.factory}
                             </div>
                             <div class="entry-detail">
-                                <span>Donus</span>
+                                <span>Dönüş</span>
                                 ${entry.location}
                             </div>
                             <div class="entry-detail">
@@ -1009,113 +1542,136 @@
                         </div>
                         <div class="entry-desc">${entry.description}</div>
                         <div class="entry-actions">
-                            <button class="btn-small btn-edit" onclick="editEntry(${actualIndex})">✏️ Duzenle</button>
+                            <button class="btn-small btn-edit" onclick="editEntry(${actualIndex})">✏️ Düzenle</button>
                             <button class="btn-small btn-delete" onclick="deleteEntry(${actualIndex})">🗑️ Sil</button>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            totalEl.textContent = total.toLocaleString('tr-TR');
-        }
-
-        function formatDate(dateStr) {
-            const [year, month, day] = dateStr.split('-');
-            return `${day}.${month}.${year}`;
+            if (totalEl) totalEl.textContent = total.toLocaleString('tr-TR');
         }
 
         function editEntry(index) {
             const entry = entries[index];
-            document.getElementById('date').value = entry.date;
-            document.getElementById('container').value = entry.container;
-            document.getElementById('factory').value = entry.factory;
-            document.getElementById('location').value = entry.location;
-            document.getElementById('time').value = entry.time;
-            document.getElementById('description').value = entry.description;
-            document.getElementById('amount').value = entry.amount;
-            
+            if (!entry) return;
+
+            const fields = {
+                'date': entry.date,
+                'container': entry.container,
+                'factory': entry.factory,
+                'location': entry.location,
+                'time': entry.time,
+                'description': entry.description,
+                'amount': entry.amount
+            };
+
+            Object.keys(fields).forEach(field => {
+                const el = document.getElementById(field);
+                if (el) el.value = fields[field];
+            });
+
             editingIndex = index;
-            document.querySelector('.btn-primary').innerHTML = '<span style="color: white; font-size: 1.2rem;">💾</span> Guncelle';
-            
-            document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+            const btn = document.querySelector('.btn-primary');
+            if (btn) btn.innerHTML = '<span style="color: white; font-size: 1.2rem;">💾</span> Güncelle';
+
+            const formCard = document.querySelector('.form-card');
+            if (formCard) formCard.scrollIntoView({ behavior: 'smooth' });
         }
 
         function deleteEntry(index) {
-            if (confirm('Bu kaydi silmek istediginize emin misiniz?')) {
+            if (confirm('Bu kaydı silmek istediğinize emin misiniz?')) {
                 entries.splice(index, 1);
                 saveEntries();
                 renderEntries();
-                showNotification('Kayit silindi');
+                showNotification('Kayıt silindi');
             }
         }
 
         function filterEntries() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            const searchTerm = searchInput.value.toLowerCase();
             if (!searchTerm) {
                 renderEntries();
                 return;
             }
-            
+
             const filtered = entries.filter(entry => 
-                entry.container.toLowerCase().includes(searchTerm) ||
-                entry.factory.toLowerCase().includes(searchTerm) ||
-                entry.location.toLowerCase().includes(searchTerm)
+                (entry.container && entry.container.toLowerCase().includes(searchTerm)) ||
+                (entry.factory && entry.factory.toLowerCase().includes(searchTerm)) ||
+                (entry.location && entry.location.toLowerCase().includes(searchTerm))
             );
-            
+
             renderEntries(filtered);
         }
 
-        // YENİ: Fiyat tarifesi modalını aç
-        function openTarife() {
-            document.getElementById('tarifeModal').classList.add('active');
+        function clearAllData() {
+            if (confirm('⚠️ Tüm kayıtlar kalıcı olarak silinecek! Emin misiniz?')) {
+                entries = [];
+                localStorage.removeItem('harcirah_entries');
+                renderEntries();
+                closeModal('settingsModal');
+                showNotification('Tüm veriler silindi');
+            }
         }
 
-        // PDF olusturma - Turkce karakter sorununu cozen versiyon
-        function generatePDF() {
+        // ==================== NOTIFICATION ====================
+        function showNotification(text, type = 'success') {
+            const notif = document.getElementById('notification');
+            const notifText = document.getElementById('notificationText');
+
+            if (!notif || !notifText) return;
+
+            notifText.textContent = text;
+            notif.style.background = type === 'error' ? '#f44336' : '#4caf50';
+
+            notif.classList.add('show');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 2500);
+        }
+
+        // ==================== PDF GENERATION ====================
+        async function generatePDF() {
             if (entries.length === 0) {
-                showNotification('Once en az bir kayit ekleyin', 'error');
+                showNotification('Önce en az bir kayıt ekleyin', 'error');
                 return;
             }
 
             const loading = document.getElementById('loading');
-            loading.classList.add('active');
+            if (loading) loading.classList.add('active');
 
             try {
                 const { jsPDF } = window.jspdf;
-                
-                // Basit ve guvenli PDF olusturma
+
                 const doc = new jsPDF({
                     orientation: 'portrait',
                     unit: 'mm',
                     format: 'a4'
                 });
 
-                // Standart font kullan (Turkce karakterleri normalize ederek)
                 doc.setFont('helvetica', 'normal');
-                
-                // Baslik
+
                 doc.setFontSize(18);
                 doc.setTextColor(14, 165, 233);
                 doc.text(toEnglishChars('HARCIRAH LISTESI'), 105, 20, { align: 'center' });
-                
-                // Cizgi ciz
+
                 doc.setDrawColor(102, 126, 234);
                 doc.line(20, 25, 190, 25);
-                
-                // Tarih
+
                 doc.setFontSize(10);
                 doc.setTextColor(100);
                 doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR'), 105, 32, { align: 'center' });
-                
-                // Tablo basliklari
+
                 let y = 45;
                 doc.setFillColor(14, 165, 233);
                 doc.rect(10, y-6, 190, 10, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(9);
                 doc.setFont('helvetica', 'bold');
-                
-                // Sutun pozisyonlari
+
                 const cols = {
                     tarih: 15,
                     konteyner: 40,
@@ -1125,7 +1681,7 @@
                     aciklama: 160,
                     tutar: 190
                 };
-                
+
                 doc.text('TARIH', cols.tarih, y);
                 doc.text('KONTEYNER', cols.konteyner, y);
                 doc.text('FABRIKA', cols.fabrika, y);
@@ -1133,142 +1689,99 @@
                 doc.text('SAAT', cols.saat, y);
                 doc.text('ACIKLAMA', cols.aciklama, y);
                 doc.text('TUTAR', cols.tutar, y, { align: 'right' });
-                
-                // Veriler
+
                 y += 12;
                 doc.setTextColor(50);
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(8);
-                
+
                 let total = 0;
                 const sortedEntries = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
-                
+
                 sortedEntries.forEach((entry, index) => {
-                    // Yeni sayfa kontrolu
                     if (y > 280) {
                         doc.addPage();
                         y = 20;
                     }
-                    
-                    // Alternatif satir rengi
+
                     if (index % 2 === 0) {
                         doc.setFillColor(245, 245, 245);
                         doc.rect(10, y-7, 190, 8, 'F');
                     }
-                    
-                    // Verileri yaz - Turkce karakterleri cevir
+
                     doc.text(formatDate(entry.date), cols.tarih, y);
-                    doc.text(toEnglishChars(entry.container), cols.konteyner, y);
-                    doc.text(toEnglishChars(entry.factory.substring(0, 15)), cols.fabrika, y);
-                    doc.text(toEnglishChars(entry.location.substring(0, 12)), cols.donus, y);
-                    doc.text(entry.time, cols.saat, y);
-                    doc.text(toEnglishChars(entry.description.substring(0, 12)), cols.aciklama, y);
-                    doc.text(entry.amount.toLocaleString('tr-TR') + ' TL', cols.tutar, y, { align: 'right' });
-                    
+                    doc.text(toEnglishChars(entry.container || ''), cols.konteyner, y);
+                    doc.text(toEnglishChars((entry.factory || '').substring(0, 15)), cols.fabrika, y);
+                    doc.text(toEnglishChars((entry.location || '').substring(0, 12)), cols.donus, y);
+                    doc.text(entry.time || '', cols.saat, y);
+                    doc.text(toEnglishChars((entry.description || '').substring(0, 12)), cols.aciklama, y);
+                    doc.text((entry.amount || 0).toLocaleString('tr-TR') + ' TL', cols.tutar, y, { align: 'right' });
+
                     y += 10;
-                    total += entry.amount;
+                    total += (entry.amount || 0);
                 });
-                
-                // Toplam bolumu
+
                 y += 5;
                 doc.setFillColor(2, 132, 199);
                 doc.rect(120, y-6, 80, 10, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(11);
-                doc.setFont('bold');
+                doc.setFont('helvetica', 'bold');
                 doc.text(toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL', 160, y, { align: 'center' });
-                
-                // Alt bilgi
+
                 y = 285;
                 doc.setFontSize(8);
                 doc.setTextColor(150);
                 doc.setFont('helvetica', 'normal');
                 doc.text(toEnglishChars('Bu belge otomatik olarak olusturulmustur.'), 105, y, { align: 'center' });
-                
-                // PDF'i indir
+
                 const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
                 doc.save(fileName);
-                
-                // Modal goster
+
                 setTimeout(() => {
-                    loading.classList.remove('active');
-                    document.getElementById('pdfModal').classList.add('active');
+                    if (loading) loading.classList.remove('active');
+                    const pdfModal = document.getElementById('pdfModal');
+                    if (pdfModal) pdfModal.classList.add('active');
                 }, 800);
-                
+
             } catch (error) {
-                console.error('PDF hatasi:', error);
-                loading.classList.remove('active');
-                showNotification('PDF olusturulurken hata: ' + error.message, 'error');
+                console.error('PDF hatası:', error);
+                if (loading) loading.classList.remove('active');
+                showNotification('PDF oluşturulurken hata: ' + error.message, 'error');
             }
         }
 
         function shareWhatsApp() {
-            // PDF zaten indirildi, kullanıcıya manuel ekleme talimatı ver
-            const total = entries.reduce((a, b) => a + b.amount, 0);
-            
-            // WhatsApp mesajını hazırla
+            const total = entries.reduce((a, b) => a + (b.amount || 0), 0);
+
             let messageText = toEnglishChars('*HARCIRAH LISTESI*\n\n');
             messageText += toEnglishChars('Toplam Tutar: ') + total.toLocaleString('tr-TR') + ' TL\n';
             messageText += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
             messageText += toEnglishChars('Detaylar:\n');
-            
-            // Son 5 kaydı ekle (mesaj çok uzun olmasın diye)
+
             const recentEntries = entries.slice(0, 5);
             recentEntries.forEach((entry, idx) => {
                 messageText += (idx + 1) + '. ' + formatDate(entry.date) + ' - ';
                 messageText += toEnglishChars(entry.container) + ' - ';
-                messageText += entry.amount.toLocaleString('tr-TR') + ' TL\n';
+                messageText += (entry.amount || 0).toLocaleString('tr-TR') + ' TL\n';
             });
-            
+
             if (entries.length > 5) {
                 messageText += '... ve ' + (entries.length - 5) + toEnglishChars(' kayit daha\n');
             }
-            
+
             messageText += '\n📎 ' + toEnglishChars('PDF dosyasi indirildi. Lutfen eki manuel olarak ekleyin.');
-            
+
             const url = 'https://wa.me/?text=' + encodeURIComponent(messageText);
             window.open(url, '_blank');
             closeModal('pdfModal');
-            
-            // Kullanıcıya bilgi ver
+
             setTimeout(() => {
                 showNotification(toEnglishChars('PDF indirildi! WhatsApp\'ta Belge/Dosya ekleme ile PDF\'i gonderebilirsiniz'));
             }, 1000);
         }
 
-        function openSettings() {
-            document.getElementById('entryCount').textContent = entries.length;
-            document.getElementById('settingsModal').classList.add('active');
-        }
-
-        function clearAllData() {
-            if (confirm(toEnglishChars('⚠️ Tum kayitlar kalici olarak silinecek! Emin misiniz?'))) {
-                entries = [];
-                localStorage.removeItem('harcirah_entries');
-                renderEntries();
-                closeModal('settingsModal');
-                showNotification('Tum veriler silindi');
-            }
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        function showNotification(text, type = 'success') {
-            const notif = document.getElementById('notification');
-            const notifText = document.getElementById('notificationText');
-            
-            notifText.textContent = text;
-            notif.style.background = type === 'error' ? '#f44336' : '#4caf50';
-            
-            notif.classList.add('show');
-            setTimeout(() => {
-                notif.classList.remove('show');
-            }, 2500);
-        }
-
-        // Modal disina tiklama
+        // ==================== EVENT LISTENERS ====================
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -1277,7 +1790,9 @@
             });
         });
     </script>
- <script async data-id="101503221" src="/49de246743a.js"></script>
+   </script>
+     <a title="" href=""><img alt="Clicky" src="" border="0" /></a>
+<script async data-id="101503222" src="//static.getclicky.com/js"></script>
 
 </body>
 </html>
