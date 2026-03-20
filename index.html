@@ -1885,5 +1885,40 @@ async function generatePDF() {
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+
+    <!-- Arka Plan Müziği -->
+    <audio id="bgMusic" loop>
+        <source src="sibel.mp3" type="audio/mpeg">
+        Tarayıcınız audio elementini desteklemiyor.
+    </audio>
+
+    <script>
+        // Sayfa yüklenince müziği başlat (kullanıcı etkileşimi gerekli olabilir)
+        document.addEventListener('DOMContentLoaded', function() {
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.3; // Ses seviyesi %30
+
+            // Otomatik oynatmayı dene
+            const playPromise = music.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Otomatik oynatma engellendi, kullanıcı etkileşimi bekle
+                    console.log('Otomatik oynatma engellendi, kullanıcı etkileşimi bekleniyor...');
+
+                    // İlk tıklamada çalmaya başla
+                    const startMusic = function() {
+                        music.play();
+                        document.removeEventListener('click', startMusic);
+                        document.removeEventListener('touchstart', startMusic);
+                    };
+
+                    document.addEventListener('click', startMusic);
+                    document.addEventListener('touchstart', startMusic);
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
