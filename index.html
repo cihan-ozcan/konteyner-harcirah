@@ -1192,6 +1192,10 @@ body.theme-solid {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
+        // ==================== THEME VARIABLES ====================
+        // localStorage'dan tema tercihini oku (varsayılan: resim modu)
+        let isImageTheme = localStorage.getItem('themeMode') !== 'solid';
+
         // ==================== GLOBAL VARIABLES ====================
         let entries = [];
         let editingIndex = -1;
@@ -1229,8 +1233,31 @@ body.theme-solid {
             return { hours, minutes };
         }
 
+        // ==================== THEME FUNCTIONS ====================
+        function applyTheme() {
+            const body = document.body;
+            const iconImg = document.getElementById('themeIconImg');
+            const iconColor = document.getElementById('themeIconColor');
+            const label = document.getElementById('themeLabel');
+
+            if (!isImageTheme) {
+                // Düz renk modu
+                body.classList.add('theme-solid');
+                if (iconImg) iconImg.style.display = 'none';
+                if (iconColor) iconColor.style.display = 'block';
+                if (label) label.textContent = 'Renk Modu';
+            } else {
+                // Resim modu
+                body.classList.remove('theme-solid');
+                if (iconImg) iconImg.style.display = 'block';
+                if (iconColor) iconColor.style.display = 'none';
+                if (label) label.textContent = 'Resim Modu';
+            }
+        }
+
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
+            applyTheme(); // Kaydedilmiş temayı uygula
             loadEntries();
             const dateInput = document.getElementById('date');
             if (dateInput) {
@@ -2063,9 +2090,6 @@ async function generatePDF() {
             updateMusicButton();
         }
 
-        // Tema kontrolü
-        let isImageTheme = true;
-
         function toggleTheme() {
             const body = document.body;
             const iconImg = document.getElementById('themeIconImg');
@@ -2075,20 +2099,22 @@ async function generatePDF() {
             if (isImageTheme) {
                 // Resim modundan düz renge geç
                 body.classList.add('theme-solid');
-                iconImg.style.display = 'none';
-                iconColor.style.display = 'block';
-                label.textContent = 'Renk Modu';
+                if (iconImg) iconImg.style.display = 'none';
+                if (iconColor) iconColor.style.display = 'block';
+                if (label) label.textContent = 'Renk Modu';
+                localStorage.setItem('themeMode', 'solid');
                 showNotification('🎨 Düz renk moduna geçildi');
+                isImageTheme = false;
             } else {
                 // Düz renkten resim moduna geç
                 body.classList.remove('theme-solid');
-                iconImg.style.display = 'block';
-                iconColor.style.display = 'none';
-                label.textContent = 'Resim Modu';
+                if (iconImg) iconImg.style.display = 'block';
+                if (iconColor) iconColor.style.display = 'none';
+                if (label) label.textContent = 'Resim Modu';
+                localStorage.setItem('themeMode', 'image');
                 showNotification('🖼️ Resim moduna geçildi');
+                isImageTheme = true;
             }
-
-            isImageTheme = !isImageTheme;
         }
 
         function toggleMusic() {
