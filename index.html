@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Harcırah Takip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 15px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Giriş Formu */
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Liste Bölümü */
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 10px;
+            color: white;
+        }
+
+        .list-header h2 {
+            font-size: 1.1rem;
+        }
+
+        .total-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .entry-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entry-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .entry-date {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1rem;
+        }
+
+        .entry-amount {
+            font-weight: 800;
+            color: #764ba2;
+            font-size: 1.2rem;
+        }
+
+        .entry-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .entry-detail span {
+            display: block;
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 2px;
+        }
+
+        .entry-desc {
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-small:active {
+            transform: scale(0.95);
+        }
+
+        /* PDF Butonu */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: none;
+            z-index: 100;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        .fab svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .fab-label {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .fab:hover + .fab-label {
+            opacity: 1;
+        }
+
+        /* Boş Durum */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            fill: rgba(255,255,255,0.3);
+            margin-bottom: 15px;
+        }
+
+        /* Animasyonlar */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .entry-card {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .modal-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #4caf50;
+        }
+
+        .modal h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn-modal {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .btn-close {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-danger {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        /* Bildirim */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #4caf50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 300;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        /* Ayarlar Butonu */
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 50;
+        }
+
+        .settings-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        /* Arama ve Filtre */
+        .search-box {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-box svg {
+            width: 20px;
+            height: 20px;
+            fill: #999;
+        }
+
+        .search-box input {
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 0.95rem;
+        }
+
+        .search-box input:focus {
+            background: none;
+        }
+
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            display: none;
+            z-index: 400;
+            text-align: center;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Ayarlar Butonu -->
+        <button class="settings-btn" onclick="openSettings()">
+            <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        </button>
+
+        <h1>🚛 Harcırah Takip</h1>
+        
+        <!-- Giriş Formu -->
+        <div class="form-card">
+            <div class="form-group">
+                <label for="date">Tarih</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="container">Konteyner No</label>
+                <input type="text" id="container" placeholder="Örn: YMMU752015-1" required>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label for="factory">Fabrika</label>
+                    <input type="text" id="factory" placeholder="Üner Depo" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Dönüş</label>
+                    <input type="text" id="location" placeholder="Marport" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="time">Giriş - Çıkış</label>
+                <input type="text" id="time" placeholder="15:45 21:40" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Açıklama</label>
+                <input type="text" id="description" placeholder="kolcu, bekleme, vs." required>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Harcırah (₺)</label>
+                <input type="number" id="amount" placeholder="600" required>
+            </div>
+            
+            <button class="btn-primary" onclick="addEntry()">➕ Kaydet</button>
+        </div>
+
+        <!-- Arama -->
+        <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="searchInput" placeholder="Konteyner no veya fabrika ara..." onkeyup="filterEntries()">
+        </div>
+
+        <!-- Liste Başlığı -->
+        <div class="list-header">
+            <h2>Kayıtlar</h2>
+            <div class="total-badge">Toplam: <span id="totalAmount">0</span>₺</div>
+        </div>
+
+        <!-- Kayıt Listesi -->
+        <div id="entriesList">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24"><path d="M9 2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2h6v-2h2v-2h-2v-2h2v-2h-2v-2h2v-2h-2v-2h2V8h-2V6h2V4h-2V2H9zm2 2h2v2h-2V4zm0 4h2v2h-2V8zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"/></svg>
+                <p>Henüz kayıt yok</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Butonu -->
+    <button class="fab" onclick="generatePDF()">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+    </button>
+    <div class="fab-label">PDF Olustur</div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>PDF hazirlaniyor...</div>
+    </div>
+
+    <!-- PDF Modal -->
+    <div class="modal" id="pdfModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <h3>PDF Hazir!</h3>
+            <p>Harcirah listesi PDF olarak olusturuldu. WhatsApp'tan gondermek ister misiniz?</p>
+            <button class="btn-modal btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp'tan Gonder</button>
+            <button class="btn-modal btn-close" onclick="closeModal('pdfModal')">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Ayarlar Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h3>⚙️ Ayarlar</h3>
+            <p style="margin: 15px 0; font-size: 0.9rem;">
+                Kayitli islem sayisi: <strong id="entryCount">0</strong>
+            </p>
+            <button class="btn-modal btn-danger" onclick="clearAllData()">🗑️ Tum Verileri Sil</button>
+            <button class="btn-modal btn-close" onclick="closeModal('settingsModal')">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Bildirim -->
+    <div class="notification" id="notification">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <span id="notificationText">Kaydedildi!</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        let entries = [];
+        let editingIndex = -1;
+
+        // Turkce karakterleri normalize eden fonksiyon (en guvenli yontem)
+        function toEnglishChars(text) {
+            if (!text) return '';
+            const charMap = {
+                'ç': 'c', 'Ç': 'C',
+                'ğ': 'g', 'Ğ': 'G',
+                'ı': 'i', 'İ': 'I',
+                'ö': 'o', 'Ö': 'O',
+                'ş': 's', 'Ş': 'S',
+                'ü': 'u', 'Ü': 'U'
+            };
+            return text.replace(/[çÇğĞıİöÖşŞüÜ]/g, char => charMap[char] || char);
+        }
+
+        // Sayfa yuklendiginde verileri cek
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEntries();
+            document.getElementById('date').valueAsDate = new Date();
+        });
+
+        // LocalStorage'dan verileri yukle
+        function loadEntries() {
+            const saved = localStorage.getItem('harcirah_entries');
+            if (saved) {
+                entries = JSON.parse(saved);
+                renderEntries();
+            }
+        }
+
+        // LocalStorage'a kaydet
+        function saveEntries() {
+            localStorage.setItem('harcirah_entries', JSON.stringify(entries));
+        }
+
+        function addEntry() {
+            const date = document.getElementById('date').value;
+            const container = document.getElementById('container').value;
+            const factory = document.getElementById('factory').value;
+            const location = document.getElementById('location').value;
+            const time = document.getElementById('time').value;
+            const description = document.getElementById('description').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            if (!date || !container || !factory || !location || !time || !description || !amount) {
+                showNotification('Lutfen tum alanlari doldurun', 'error');
+                return;
+            }
+
+            const entry = { 
+                id: Date.now(),
+                date, 
+                container, 
+                factory, 
+                location, 
+                time, 
+                description, 
+                amount,
+                createdAt: new Date().toISOString()
+            };
+
+            if (editingIndex >= 0) {
+                entries[editingIndex] = { ...entries[editingIndex], ...entry };
+                editingIndex = -1;
+                document.querySelector('.btn-primary').textContent = '➕ Kaydet';
+                showNotification('Kayit guncellendi!');
+            } else {
+                entries.unshift(entry);
+                showNotification('Yeni kayit eklendi!');
+            }
+
+            saveEntries();
+            clearForm();
+            renderEntries();
+        }
+
+        function clearForm() {
+            document.getElementById('date').valueAsDate = new Date();
+            document.getElementById('container').value = '';
+            document.getElementById('factory').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('time').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('amount').value = '';
+        }
+
+        function renderEntries(filteredEntries = null) {
+            const list = document.getElementById('entriesList');
+            const totalEl = document.getElementById('totalAmount');
+            const displayEntries = filteredEntries || entries;
+            
+            if (displayEntries.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24"><path d="M9 2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2H7v2h2v2h6v-2h2v-2h-2v-2h2v-2h-2v-2h2v-2h-2v-2h2V8h-2V6h2V4h-2V2H9zm2 2h2v2h-2V4zm0 4h2v2h-2V8zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z"/></svg>
+                        <p>${filteredEntries ? 'Arama sonucu bulunamadi' : 'Henüz kayit yok'}</p>
+                    </div>
+                `;
+                totalEl.textContent = entries.reduce((a, b) => a + b.amount, 0).toLocaleString('tr-TR');
+                return;
+            }
+
+            let total = entries.reduce((a, b) => a + b.amount, 0);
+            
+            list.innerHTML = displayEntries.map((entry, index) => {
+                const actualIndex = entries.indexOf(entry);
+                return `
+                    <div class="entry-card">
+                        <div class="entry-header">
+                            <span class="entry-date">${formatDate(entry.date)}</span>
+                            <span class="entry-amount">${entry.amount.toLocaleString('tr-TR')}₺</span>
+                        </div>
+                        <div class="entry-details">
+                            <div class="entry-detail">
+                                <span>Konteyner</span>
+                                ${entry.container}
+                            </div>
+                            <div class="entry-detail">
+                                <span>Fabrika</span>
+                                ${entry.factory}
+                            </div>
+                            <div class="entry-detail">
+                                <span>Donus</span>
+                                ${entry.location}
+                            </div>
+                            <div class="entry-detail">
+                                <span>Saat</span>
+                                ${entry.time}
+                            </div>
+                        </div>
+                        <div class="entry-desc">${entry.description}</div>
+                        <div class="entry-actions">
+                            <button class="btn-small btn-edit" onclick="editEntry(${actualIndex})">✏️ Duzenle</button>
+                            <button class="btn-small btn-delete" onclick="deleteEntry(${actualIndex})">🗑️ Sil</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            totalEl.textContent = total.toLocaleString('tr-TR');
+        }
+
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split('-');
+            return `${day}.${month}.${year}`;
+        }
+
+        function editEntry(index) {
+            const entry = entries[index];
+            document.getElementById('date').value = entry.date;
+            document.getElementById('container').value = entry.container;
+            document.getElementById('factory').value = entry.factory;
+            document.getElementById('location').value = entry.location;
+            document.getElementById('time').value = entry.time;
+            document.getElementById('description').value = entry.description;
+            document.getElementById('amount').value = entry.amount;
+            
+            editingIndex = index;
+            document.querySelector('.btn-primary').textContent = '💾 Guncelle';
+            
+            document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteEntry(index) {
+            if (confirm('Bu kaydi silmek istediginize emin misiniz?')) {
+                entries.splice(index, 1);
+                saveEntries();
+                renderEntries();
+                showNotification('Kayit silindi');
+            }
+        }
+
+        function filterEntries() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                renderEntries();
+                return;
+            }
+            
+            const filtered = entries.filter(entry => 
+                entry.container.toLowerCase().includes(searchTerm) ||
+                entry.factory.toLowerCase().includes(searchTerm) ||
+                entry.location.toLowerCase().includes(searchTerm)
+            );
+            
+            renderEntries(filtered);
+        }
+
+        // PDF olusturma - Turkce karakter sorununu cozen versiyon
+        function generatePDF() {
+            if (entries.length === 0) {
+                showNotification('Once en az bir kayit ekleyin', 'error');
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            loading.classList.add('active');
+
+            try {
+                const { jsPDF } = window.jspdf;
+                
+                // Basit ve guvenli PDF olusturma
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Standart font kullan (Turkce karakterleri normalize ederek)
+                doc.setFont('helvetica', 'normal');
+                
+                // Baslik
+                doc.setFontSize(18);
+                doc.setTextColor(102, 126, 234);
+                doc.text(toEnglishChars('HARCIRAH LISTESI'), 105, 20, { align: 'center' });
+                
+                // Cizgi ciz
+                doc.setDrawColor(102, 126, 234);
+                doc.line(20, 25, 190, 25);
+                
+                // Tarih
+                doc.setFontSize(10);
+                doc.setTextColor(100);
+                doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR'), 105, 32, { align: 'center' });
+                
+                // Tablo basliklari
+                let y = 45;
+                doc.setFillColor(102, 126, 234);
+                doc.rect(10, y-6, 190, 10, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'bold');
+                
+                // Sutun pozisyonlari
+                const cols = {
+                    tarih: 15,
+                    konteyner: 40,
+                    fabrika: 85,
+                    donus: 115,
+                    saat: 140,
+                    aciklama: 160,
+                    tutar: 190
+                };
+                
+                doc.text('TARIH', cols.tarih, y);
+                doc.text('KONTEYNER', cols.konteyner, y);
+                doc.text('FABRIKA', cols.fabrika, y);
+                doc.text('DONUS', cols.donus, y);
+                doc.text('SAAT', cols.saat, y);
+                doc.text('ACIKLAMA', cols.aciklama, y);
+                doc.text('TUTAR', cols.tutar, y, { align: 'right' });
+                
+                // Veriler
+                y += 12;
+                doc.setTextColor(50);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                
+                let total = 0;
+                const sortedEntries = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                sortedEntries.forEach((entry, index) => {
+                    // Yeni sayfa kontrolu
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    
+                    // Alternatif satir rengi
+                    if (index % 2 === 0) {
+                        doc.setFillColor(245, 245, 245);
+                        doc.rect(10, y-7, 190, 8, 'F');
+                    }
+                    
+                    // Verileri yaz - Turkce karakterleri cevir
+                    doc.text(formatDate(entry.date), cols.tarih, y);
+                    doc.text(toEnglishChars(entry.container), cols.konteyner, y);
+                    doc.text(toEnglishChars(entry.factory.substring(0, 15)), cols.fabrika, y);
+                    doc.text(toEnglishChars(entry.location.substring(0, 12)), cols.donus, y);
+                    doc.text(entry.time, cols.saat, y);
+                    doc.text(toEnglishChars(entry.description.substring(0, 12)), cols.aciklama, y);
+                    doc.text(entry.amount.toLocaleString('tr-TR') + ' TL', cols.tutar, y, { align: 'right' });
+                    
+                    y += 10;
+                    total += entry.amount;
+                });
+                
+                // Toplam bolumu
+                y += 5;
+                doc.setFillColor(118, 75, 162);
+                doc.rect(120, y-6, 80, 10, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text(toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL', 160, y, { align: 'center' });
+                
+                // Alt bilgi
+                y = 285;
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.setFont('helvetica', 'normal');
+                doc.text(toEnglishChars('Bu belge otomatik olarak olusturulmustur.'), 105, y, { align: 'center' });
+                
+                // PDF'i indir
+                const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
+                doc.save(fileName);
+                
+                // Modal goster
+                setTimeout(() => {
+                    loading.classList.remove('active');
+                    document.getElementById('pdfModal').classList.add('active');
+                }, 500);
+                
+            } catch (error) {
+                console.error('PDF hatasi:', error);
+                loading.classList.remove('active');
+                showNotification('PDF olusturulurken hata: ' + error.message, 'error');
+            }
+        }
+
+        function shareWhatsApp() {
+            const total = entries.reduce((a, b) => a + b.amount, 0);
+            const text = toEnglishChars('Harcirah listesi ektedir.\nToplam: ') + total.toLocaleString('tr-TR') + ' TL\n' + toEnglishChars('Kayit sayisi: ') + entries.length;
+            const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+            window.open(url, '_blank');
+            closeModal('pdfModal');
+        }
+
+        function openSettings() {
+            document.getElementById('entryCount').textContent = entries.length;
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function clearAllData() {
+            if (confirm(toEnglishChars('⚠️ Tum kayitlar kalici olarak silinecek! Emin misiniz?'))) {
+                entries = [];
+                localStorage.removeItem('harcirah_entries');
+                renderEntries();
+                closeModal('settingsModal');
+                showNotification('Tum veriler silindi');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showNotification(text, type = 'success') {
+            const notif = document.getElementById('notification');
+            const notifText = document.getElementById('notificationText');
+            
+            notifText.textContent = text;
+            notif.style.background = type === 'error' ? '#f44336' : '#4caf50';
+            
+            notif.classList.add('show');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 2500);
+        }
+
+        // Modal disina tiklama
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
