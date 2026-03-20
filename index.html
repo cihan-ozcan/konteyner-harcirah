@@ -24,12 +24,76 @@
             margin: 0 auto;
         }
 
+        /* Header Düzeni - DÜZELTİLMİŞ */
+        .header {
+            position: relative;
+            padding-top: 60px; /* Butonlar için üst boşluk */
+            margin-bottom: 15px;
+        }
+
         h1 {
             text-align: center;
             color: white;
             font-size: 1.5rem;
-            margin: 15px 0;
+            margin: 0;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            padding: 0 60px; /* Kenarlardan boşluk */
+            line-height: 1.3;
+        }
+
+        /* Header Butonları - DÜZELTİLMİŞ */
+        .header-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .header-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .header-btn-label {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .header-btn:hover .header-btn-label {
+            opacity: 1;
         }
 
         /* Giriş Formu */
@@ -399,60 +463,6 @@
             fill: white;
         }
 
-        /* Header Butonları */
-        .header-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 50;
-        }
-
-        .header-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
-        }
-
-        .header-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        .header-btn-label {
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .header-btn:hover .header-btn-label {
-            opacity: 1;
-        }
-
         /* Fiyat Tarifesi Modal */
         .tarife-modal .modal-content {
             max-width: 500px;
@@ -663,23 +673,23 @@
         }
     </style>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div class="container">
-        <!-- Header Butonları -->
-        <div class="header-buttons">
-            <button class="header-btn" onclick="openTarife()">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
-                <span class="header-btn-label">Fiyat Tarifesi</span>
-            </button>
-            <button class="header-btn" onclick="openSettings()">
-                <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                <span class="header-btn-label">Ayarlar</span>
-            </button>
+        <!-- Header - DÜZELTİLMİŞ -->
+        <div class="header">
+            <div class="header-buttons">
+                <button class="header-btn" onclick="openTarife()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
+                    <span class="header-btn-label">Fiyat Tarifesi</span>
+                </button>
+                <button class="header-btn" onclick="openSettings()">
+                    <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <span class="header-btn-label">Ayarlar</span>
+                </button>
+            </div>
+            <h1>🚛 Harcırah Takip</h1>
         </div>
-
-        <h1>🚛 Harcırah Takip</h1>
         
         <!-- Giriş Formu -->
         <div class="form-card">
@@ -779,7 +789,7 @@
         </div>
     </div>
 
-    <!-- Fiyat Tarifesi Modal - YENİ -->
+    <!-- Fiyat Tarifesi Modal -->
     <div class="modal tarife-modal" id="tarifeModal">
         <div class="modal-content">
             <div class="tarife-header">
@@ -1165,7 +1175,7 @@
                 doc.rect(120, y-6, 80, 10, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
+                doc.setFont('bold');
                 doc.text(toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL', 160, y, { align: 'center' });
                 
                 // Alt bilgi
