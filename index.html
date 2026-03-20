@@ -1658,122 +1658,178 @@
         }
 
         // ==================== PDF GENERATION ====================
-        async function generatePDF() {
-            if (entries.length === 0) {
-                showNotification('Önce en az bir kayıt ekleyin', 'error');
-                return;
-            }
+async function generatePDF() {
+    if (entries.length === 0) {
+        showNotification('Önce en az bir kayıt ekleyin', 'error');
+        return;
+    }
 
-            const loading = document.getElementById('loading');
-            if (loading) loading.classList.add('active');
+    const loading = document.getElementById('loading');
+    if (loading) loading.classList.add('active');
 
-            try {
-                const { jsPDF } = window.jspdf;
+    try {
+        const { jsPDF } = window.jspdf;
 
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
 
-                doc.setFont('helvetica', 'normal');
+        doc.setFont('helvetica', 'normal');
 
-                doc.setFontSize(18);
-                doc.setTextColor(14, 165, 233);
-                doc.text(toEnglishChars('HARCIRAH LISTESI'), 105, 20, { align: 'center' });
+        // Başlık
+        doc.setFontSize(18);
+        doc.setTextColor(14, 165, 233);
+        doc.text(toEnglishChars('HARCIRAH LISTESI'), 105, 20, { align: 'center' });
 
-                doc.setDrawColor(102, 126, 234);
-                doc.line(20, 25, 190, 25);
+        doc.setDrawColor(2, 132, 199);
+        doc.line(20, 25, 190, 25);
 
-                doc.setFontSize(10);
-                doc.setTextColor(100);
-                doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR'), 105, 32, { align: 'center' });
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR'), 105, 32, { align: 'center' });
 
-                let y = 45;
-                doc.setFillColor(14, 165, 233);
-                doc.rect(10, y-6, 190, 10, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(9);
-                doc.setFont('helvetica', 'bold');
+        // Tablo başlığı - DÜZELTİLMİŞ SÜTUN GENİŞLİKLERİ
+        let y = 45;
+        doc.setFillColor(14, 165, 233);
+        doc.rect(10, y-6, 190, 10, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'bold');
 
-                const cols = {
-                    tarih: 15,
-                    konteyner: 40,
-                    fabrika: 85,
-                    donus: 115,
-                    saat: 140,
-                    aciklama: 160,
-                    tutar: 190
-                };
+        // Yeni sütun pozisyonları - daha dengeli dağılım
+        const cols = {
+            tarih: 12,
+            konteyner: 32,
+            fabrika: 62,
+            donus: 92,
+            saat: 118,
+            aciklama: 148,
+            tutar: 185
+        };
 
-                doc.text('TARIH', cols.tarih, y);
-                doc.text('KONTEYNER', cols.konteyner, y);
-                doc.text('FABRIKA', cols.fabrika, y);
-                doc.text('DONUS', cols.donus, y);
-                doc.text('SAAT', cols.saat, y);
-                doc.text('ACIKLAMA', cols.aciklama, y);
-                doc.text('TUTAR', cols.tutar, y, { align: 'right' });
+        doc.text('TARIH', cols.tarih, y);
+        doc.text('KONTEYNER', cols.konteyner, y);
+        doc.text('FABRIKA', cols.fabrika, y);
+        doc.text('DONUS', cols.donus, y);
+        doc.text('SAAT', cols.saat, y);
+        doc.text('ACIKLAMA', cols.aciklama, y);
+        doc.text('TUTAR', cols.tutar, y, { align: 'right' });
 
-                y += 12;
-                doc.setTextColor(50);
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8);
+        y += 10;
+        doc.setTextColor(50);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7); // Daha küçük font
 
-                let total = 0;
-                const sortedEntries = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+        let total = 0;
+        const sortedEntries = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                sortedEntries.forEach((entry, index) => {
-                    if (y > 280) {
-                        doc.addPage();
-                        y = 20;
-                    }
-
-                    if (index % 2 === 0) {
-                        doc.setFillColor(245, 245, 245);
-                        doc.rect(10, y-7, 190, 8, 'F');
-                    }
-
-                    doc.text(formatDate(entry.date), cols.tarih, y);
-                    doc.text(toEnglishChars(entry.container || ''), cols.konteyner, y);
-                    doc.text(toEnglishChars((entry.factory || '').substring(0, 15)), cols.fabrika, y);
-                    doc.text(toEnglishChars((entry.location || '').substring(0, 12)), cols.donus, y);
-                    doc.text(entry.time || '', cols.saat, y);
-                    doc.text(toEnglishChars((entry.description || '').substring(0, 12)), cols.aciklama, y);
-                    doc.text((entry.amount || 0).toLocaleString('tr-TR') + ' TL', cols.tutar, y, { align: 'right' });
-
-                    y += 10;
-                    total += (entry.amount || 0);
-                });
-
-                y += 5;
-                doc.setFillColor(2, 132, 199);
-                doc.rect(120, y-6, 80, 10, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
-                doc.text(toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL', 160, y, { align: 'center' });
-
-                y = 285;
-                doc.setFontSize(8);
-                doc.setTextColor(150);
-                doc.setFont('helvetica', 'normal');
-                doc.text(toEnglishChars('Bu belge otomatik olarak olusturulmustur.'), 105, y, { align: 'center' });
-
-                const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
-                doc.save(fileName);
-
-                setTimeout(() => {
-                    if (loading) loading.classList.remove('active');
-                    const pdfModal = document.getElementById('pdfModal');
-                    if (pdfModal) pdfModal.classList.add('active');
-                }, 800);
-
-            } catch (error) {
-                console.error('PDF hatası:', error);
-                if (loading) loading.classList.remove('active');
-                showNotification('PDF oluşturulurken hata: ' + error.message, 'error');
-            }
+        // Metin uzunluğunu sınırlama fonksiyonu
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength - 2) + '..';
         }
+
+        // Çok uzun metinleri birden fazla satıra bölme
+        function splitLongText(text, maxLength) {
+            if (!text) return [''];
+            if (text.length <= maxLength) return [text];
+            
+            const lines = [];
+            let currentLine = '';
+            const words = text.split(' ');
+            
+            for (let word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            
+            return lines.length > 0 ? lines : [text.substring(0, maxLength)];
+        }
+
+        sortedEntries.forEach((entry, index) => {
+            // Sayfa sonu kontrolü
+            if (y > 270) {
+                doc.addPage();
+                y = 20;
+            }
+
+            // Alternatif satır arka planı
+            if (index % 2 === 0) {
+                doc.setFillColor(245, 250, 255);
+                doc.rect(10, y-7, 190, 8, 'F');
+            }
+
+            // Saat sütunundaki uzun metni işle
+            let timeText = entry.time || '';
+            let timeLines = splitLongText(timeText, 18); // Saat sütunu için max 18 karakter
+            let displayTime = timeLines[0]; // İlk satırı göster
+            if (timeLines.length > 1) {
+                displayTime = truncateText(timeText, 18);
+            }
+
+            // Açıklama sütunundaki metni işle
+            let descText = entry.description || '';
+            let descLines = splitLongText(descText, 20); // Açıklama için max 20 karakter
+            let displayDesc = descLines[0];
+            if (descLines.length > 1) {
+                displayDesc = truncateText(descText, 20);
+            }
+
+            // Verileri yaz - her biri kendi sütununda
+            doc.text(formatDate(entry.date), cols.tarih, y);
+            doc.text(truncateText(toEnglishChars(entry.container || ''), 15), cols.konteyner, y);
+            doc.text(truncateText(toEnglishChars(entry.factory || ''), 18), cols.fabrika, y);
+            doc.text(truncateText(toEnglishChars(entry.location || ''), 15), cols.donus, y);
+            doc.text(displayTime, cols.saat, y);
+            doc.text(displayDesc, cols.aciklama, y);
+            doc.text((entry.amount || 0).toLocaleString('tr-TR') + ' TL', cols.tutar, y, { align: 'right' });
+
+            y += 8; // Satır yüksekliği
+            total += (entry.amount || 0);
+        });
+
+        // Toplam satırı
+        y += 5;
+        doc.setFillColor(2, 132, 199);
+        doc.rect(130, y-6, 70, 10, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text(toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL', 165, y, { align: 'center' });
+
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text(toEnglishChars('Bu belge otomatik olarak olusturulmustur.'), 105, 287, { align: 'center' });
+        }
+
+        const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
+        doc.save(fileName);
+
+        setTimeout(() => {
+            if (loading) loading.classList.remove('active');
+            const pdfModal = document.getElementById('pdfModal');
+            if (pdfModal) pdfModal.classList.add('active');
+        }, 800);
+
+    } catch (error) {
+        console.error('PDF hatası:', error);
+        if (loading) loading.classList.add('active');
+        showNotification('PDF oluşturulurken hata: ' + error.message, 'error');
+    }
+}
 
         function shareWhatsApp() {
             const total = entries.reduce((a, b) => a + (b.amount || 0), 0);
