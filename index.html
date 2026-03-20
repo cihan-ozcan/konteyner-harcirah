@@ -13,7 +13,7 @@
 
      body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-image: url('image.png');
+    background-image: url('backg.png');
     background-size: 100% auto;
     background-position: top center;
     background-repeat: repeat-y;
@@ -1192,10 +1192,6 @@ body.theme-solid {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        // ==================== THEME VARIABLES ====================
-        // localStorage'dan tema tercihini oku (varsayılan: resim modu)
-        let isImageTheme = localStorage.getItem('themeMode') !== 'solid';
-
         // ==================== GLOBAL VARIABLES ====================
         let entries = [];
         let editingIndex = -1;
@@ -1233,31 +1229,8 @@ body.theme-solid {
             return { hours, minutes };
         }
 
-        // ==================== THEME FUNCTIONS ====================
-        function applyTheme() {
-            const body = document.body;
-            const iconImg = document.getElementById('themeIconImg');
-            const iconColor = document.getElementById('themeIconColor');
-            const label = document.getElementById('themeLabel');
-
-            if (!isImageTheme) {
-                // Düz renk modu
-                body.classList.add('theme-solid');
-                if (iconImg) iconImg.style.display = 'none';
-                if (iconColor) iconColor.style.display = 'block';
-                if (label) label.textContent = 'Renk Modu';
-            } else {
-                // Resim modu
-                body.classList.remove('theme-solid');
-                if (iconImg) iconImg.style.display = 'block';
-                if (iconColor) iconColor.style.display = 'none';
-                if (label) label.textContent = 'Resim Modu';
-            }
-        }
-
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', function() {
-            applyTheme(); // Kaydedilmiş temayı uygula
             loadEntries();
             const dateInput = document.getElementById('date');
             if (dateInput) {
@@ -1941,12 +1914,12 @@ async function generatePDF() {
 
     <!-- Arka Plan Müziği -->
     <audio id="bgMusic" loop>
-        <source src="kolpacino.mp3" type="audio/mpeg">
+        <source src="sibel.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Ses İzni Modalı -->
     <div id="musicPermissionModal" style="
-        display: flex;
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
@@ -2042,7 +2015,7 @@ async function generatePDF() {
                 font-size: 0.8rem;
                 margin-top: 20px;
             ">
-                ♪ Şimdi çalacak: <strong style="color: white;">Kolpacino</strong>
+                ♪ Şimdi çalacak: <strong style="color: white;">Sibel</strong>
             </p>
         </div>
     </div>
@@ -2063,17 +2036,21 @@ async function generatePDF() {
     </style>
 
     <script>
-        // Müzik kontrolü
+        // Müzik kontrolü - localStorage ile hatırlama
         const music = document.getElementById('bgMusic');
         music.volume = 0.3;
 
         let musicStarted = false;
         let isPlaying = false;
 
+        // localStorage'dan müzik tercihini oku
+        const savedMusicPref = localStorage.getItem('musicPreference');
+
         function allowMusic() {
             music.play().then(() => {
                 musicStarted = true;
                 isPlaying = true;
+                localStorage.setItem('musicPreference', 'enabled');
                 updateMusicButton();
                 closeMusicModal();
                 showNotification('🎵 Müzik başladı!');
@@ -2087,7 +2064,30 @@ async function generatePDF() {
             closeMusicModal();
             musicStarted = false;
             isPlaying = false;
+            localStorage.setItem('musicPreference', 'disabled');
             updateMusicButton();
+        }
+
+        // Tema kontrolü - localStorage ile hatırlama
+        let isImageTheme = localStorage.getItem('themeMode') !== 'solid';
+
+        function applyTheme() {
+            const body = document.body;
+            const iconImg = document.getElementById('themeIconImg');
+            const iconColor = document.getElementById('themeIconColor');
+            const label = document.getElementById('themeLabel');
+
+            if (!isImageTheme) {
+                body.classList.add('theme-solid');
+                if (iconImg) iconImg.style.display = 'none';
+                if (iconColor) iconColor.style.display = 'block';
+                if (label) label.textContent = 'Renk Modu';
+            } else {
+                body.classList.remove('theme-solid');
+                if (iconImg) iconImg.style.display = 'block';
+                if (iconColor) iconColor.style.display = 'none';
+                if (label) label.textContent = 'Resim Modu';
+            }
         }
 
         function toggleTheme() {
@@ -2097,7 +2097,6 @@ async function generatePDF() {
             const label = document.getElementById('themeLabel');
 
             if (isImageTheme) {
-                // Resim modundan düz renge geç
                 body.classList.add('theme-solid');
                 if (iconImg) iconImg.style.display = 'none';
                 if (iconColor) iconColor.style.display = 'block';
@@ -2106,7 +2105,6 @@ async function generatePDF() {
                 showNotification('🎨 Düz renk moduna geçildi');
                 isImageTheme = false;
             } else {
-                // Düz renkten resim moduna geç
                 body.classList.remove('theme-solid');
                 if (iconImg) iconImg.style.display = 'block';
                 if (iconColor) iconColor.style.display = 'none';
@@ -2123,6 +2121,7 @@ async function generatePDF() {
                 music.play().then(() => {
                     musicStarted = true;
                     isPlaying = true;
+                    localStorage.setItem('musicPreference', 'enabled');
                     updateMusicButton();
                     showNotification('🎵 Müzik başladı!');
                 });
@@ -2131,10 +2130,12 @@ async function generatePDF() {
                 if (isPlaying) {
                     music.pause();
                     isPlaying = false;
+                    localStorage.setItem('musicPreference', 'disabled');
                     showNotification('🔇 Müzik duraklatıldı');
                 } else {
                     music.play();
                     isPlaying = true;
+                    localStorage.setItem('musicPreference', 'enabled');
                     showNotification('🎵 Müzik devam ediyor');
                 }
                 updateMusicButton();
@@ -2153,41 +2154,59 @@ async function generatePDF() {
                 if (iconOn) iconOn.style.display = 'block';
                 if (iconOff) iconOff.style.display = 'none';
                 if (label) label.textContent = 'Müzik Açık';
-                btn.style.background = 'rgba(16, 185, 129, 0.3)'; // Yeşil ton
+                btn.style.background = 'rgba(16, 185, 129, 0.3)';
             } else {
                 if (iconOn) iconOn.style.display = 'none';
                 if (iconOff) iconOff.style.display = 'block';
                 if (label) label.textContent = 'Müzik Kapalı';
-                btn.style.background = 'rgba(255, 255, 255, 0.2)'; // Normal
+                btn.style.background = 'rgba(255, 255, 255, 0.2)';
             }
         }
 
         function closeMusicModal() {
             const modal = document.getElementById('musicPermissionModal');
-            modal.style.opacity = '0';
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
         }
 
-        // Sayfa yüklenince modalı göster
-        document.addEventListener('DOMContentLoaded', function() {
-            // Önce otomatik deneyelim, olmazsa modal göster
-            const playPromise = music.play();
+        function showMusicModal() {
+            const modal = document.getElementById('musicPermissionModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+            }
+        }
 
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // Otomatik başladı, modalı gizle
-                    closeMusicModal();
+        // Sayfa yüklenince müzik ve tema durumunu kontrol et
+        document.addEventListener('DOMContentLoaded', function() {
+            applyTheme(); // Kaydedilmiş temayı uygula
+
+            const musicPref = localStorage.getItem('musicPreference');
+
+            if (musicPref === 'enabled') {
+                // Kullanıcı daha önce müziği açmış, otomatik başlatmayı dene
+                music.play().then(() => {
                     musicStarted = true;
                     isPlaying = true;
                     updateMusicButton();
+                    closeMusicModal();
                 }).catch(() => {
-                    // Otomatik başlamadı, modal zaten görünür durumda
-                    console.log('Otomatik oynatma engellendi, izin modalı gösteriliyor...');
-                    // Butonu göster ama kapalı durumda
-                    updateMusicButton();
+                    // Otomatik başlatma engellendi, modal göster
+                    showMusicModal();
                 });
+            } else if (musicPref === 'disabled') {
+                // Kullanıcı sessiz modu seçmiş, modal gösterme
+                musicStarted = false;
+                isPlaying = false;
+                updateMusicButton();
+                closeMusicModal();
+            } else {
+                // İlk ziyaret, modal göster
+                showMusicModal();
             }
         });
     </script>
