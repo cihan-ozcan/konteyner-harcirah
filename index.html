@@ -858,6 +858,11 @@
         <!-- Header -->
         <div class="header">
             <div class="header-buttons">
+                <button class="header-btn" id="musicToggleBtn" onclick="toggleMusic()" style="display: none;">
+                    <svg id="musicIconOn" viewBox="0 0 24 24" style="display: none;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                    <svg id="musicIconOff" viewBox="0 0 24 24"><path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z"/></svg>
+                    <span class="header-btn-label" id="musicLabel">Müzik Kapalı</span>
+                </button>
                 <button class="header-btn" onclick="openTarife()">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
                     <span class="header-btn-label">Fiyat Tarifesi</span>
@@ -2016,10 +2021,13 @@ async function generatePDF() {
         music.volume = 0.3;
 
         let musicStarted = false;
+        let isPlaying = false;
 
         function allowMusic() {
             music.play().then(() => {
                 musicStarted = true;
+                isPlaying = true;
+                updateMusicButton();
                 closeMusicModal();
                 showNotification('🎵 Müzik başladı!');
             }).catch(err => {
@@ -2030,7 +2038,54 @@ async function generatePDF() {
 
         function denyMusic() {
             closeMusicModal();
-            // Kullanıcı daha sonra isterse başlatabilir
+            musicStarted = false;
+            isPlaying = false;
+            updateMusicButton();
+        }
+
+        function toggleMusic() {
+            if (!musicStarted) {
+                // İlk defa başlatılıyor
+                music.play().then(() => {
+                    musicStarted = true;
+                    isPlaying = true;
+                    updateMusicButton();
+                    showNotification('🎵 Müzik başladı!');
+                });
+            } else {
+                // Toggle durumu
+                if (isPlaying) {
+                    music.pause();
+                    isPlaying = false;
+                    showNotification('🔇 Müzik duraklatıldı');
+                } else {
+                    music.play();
+                    isPlaying = true;
+                    showNotification('🎵 Müzik devam ediyor');
+                }
+                updateMusicButton();
+            }
+        }
+
+        function updateMusicButton() {
+            const btn = document.getElementById('musicToggleBtn');
+            const iconOn = document.getElementById('musicIconOn');
+            const iconOff = document.getElementById('musicIconOff');
+            const label = document.getElementById('musicLabel');
+
+            if (btn) btn.style.display = 'flex';
+
+            if (isPlaying) {
+                if (iconOn) iconOn.style.display = 'block';
+                if (iconOff) iconOff.style.display = 'none';
+                if (label) label.textContent = 'Müzik Açık';
+                btn.style.background = 'rgba(16, 185, 129, 0.3)'; // Yeşil ton
+            } else {
+                if (iconOn) iconOn.style.display = 'none';
+                if (iconOff) iconOff.style.display = 'block';
+                if (label) label.textContent = 'Müzik Kapalı';
+                btn.style.background = 'rgba(255, 255, 255, 0.2)'; // Normal
+            }
         }
 
         function closeMusicModal() {
@@ -2051,9 +2106,13 @@ async function generatePDF() {
                     // Otomatik başladı, modalı gizle
                     closeMusicModal();
                     musicStarted = true;
+                    isPlaying = true;
+                    updateMusicButton();
                 }).catch(() => {
                     // Otomatik başlamadı, modal zaten görünür durumda
                     console.log('Otomatik oynatma engellendi, izin modalı gösteriliyor...');
+                    // Butonu göster ama kapalı durumda
+                    updateMusicButton();
                 });
             }
         });
