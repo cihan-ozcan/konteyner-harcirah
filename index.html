@@ -570,16 +570,26 @@
         <div>PDF hazirlaniyor...</div>
     </div>
 
-    <!-- PDF Modal -->
+    <!-- PDF Modal - GÜNCELLENMİŞ VERSİYON -->
     <div class="modal" id="pdfModal">
         <div class="modal-content">
-            <div class="modal-icon">
-                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <div class="modal-icon" style="background: #e3f2fd;">
+                <svg viewBox="0 0 24 24" style="fill: #1976d2;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
             </div>
-            <h3>PDF Hazir!</h3>
-            <p>Harcirah listesi PDF olarak olusturuldu. WhatsApp'tan gondermek ister misiniz?</p>
-            <button class="btn-modal btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp'tan Gonder</button>
-            <button class="btn-modal btn-close" onclick="closeModal('pdfModal')">Kapat</button>
+            <h3>PDF İndirildi!</h3>
+            <p style="margin-bottom: 20px; line-height: 1.6; font-size: 0.9rem;">
+                <strong>WhatsApp'ta PDF göndermek için:</strong><br>
+                1. "WhatsApp'tan Gönder" butonuna tıkla<br>
+                2. Kişiyi seç<br>
+                3. <strong>📎 Ekle > Belge/Dosya</strong> ile indirilen PDF'i seç
+            </p>
+            <button class="btn-modal btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp'tan Gönder</button>
+            <button class="btn-modal btn-close" onclick="closeModal('pdfModal')" style="margin-bottom: 10px;">Kapat</button>
+            
+            <div style="background: #f5f5f5; padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.8rem; color: #666; line-height: 1.4;">
+                💡 <strong>İpucu:</strong> PDF "İndirilenler" klasöründe.<br>
+                Dosya adı: <strong>Harcirah_YYYY-AA-GG.pdf</strong>
+            </div>
         </div>
     </div>
 
@@ -916,7 +926,7 @@
                 setTimeout(() => {
                     loading.classList.remove('active');
                     document.getElementById('pdfModal').classList.add('active');
-                }, 500);
+                }, 800);
                 
             } catch (error) {
                 console.error('PDF hatasi:', error);
@@ -925,12 +935,39 @@
             }
         }
 
+        // GÜNCELLENMİŞ WhatsApp Fonksiyonu
         function shareWhatsApp() {
+            // PDF zaten indirildi, kullanıcıya manuel ekleme talimatı ver
             const total = entries.reduce((a, b) => a + b.amount, 0);
-            const text = toEnglishChars('Harcirah listesi ektedir.\nToplam: ') + total.toLocaleString('tr-TR') + ' TL\n' + toEnglishChars('Kayit sayisi: ') + entries.length;
-            const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+            
+            // WhatsApp mesajını hazırla
+            let messageText = toEnglishChars('*HARCIRAH LISTESI*\n\n');
+            messageText += toEnglishChars('Toplam Tutar: ') + total.toLocaleString('tr-TR') + ' TL\n';
+            messageText += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
+            messageText += toEnglishChars('Detaylar:\n');
+            
+            // Son 5 kaydı ekle (mesaj çok uzun olmasın diye)
+            const recentEntries = entries.slice(0, 5);
+            recentEntries.forEach((entry, idx) => {
+                messageText += (idx + 1) + '. ' + formatDate(entry.date) + ' - ';
+                messageText += toEnglishChars(entry.container) + ' - ';
+                messageText += entry.amount.toLocaleString('tr-TR') + ' TL\n';
+            });
+            
+            if (entries.length > 5) {
+                messageText += '... ve ' + (entries.length - 5) + toEnglishChars(' kayit daha\n');
+            }
+            
+            messageText += '\n📎 ' + toEnglishChars('PDF dosyasi indirildi. Lutfen eki manuel olarak ekleyin.');
+            
+            const url = 'https://wa.me/?text=' + encodeURIComponent(messageText);
             window.open(url, '_blank');
             closeModal('pdfModal');
+            
+            // Kullanıcıya bilgi ver
+            setTimeout(() => {
+                showNotification(toEnglishChars('PDF indirildi! WhatsApp\'ta Belge/Dosya ekleme ile PDF\'i gonderebilirsiniz'));
+            }, 1000);
         }
 
         function openSettings() {
