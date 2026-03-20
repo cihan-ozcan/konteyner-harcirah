@@ -2062,33 +2062,60 @@ async function generatePDF() {
             updateMusicButton();
         }
 
-        // Tema kontrolü
-        let isImageTheme = true;
+        // Tema kontrolü - localStorage ile hatırlama
+        let isImageTheme = localStorage.getItem('themeMode') !== 'solid'; 
+        // Varsayılan resim modu
 
+        // Sayfa yüklenince tema durumunu uygula
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('themeMode');
+    const body = document.body;
+    const iconImg = document.getElementById('themeIconImg');
+    const iconColor = document.getElementById('themeIconColor');
+    const label = document.getElementById('themeLabel');
+    
+    if (savedTheme === 'solid') {
+        // Kaydedilmiş tema düz renk modu
+        body.classList.add('theme-solid');
+        if (iconImg) iconImg.style.display = 'none';
+        if (iconColor) iconColor.style.display = 'block';
+        if (label) label.textContent = 'Renk Modu';
+        isImageTheme = false;
+    } else {
+        // Varsayılan veya kaydedilmiş resim modu
+        body.classList.remove('theme-solid');
+        if (iconImg) iconImg.style.display = 'block';
+        if (iconColor) iconColor.style.display = 'none';
+        if (label) label.textContent = 'Resim Modu';
+        isImageTheme = true;
+    }
+        
         function toggleTheme() {
-            const body = document.body;
-            const iconImg = document.getElementById('themeIconImg');
-            const iconColor = document.getElementById('themeIconColor');
-            const label = document.getElementById('themeLabel');
+    const body = document.body;
+    const iconImg = document.getElementById('themeIconImg');
+    const iconColor = document.getElementById('themeIconColor');
+    const label = document.getElementById('themeLabel');
 
-            if (isImageTheme) {
-                // Resim modundan düz renge geç
-                body.classList.add('theme-solid');
-                iconImg.style.display = 'none';
-                iconColor.style.display = 'block';
-                label.textContent = 'Renk Modu';
-                showNotification('🎨 Düz renk moduna geçildi');
-            } else {
-                // Düz renkten resim moduna geç
-                body.classList.remove('theme-solid');
-                iconImg.style.display = 'block';
-                iconColor.style.display = 'none';
-                label.textContent = 'Resim Modu';
-                showNotification('🖼️ Resim moduna geçildi');
-            }
-
-            isImageTheme = !isImageTheme;
-        }
+    if (isImageTheme) {
+        // Resim modundan düz renge geç
+        body.classList.add('theme-solid');
+        if (iconImg) iconImg.style.display = 'none';
+        if (iconColor) iconColor.style.display = 'block';
+        if (label) label.textContent = 'Renk Modu';
+        localStorage.setItem('themeMode', 'solid'); // Kaydet
+        showNotification('🎨 Düz renk moduna geçildi');
+        isImageTheme = false;
+    } else {
+        // Düz renkten resim moduna geç
+        body.classList.remove('theme-solid');
+        if (iconImg) iconImg.style.display = 'block';
+        if (iconColor) iconColor.style.display = 'none';
+        if (label) label.textContent = 'Resim Modu';
+        localStorage.setItem('themeMode', 'image'); // Kaydet
+        showNotification('🖼️ Resim moduna geçildi');
+        isImageTheme = true;
+    }
+}
 
         function toggleMusic() {
             if (!musicStarted) {
