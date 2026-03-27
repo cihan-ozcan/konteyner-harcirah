@@ -1043,7 +1043,7 @@
                     <label style="display: flex; align-items: center; padding: 12px; background: white; border-radius: 10px; margin-bottom: 8px; cursor: pointer; border: 2px solid #e2e8f0; transition: all 0.2s;" onmouseover="this.style.borderColor='#0ea5e9'" onmouseout="this.style.borderColor='#e2e8f0'">
                         <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()" style="width: 20px; height: 20px; margin-right: 12px; cursor: pointer; accent-color: #0ea5e9;">
                         <span style="display: flex; flex-direction: column; flex: 1;">
-                            <span style="font-size: 0.95rem; font-weight: 600; color: #334155;">ATS Farkı</span>
+                            <span style="font-size: 0.95rem; font-weight: 600; color: #334155;">ATS & Kolcu Farkı</span>
                             <span style="font-size: 0.85rem; color: #0ea5e9; font-weight: 700;">+ ₺100</span>
                         </span>
                     </label>
@@ -1812,7 +1812,7 @@ async function generatePDF() {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(150);
-            doc.text(toEnglishChars('Bu belge otomatik olarak olusturulmustur.'), 105, 287, { align: 'center' });
+            doc.text(toEnglishChars('Bu belge cihan-ozcan.github.io/konteyner-harcirah da olusturulmustur.'), 105, 287, { align: 'center' });
         }
 
         const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
