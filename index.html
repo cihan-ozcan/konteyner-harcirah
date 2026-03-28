@@ -1463,46 +1463,47 @@
 
         // ==================== ENTRY MANAGEMENT ====================
         function addEntry() {
-            const date = document.getElementById('date').value;
-            const container = document.getElementById('container').value;
-            const factory = document.getElementById('factory').value;
-            const location = document.getElementById('location').value;
-            const time = document.getElementById('time').value;
-            const description = document.getElementById('description').value;
-            const amount = parseFloat(document.getElementById('amount').value);
+    const date = document.getElementById('date').value;
+    const container = document.getElementById('container').value;
+    const factory = document.getElementById('factory').value;
+    const location = document.getElementById('location').value;
+    const time = document.getElementById('time').value;
+    const description = document.getElementById('description').value || ''; // Boş olabilir
+    const amount = parseFloat(document.getElementById('amount').value);
 
-            if (!date || !container || !factory || !location || !time || !description || !amount) {
-                showNotification('Lütfen tüm alanları doldurun', 'error');
-                return;
-            }
+    // Açıklama artık zorunlu değil
+    if (!date || !container || !factory || !location || !time || !amount) {
+        showNotification('Lütfen zorunlu alanları doldurun', 'error');
+        return;
+    }
 
-            const entry = { 
-                id: Date.now(),
-                date, 
-                container, 
-                factory, 
-                location, 
-                time, 
-                description, 
-                amount,
-                createdAt: new Date().toISOString()
-            };
+    const entry = { 
+        id: Date.now(),
+        date, 
+        container, 
+        factory, 
+        location, 
+        time, 
+        description, // Boş string olabilir
+        amount,
+        createdAt: new Date().toISOString()
+    };
 
-            if (editingIndex >= 0) {
-                entries[editingIndex] = { ...entries[editingIndex], ...entry };
-                editingIndex = -1;
-                const btn = document.querySelector('.btn-primary');
-                if (btn) btn.innerHTML = '<span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet';
-                showNotification('Kayıt güncellendi!');
-            } else {
-                entries.unshift(entry);
-                showNotification('Yeni kayıt eklendi!');
-            }
+    if (editingIndex >= 0) {
+        entries[editingIndex] = { ...entries[editingIndex], ...entry };
+        editingIndex = -1;
+        const btn = document.querySelector('.btn-primary');
+        if (btn) btn.innerHTML = '<span style="color: white; font-size: 1.2rem; font-weight: bold;">+</span> Kaydet';
+        showNotification('Kayıt güncellendi!');
+    } else {
+        entries.unshift(entry);
+        showNotification('Yeni kayıt eklendi!');
+    }
 
-            saveEntries();
-            clearForm();
-            renderEntries();
-        }
+    saveEntries();
+    clearForm();
+    renderEntries();
+}
 
         function clearForm() {
             const dateInput = document.getElementById('date');
