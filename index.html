@@ -1812,7 +1812,7 @@ async function generatePDF() {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(150);
-            doc.text(toEnglishChars('Bu belge cihan-ozcan.github.io/konteyner-harcirah da olusturulmustur.'), 105, 287, { align: 'center' });
+            doc.text(toEnglishChars('Bu belge cihan-ozcan.github.io/konteyner-harcirah tarafindan olusturulmustur.'), 105, 287, { align: 'center' });
         }
 
         const fileName = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
