@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,143 +14,637 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-152.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
-            min-height: 100vh;
-            padding: 10px;
-            color: #333;
-        }
-        .container { max-width: 480px; margin: 0 auto; }
-        .header { position: relative; padding-top: 60px; margin-bottom: 15px; }
-        h1 { text-align: center; color: white; font-size: 1.5rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.2); padding: 0 60px; line-height: 1.3; }
+        /* ═══════════════════════════════════════════════
+           DESIGN TOKENS — Light Mode
+        ═══════════════════════════════════════════════ */
+        :root {
+            --brand-primary: #0ea5e9;
+            --brand-dark: #0284c7;
+            --brand-darker: #0369a1;
+            --brand-light: #e0f2fe;
+            --brand-xlight: #f0f9ff;
 
-        /* Week badge under title */
+            --accent-purple: #7c3aed;
+            --accent-purple-dark: #5b21b6;
+            --accent-purple-light: #f3f0ff;
+
+            --bg-page: linear-gradient(160deg, #0f172a 0%, #0369a1 45%, #0ea5e9 100%);
+            --bg-card: #ffffff;
+            --bg-card-2: #f8fafc;
+            --bg-input: #f1f5f9;
+            --bg-input-focus: #ffffff;
+
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --text-on-brand: #ffffff;
+
+            --border-color: #e2e8f0;
+            --border-focus: #0ea5e9;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-brand: 0 8px 24px rgba(14,165,233,0.35);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+
+            --entry-bar: linear-gradient(to bottom, #0ea5e9, #06b6d4);
+
+            --modal-bg: #ffffff;
+            --modal-overlay: rgba(0,0,0,0.55);
+
+            --btn-close-bg: #f1f5f9;
+            --btn-close-color: #475569;
+
+            --search-bg: #ffffff;
+
+            --badge-bg: rgba(255,255,255,0.18);
+            --badge-color: #ffffff;
+
+            --week-banner-bg: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* ═══════════════════════════════════════════════
+           DESIGN TOKENS — Dark Mode
+        ═══════════════════════════════════════════════ */
+        [data-theme="dark"] {
+            --bg-page: linear-gradient(160deg, #020617 0%, #0c1a2e 50%, #0d2a42 100%);
+            --bg-card: #1e293b;
+            --bg-card-2: #0f172a;
+            --bg-input: #0f172a;
+            --bg-input-focus: #1e293b;
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --border-color: #334155;
+            --border-focus: #38bdf8;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.6);
+            --shadow-brand: 0 8px 24px rgba(14,165,233,0.25);
+
+            --entry-bar: linear-gradient(to bottom, #38bdf8, #0ea5e9);
+
+            --modal-bg: #1e293b;
+            --modal-overlay: rgba(0,0,0,0.75);
+
+            --btn-close-bg: #334155;
+            --btn-close-color: #94a3b8;
+
+            --search-bg: #1e293b;
+
+            --badge-bg: rgba(255,255,255,0.12);
+
+            --accent-purple-light: #1e1535;
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESET & BASE
+        ═══════════════════════════════════════════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-page);
+            min-height: 100vh;
+            padding: 12px 12px 100px;
+            color: var(--text-primary);
+            transition: background var(--transition), color var(--transition);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 480px; margin: 0 auto; }
+
+        /* ═══════════════════════════════════════════════
+           HEADER
+        ═══════════════════════════════════════════════ */
+        .header {
+            position: relative;
+            padding-top: 64px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.45rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            padding: 0 56px;
+            line-height: 1.3;
+        }
+
+        .header-sub {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        /* Week badge */
         .week-badge {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .week-badge-pill {
-            background: rgba(255,255,255,0.25);
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            background: var(--badge-bg);
+            color: rgba(255,255,255,0.92);
+            padding: 5px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.78rem;
             font-weight: 600;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            letter-spacing: 0.2px;
         }
 
-        .header-buttons { position: absolute; top: 10px; right: 10px; display: flex; gap: 8px; z-index: 50; }
-        .header-btn {
-            width: 40px; height: 40px;
-            background: rgba(255,255,255,0.2);
-            border: none; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease;
-            backdrop-filter: blur(10px); position: relative;
+        /* Header buttons */
+        .header-buttons {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
         }
-        .header-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
-        .header-btn svg { width: 20px; height: 20px; fill: white; }
+
+        .header-btn {
+            width: 42px; height: 42px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-full);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+        .header-btn:hover {
+            background: rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .header-btn:active { transform: scale(0.93); }
+        .header-btn svg { width: 19px; height: 19px; fill: white; }
+
         .header-btn-label {
             position: absolute; top: 50px; right: 0;
-            background: rgba(0,0,0,0.8); color: white;
-            padding: 6px 12px; border-radius: 6px;
-            font-size: 0.75rem; opacity: 0;
-            transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+            background: rgba(15,23,42,0.92);
+            color: white;
+            padding: 6px 12px; border-radius: var(--radius-sm);
+            font-size: 0.72rem; font-weight: 500;
+            opacity: 0; pointer-events: none; white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            transition: opacity 0.18s;
         }
         .header-btn:hover .header-btn-label { opacity: 1; }
 
-        /* Haftayı Kapat Banner */
+        /* Dark mode toggle button */
+        .dark-mode-btn svg { width: 18px; height: 18px; }
+
+        /* ═══════════════════════════════════════════════
+           WEEK CLOSE BANNER
+        ═══════════════════════════════════════════════ */
         .week-close-banner {
-            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-            border-radius: 16px;
+            background: var(--week-banner-bg);
+            border-radius: var(--radius-lg);
             padding: 14px 18px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 6px 20px rgba(124,58,237,0.35);
+            box-shadow: 0 6px 24px rgba(124,58,237,0.3);
+            border: 1px solid rgba(255,255,255,0.12);
         }
         .week-close-info { color: white; }
-        .week-close-info .wci-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
-        .week-close-info .wci-sub { font-size: 0.75rem; opacity: 0.85; }
+        .week-close-info .wci-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
+        .week-close-info .wci-sub { font-size: 0.74rem; opacity: 0.8; }
         .btn-week-close {
-            background: white;
+            background: rgba(255,255,255,0.95);
             color: #5b21b6;
             border: none;
             padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            transition: transform 0.2s;
+            transition: all var(--transition);
             flex-shrink: 0;
+            font-family: inherit;
         }
+        .btn-week-close:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .btn-week-close:active { transform: scale(0.95); }
 
-        .form-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px; font-weight: 600; }
-        input, select { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 1rem; transition: all 0.3s ease; background: #fafafa; }
-        input:focus, select:focus { outline: none; border-color: #0284c7; background: white; }
+        /* ═══════════════════════════════════════════════
+           FORM CARD
+        ═══════════════════════════════════════════════ */
+        .form-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .form-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--brand-primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group { margin-bottom: 14px; }
+
+        label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all var(--transition);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            -webkit-appearance: none;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background: var(--bg-input-focus);
+            box-shadow: 0 0 0 3px rgba(14,165,233,0.12);
+        }
+        input::placeholder { color: var(--text-muted); font-weight: 400; }
+
         .row { display: flex; gap: 10px; }
         .row .form-group { flex: 1; }
-        .btn-primary { width: 100%; padding: 16px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 10px; }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 10px;
+            box-shadow: var(--shadow-brand);
+            letter-spacing: 0.2px;
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(14,165,233,0.4); }
         .btn-primary:active { transform: scale(0.98); }
 
-        .fiyat-hesapla-btn { background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%); color: white; border: none; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
-        .fiyat-hesapla-btn:hover { transform: scale(1.05); }
+        .fiyat-hesapla-btn {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            color: var(--brand-dark);
+            border: 1.5px solid #bae6fd;
+            padding: 9px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        [data-theme="dark"] .fiyat-hesapla-btn {
+            background: rgba(14,165,233,0.15);
+            border-color: rgba(14,165,233,0.3);
+            color: #38bdf8;
+        }
+        .fiyat-hesapla-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
         .fiyat-hesapla-btn:active { transform: scale(0.95); }
 
-        .list-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px; color: white; }
-        .list-header h2 { font-size: 1.1rem; }
-        .total-badge { background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+        /* ═══════════════════════════════════════════════
+           SEARCH
+        ═══════════════════════════════════════════════ */
+        .search-box {
+            background: var(--search-bg);
+            border-radius: var(--radius-md);
+            padding: 11px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-sm);
+            border: 1.5px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .search-box:focus-within {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+        }
+        .search-box svg { width: 18px; height: 18px; fill: var(--text-muted); flex-shrink: 0; }
+        .search-box input {
+            border: none; background: none; padding: 0;
+            font-size: 0.92rem; box-shadow: none;
+            color: var(--text-primary);
+        }
+        .search-box input:focus { background: none; box-shadow: none; border: none; }
 
-        .entry-card { background: white; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow: hidden; animation: slideIn 0.3s ease-out; }
-        .entry-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #06b6d4, #0ea5e9); }
-        .entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .entry-date { font-weight: 700; color: #0284c7; font-size: 1rem; }
-        .entry-amount { font-weight: 800; color: #0ea5e9; font-size: 1.2rem; }
-        .entry-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9rem; color: #555; margin-bottom: 8px; }
-        .entry-detail span { display: block; font-size: 0.75rem; color: #999; margin-bottom: 2px; }
-        .entry-desc { background: #f5f5f5; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; color: #666; margin-top: 8px; }
-        .entry-actions { display: flex; gap: 8px; margin-top: 12px; }
-        .btn-small { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .btn-edit { background: #e3f2fd; color: #1976d2; }
-        .btn-delete { background: #ffebee; color: #d32f2f; }
+        /* ═══════════════════════════════════════════════
+           LIST HEADER
+        ═══════════════════════════════════════════════ */
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 12px;
+        }
+        .list-header h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: -0.2px;
+        }
+        .total-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 7px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.88rem;
+            backdrop-filter: blur(8px);
+        }
+
+        /* ═══════════════════════════════════════════════
+           ENTRY CARDS
+        ═══════════════════════════════════════════════ */
+        .entry-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 16px 16px 14px 20px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            animation: cardIn 0.28s ease-out both;
+            border: 1px solid var(--border-color);
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+        .entry-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--entry-bar);
+            border-radius: 4px 0 0 4px;
+        }
+        .entry-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .entry-date {
+            font-weight: 700;
+            color: var(--brand-primary);
+            font-size: 0.92rem;
+        }
+        .entry-amount {
+            font-weight: 800;
+            color: var(--brand-primary);
+            font-size: 1.15rem;
+            background: var(--brand-xlight);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            letter-spacing: -0.3px;
+        }
+        [data-theme="dark"] .entry-amount {
+            background: rgba(14,165,233,0.15);
+        }
+
+        .entry-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.86rem;
+            margin-bottom: 8px;
+        }
+        .entry-detail span {
+            display: block;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+        }
+        .entry-detail { color: var(--text-primary); font-weight: 500; }
+
+        .entry-desc {
+            background: var(--bg-card-2);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            border-left: 3px solid var(--border-color);
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .btn-small {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .btn-edit {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        [data-theme="dark"] .btn-edit { background: rgba(30,64,175,0.2); color: #60a5fa; }
+        .btn-delete {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        [data-theme="dark"] .btn-delete { background: rgba(185,28,28,0.2); color: #f87171; }
+        .btn-small:hover { filter: brightness(0.95); }
         .btn-small:active { transform: scale(0.95); }
 
-        .fab { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(14,165,233,0.4); cursor: pointer; transition: transform 0.3s; border: none; z-index: 100; }
-        .fab:active { transform: scale(0.9); }
-        .fab svg { width: 28px; height: 28px; fill: white; }
+        /* ═══════════════════════════════════════════════
+           FAB — PDF BUTTON
+        ═══════════════════════════════════════════════ */
+        .fab {
+            position: fixed;
+            bottom: 22px; right: 20px;
+            width: 58px; height: 58px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            border-radius: var(--radius-full);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 24px rgba(14,165,233,0.45), 0 2px 8px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            z-index: 100;
+        }
+        .fab:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 32px rgba(14,165,233,0.55); }
+        .fab:active { transform: scale(0.92); }
+        .fab svg { width: 26px; height: 26px; fill: white; }
 
-        .empty-state { text-align: center; padding: 40px; color: rgba(255,255,255,0.7); }
-        .empty-state svg { width: 80px; height: 80px; fill: rgba(255,255,255,0.3); margin-bottom: 15px; }
+        /* ═══════════════════════════════════════════════
+           EMPTY STATE
+        ═══════════════════════════════════════════════ */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: rgba(255,255,255,0.6);
+        }
+        .empty-state svg { width: 72px; height: 72px; fill: rgba(255,255,255,0.25); margin-bottom: 14px; }
+        .empty-state p { font-size: 0.92rem; font-weight: 500; }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        /* ═══════════════════════════════════════════════
+           LOADING
+        ═══════════════════════════════════════════════ */
+        .loading {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15,23,42,0.92);
+            color: white;
+            padding: 22px 32px;
+            border-radius: var(--radius-lg);
+            display: none; z-index: 400;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+        }
+        .loading.active { display: block; }
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top: 3px solid #38bdf8;
+            width: 30px; height: 30px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ========== MODAL BASE ========== */
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+        /* ═══════════════════════════════════════════════
+           MODAL BASE
+        ═══════════════════════════════════════════════ */
+        .modal {
+            display: none;
+            position: fixed; inset: 0;
+            background: var(--modal-overlay);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
         .modal.active { display: flex; }
-        .modal-content { background: white; border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; text-align: center; }
-        .modal-icon { width: 60px; height: 60px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
-        .modal-icon svg { width: 30px; height: 30px; fill: #4caf50; }
-        .modal h3 { margin-bottom: 10px; color: #333; }
-        .modal p { color: #666; margin-bottom: 20px; font-size: 0.95rem; }
-        .btn-modal { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: all 0.2s; }
-        .btn-whatsapp { background: #25d366; color: white; }
-        .btn-close { background: #f5f5f5; color: #666; }
-        .btn-close:hover { background: #e0e0e0; }
-        .btn-danger { background: #ffebee; color: #d32f2f; }
 
-        /* ========== ARCHIVE MODAL ========== */
+        .modal-content {
+            background: var(--modal-bg);
+            border-radius: var(--radius-xl);
+            padding: 26px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            animation: modalIn 0.22s ease-out both;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.94) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-icon {
+            width: 60px; height: 60px;
+            border-radius: var(--radius-full);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .modal-icon svg { width: 28px; height: 28px; }
+        .modal h3 { margin-bottom: 8px; color: var(--text-primary); font-size: 1.1rem; font-weight: 700; }
+        .modal p { color: var(--text-secondary); margin-bottom: 18px; font-size: 0.9rem; line-height: 1.6; }
+
+        .btn-modal {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-bottom: 9px;
+            transition: all var(--transition);
+        }
+        .btn-modal:hover { filter: brightness(0.94); }
+        .btn-modal:active { transform: scale(0.97); }
+
+        .btn-whatsapp { background: #22c55e; color: white; }
+        .btn-email { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; }
+        .btn-close { background: var(--btn-close-bg); color: var(--btn-close-color); }
+        .btn-danger { background: #fee2e2; color: #dc2626; }
+        [data-theme="dark"] .btn-danger { background: rgba(185,28,28,0.2); color: #f87171; }
+
+        /* ═══════════════════════════════════════════════
+           ARCHIVE MODAL
+        ═══════════════════════════════════════════════ */
         .archive-modal .modal-content {
             max-width: 500px;
             max-height: 88vh;
@@ -161,216 +655,308 @@
         .archive-header {
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
             color: white;
-            padding: 20px;
-            border-radius: 20px 20px 0 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            padding: 22px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            position: sticky; top: 0; z-index: 10;
         }
-        .archive-header h2 { font-size: 1.2rem; margin-bottom: 4px; }
-        .archive-header p { font-size: 0.85rem; opacity: 0.85; margin: 0; }
+        .archive-header h2 { font-size: 1.15rem; margin-bottom: 4px; font-weight: 800; }
+        .archive-header p { font-size: 0.82rem; opacity: 0.8; margin: 0; }
+
         .archive-total-row {
-            display: flex;
-            gap: 10px;
+            display: flex; gap: 10px;
             padding: 14px 20px;
-            background: #f8f5ff;
-            border-bottom: 1px solid #ede9fe;
+            background: var(--accent-purple-light);
+            border-bottom: 1px solid var(--border-color);
         }
         .archive-stat {
-            flex: 1;
-            text-align: center;
+            flex: 1; text-align: center;
             padding: 10px;
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #ede9fe;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
         }
-        .archive-stat-num { font-size: 1.3rem; font-weight: 800; color: #5b21b6; }
-        .archive-stat-lbl { font-size: 0.75rem; color: #888; }
+        .archive-stat-num { font-size: 1.25rem; font-weight: 800; color: #7c3aed; }
+        .archive-stat-lbl { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+
         .archive-list { padding: 14px 20px; }
         .archive-week-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            display: flex; align-items: center; gap: 12px;
             padding: 14px;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid #ede9fe;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            border: 1.5px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all var(--transition);
         }
-        .archive-week-item:hover { background: #f8f5ff; transform: translateX(4px); }
-        .archive-week-item.current-week {
-            border-color: #0ea5e9;
-            background: #f0f9ff;
-        }
+        .archive-week-item:hover { background: var(--accent-purple-light); transform: translateX(3px); border-color: #7c3aed; }
+        .archive-week-item.current-week { border-color: var(--brand-primary); background: var(--brand-xlight); }
+        [data-theme="dark"] .archive-week-item.current-week { background: rgba(14,165,233,0.08); }
         .week-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .week-item-info { flex: 1; }
-        .week-item-name { font-weight: 700; font-size: 0.95rem; color: #333; display: flex; align-items: center; gap: 6px; }
-        .current-tag { font-size: 0.7rem; background: #0ea5e9; color: white; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-        .week-item-sub { font-size: 0.8rem; color: #888; margin-top: 2px; }
-        .week-item-amount { font-weight: 800; font-size: 1rem; color: #5b21b6; }
-        .week-item-arrow { color: #ccc; font-size: 1.2rem; }
-        .archive-footer { padding: 14px 20px; border-top: 1px solid #ede9fe; position: sticky; bottom: 0; background: white; }
+        .week-item-info { flex: 1; min-width: 0; }
+        .week-item-name { font-weight: 700; font-size: 0.92rem; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+        .current-tag { font-size: 0.68rem; background: var(--brand-primary); color: white; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700; }
+        .week-item-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .week-item-amount { font-weight: 800; font-size: 0.98rem; color: #7c3aed; white-space: nowrap; }
+        .week-item-arrow { color: var(--text-muted); font-size: 1.2rem; }
+        .archive-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); position: sticky; bottom: 0; background: var(--modal-bg); }
 
-        /* ========== WEEK DETAIL MODAL ========== */
+        /* ═══════════════════════════════════════════════
+           WEEK DETAIL MODAL
+        ═══════════════════════════════════════════════ */
         .week-detail-modal .modal-content {
-            max-width: 500px;
-            max-height: 88vh;
-            overflow-y: auto;
-            padding: 0;
-            text-align: left;
+            max-width: 500px; max-height: 88vh;
+            overflow-y: auto; padding: 0; text-align: left;
         }
-        .week-detail-header {
-            padding: 20px;
-            border-radius: 20px 20px 0 0;
-            color: white;
-        }
-        .week-detail-header h2 { font-size: 1.2rem; margin-bottom: 4px; }
-        .week-detail-header p { font-size: 0.85rem; opacity: 0.85; margin: 0; }
+        .week-detail-header { padding: 22px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; color: white; }
+        .week-detail-header h2 { font-size: 1.15rem; margin-bottom: 4px; font-weight: 800; }
+        .week-detail-header p { font-size: 0.82rem; opacity: 0.8; margin: 0; }
+
         .week-detail-stats {
-            display: flex;
-            gap: 10px;
+            display: flex; gap: 10px;
             padding: 14px 20px;
-            background: #fafafa;
-            border-bottom: 1px solid #eee;
+            background: var(--bg-card-2);
+            border-bottom: 1px solid var(--border-color);
         }
         .wds-box {
-            flex: 1;
-            text-align: center;
-            background: white;
-            border-radius: 10px;
+            flex: 1; text-align: center;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             padding: 10px 6px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
-        .wds-num { font-size: 1.1rem; font-weight: 800; }
-        .wds-lbl { font-size: 0.7rem; color: #888; }
+        .wds-num { font-size: 1.08rem; font-weight: 800; }
+        .wds-lbl { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+
         .week-detail-body { padding: 14px 20px; }
         .week-detail-entry {
             padding: 12px;
-            background: #f8fafc;
-            border-radius: 10px;
+            background: var(--bg-card-2);
+            border-radius: var(--radius-md);
             margin-bottom: 8px;
-            border-left: 3px solid #0ea5e9;
+            border-left: 3px solid var(--brand-primary);
         }
         .wde-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .wde-date { font-weight: 700; font-size: 0.85rem; color: #0284c7; }
-        .wde-amount { font-weight: 800; font-size: 0.95rem; color: #0ea5e9; }
-        .wde-detail { font-size: 0.8rem; color: #666; }
-        .week-detail-footer { padding: 14px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; position: sticky; bottom: 0; background: white; }
+        .wde-date { font-weight: 700; font-size: 0.83rem; }
+        .wde-amount { font-weight: 800; font-size: 0.92rem; }
+        .wde-detail { font-size: 0.78rem; color: var(--text-secondary); }
+
+        .week-detail-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex; gap: 10px;
+            position: sticky; bottom: 0;
+            background: var(--modal-bg);
+        }
         .btn-redownload {
-            flex: 2;
-            padding: 14px;
+            flex: 2; padding: 13px;
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
+            color: white; border: none; border-radius: var(--radius-md);
+            font-size: 0.92rem; font-weight: 700; font-family: inherit; cursor: pointer;
         }
         .btn-back {
-            flex: 1;
-            padding: 14px;
-            background: #f5f5f5;
-            color: #666;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
+            flex: 1; padding: 13px;
+            background: var(--btn-close-bg); color: var(--btn-close-color);
+            border: none; border-radius: var(--radius-md);
+            font-size: 0.92rem; font-weight: 700; font-family: inherit; cursor: pointer;
         }
 
-        /* ========== HAFTA KAPAT MODAL ========== */
+        /* ═══════════════════════════════════════════════
+           HAFTA KAPAT MODAL
+        ═══════════════════════════════════════════════ */
         .close-week-modal .modal-content {
-            max-width: 400px;
-            text-align: center;
-            padding: 0;
-            overflow: hidden;
+            max-width: 400px; text-align: center; padding: 0; overflow: hidden;
         }
         .cw-header {
             background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
-            padding: 24px 20px;
-            color: white;
+            padding: 24px 20px; color: white;
         }
-        .cw-header h3 { font-size: 1.3rem; margin-bottom: 5px; }
-        .cw-header p { font-size: 0.85rem; opacity: 0.85; }
+        .cw-header h3 { font-size: 1.25rem; margin-bottom: 5px; font-weight: 800; }
+        .cw-header p { font-size: 0.83rem; opacity: 0.8; }
         .cw-body { padding: 20px; }
         .cw-summary {
-            background: #f8f5ff;
-            border-radius: 12px;
+            background: var(--accent-purple-light);
+            border-radius: var(--radius-md);
             padding: 16px;
             margin-bottom: 16px;
-            border: 1px solid #ede9fe;
+            border: 1.5px solid rgba(124,58,237,0.2);
         }
-        .cw-sum-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 0.9rem; border-bottom: 1px solid #ede9fe; }
-        .cw-sum-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; color: #5b21b6; }
-        .cw-sum-label { color: #666; }
+        .cw-sum-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 7px 0; font-size: 0.88rem;
+            border-bottom: 1px solid rgba(124,58,237,0.1);
+            color: var(--text-primary);
+        }
+        .cw-sum-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; color: #7c3aed; }
+        .cw-sum-label { color: var(--text-secondary); }
         .cw-footer { padding: 0 20px 20px; }
 
-        /* ========== NOTIFICATION ========== */
-        .notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #4caf50; color: white; padding: 12px 24px; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 300; transition: transform 0.3s ease; display: flex; align-items: center; gap: 8px; }
+        /* ═══════════════════════════════════════════════
+           NOTIFICATION
+        ═══════════════════════════════════════════════ */
+        .notification {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #22c55e;
+            color: white;
+            padding: 12px 22px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.88rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            z-index: 500;
+            transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+            display: flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
         .notification.show { transform: translateX(-50%) translateY(0); }
-        .notification svg { width: 20px; height: 20px; fill: white; }
+        .notification svg { width: 18px; height: 18px; fill: white; }
 
-        /* ========== SEARCH ========== */
-        .search-box { background: white; border-radius: 12px; padding: 12px 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .search-box svg { width: 20px; height: 20px; fill: #999; }
-        .search-box input { border: none; background: none; padding: 0; font-size: 0.95rem; }
-        .search-box input:focus { background: none; }
-
-        /* ========== LOADING ========== */
-        .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px 30px; border-radius: 10px; display: none; z-index: 400; text-align: center; }
-        .loading.active { display: block; }
-        .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* ========== TARIFE MODAL ========== */
-        .tarife-modal .modal-content { max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 0; }
-        .tarife-header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; }
-        .tarife-header h2 { font-size: 1.3rem; margin-bottom: 5px; }
-        .tarife-header p { color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0; }
-        .tarife-content { padding: 20px; }
-        .tarife-item { background: #f8fafc; border-radius: 12px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #0ea5e9; }
-        .tarife-bolge { font-size: 0.85rem; color: #64748b; line-height: 1.4; margin-bottom: 8px; }
-        .tarife-fiyat { font-size: 1.4rem; font-weight: 800; color: #0ea5e9; }
-        .tarife-notlar { background: #fef3c7; border-radius: 12px; padding: 15px; margin-top: 20px; border: 1px solid #fcd34d; }
-        .tarife-notlar h4 { color: #92400e; font-size: 0.9rem; margin-bottom: 10px; }
+        /* ═══════════════════════════════════════════════
+           TARIFE MODAL
+        ═══════════════════════════════════════════════ */
+        .tarife-modal .modal-content {
+            max-width: 500px; max-height: 85vh; overflow-y: auto; padding: 0;
+        }
+        .tarife-header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white; padding: 22px; text-align: center;
+            position: sticky; top: 0; z-index: 10;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+        .tarife-header h2 { font-size: 1.2rem; margin-bottom: 5px; font-weight: 800; }
+        .tarife-header p { color: rgba(255,255,255,0.85); font-size: 0.85rem; margin: 0; }
+        .tarife-content { padding: 18px 20px; }
+        .tarife-item {
+            background: var(--bg-card-2);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--brand-primary);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-primary);
+            transition: all var(--transition);
+        }
+        .tarife-item:hover { background: var(--brand-xlight); }
+        [data-theme="dark"] .tarife-item:hover { background: rgba(14,165,233,0.08); }
+        .tarife-bolge { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px; }
+        .tarife-fiyat { font-size: 1.35rem; font-weight: 800; color: var(--brand-primary); }
+        .tarife-notlar {
+            background: #fefce8;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-top: 18px;
+            border: 1.5px solid #fde68a;
+        }
+        [data-theme="dark"] .tarife-notlar { background: rgba(253,230,138,0.08); border-color: rgba(253,230,138,0.2); }
+        .tarife-notlar h4 { color: #92400e; font-size: 0.88rem; margin-bottom: 10px; }
+        [data-theme="dark"] .tarife-notlar h4 { color: #fcd34d; }
         .tarife-notlar ul { list-style: none; padding: 0; }
-        .tarife-notlar li { color: #78350f; font-size: 0.85rem; padding: 5px 0 5px 20px; position: relative; }
-        .tarife-notlar li:before { content: "•"; color: #f59e0b; font-weight: bold; position: absolute; left: 5px; }
-        .tarife-close { position: sticky; bottom: 0; background: white; padding: 15px 20px; border-top: 1px solid #e2e8f0; }
-        .btn-tarife-kapat { width: 100%; padding: 14px; background: #f1f5f9; color: #475569; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .tarife-notlar li { color: #78350f; font-size: 0.83rem; padding: 5px 0 5px 18px; position: relative; }
+        [data-theme="dark"] .tarife-notlar li { color: #fde68a; }
+        .tarife-notlar li::before { content: "•"; color: #f59e0b; font-weight: bold; position: absolute; left: 4px; }
+        .tarife-close { position: sticky; bottom: 0; background: var(--modal-bg); padding: 14px 20px; border-top: 1px solid var(--border-color); }
+        .btn-tarife-kapat { width: 100%; padding: 13px; background: var(--btn-close-bg); color: var(--btn-close-color); border: none; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 700; font-family: inherit; cursor: pointer; }
 
-        /* ========== HESAP MODAL ========== */
+        /* ═══════════════════════════════════════════════
+           HESAP MODAL
+        ═══════════════════════════════════════════════ */
         .hesap-modal.active { display: flex !important; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* ========== SETTINGS ========== */
+        /* ═══════════════════════════════════════════════
+           SETTINGS MODAL
+        ═══════════════════════════════════════════════ */
         #settingsInstallBtn { display: none; }
 
-        /* ========== PWA BANNER ========== */
-        .pwa-banner { position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -8px 30px rgba(0,0,0,0.2); border-radius: 20px 20px 0 0; padding: 20px; z-index: 500; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        /* ═══════════════════════════════════════════════
+           PWA BANNER
+        ═══════════════════════════════════════════════ */
+        .pwa-banner {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--modal-bg);
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.2);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 20px;
+            z-index: 500;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            border-top: 1px solid var(--border-color);
+        }
         .pwa-banner.show { transform: translateY(0); }
         .pwa-banner-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .pwa-banner-icon { width: 56px; height: 56px; background: linear-gradient(135deg, #0ea5e9, #0369a1); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 28px; }
-        .pwa-banner-text h3 { font-size: 1rem; color: #1e293b; margin: 0 0 3px 0; }
-        .pwa-banner-text p { font-size: 0.8rem; color: #64748b; margin: 0; }
-        .pwa-banner-close { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; background: #f1f5f9; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #64748b; }
+        .pwa-banner-icon {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 26px;
+        }
+        .pwa-banner-text h3 { font-size: 1rem; color: var(--text-primary); margin: 0 0 3px; font-weight: 700; }
+        .pwa-banner-text p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .pwa-banner-close {
+            position: absolute; top: 16px; right: 16px;
+            width: 28px; height: 28px;
+            background: var(--bg-card-2); border: none;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: var(--text-muted);
+        }
         .pwa-banner-actions { display: flex; gap: 10px; }
-        .btn-pwa-install { flex: 2; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
-        .btn-pwa-later { flex: 1; background: #f1f5f9; color: #64748b; border: none; padding: 14px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+        .btn-pwa-install {
+            flex: 2; background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white; border: none; padding: 14px;
+            border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 700;
+            font-family: inherit; cursor: pointer;
+        }
+        .btn-pwa-later {
+            flex: 1; background: var(--btn-close-bg); color: var(--btn-close-color);
+            border: none; padding: 14px; border-radius: var(--radius-md);
+            font-size: 0.9rem; font-weight: 600; font-family: inherit; cursor: pointer;
+        }
 
         /* iOS install modal */
-        .ios-install-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 600; align-items: flex-end; justify-content: center; }
+        .ios-install-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 600;
+            align-items: flex-end; justify-content: center;
+        }
         .ios-install-modal.active { display: flex; }
-        .ios-install-content { background: white; border-radius: 20px 20px 0 0; padding: 25px 20px 35px; width: 100%; max-width: 480px; }
-        .ios-install-content h3 { text-align: center; font-size: 1.1rem; color: #1e293b; margin-bottom: 20px; }
-        .ios-step { display: flex; align-items: center; gap: 15px; padding: 12px; background: #f8fafc; border-radius: 12px; margin-bottom: 10px; }
-        .ios-step-num { width: 32px; height: 32px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
-        .ios-step p { margin: 0; font-size: 0.9rem; color: #334155; line-height: 1.4; }
-        .ios-step strong { color: #0284c7; }
-        .btn-ios-kapat { width: 100%; margin-top: 15px; padding: 14px; background: #f1f5f9; color: #475569; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .ios-install-content {
+            background: var(--modal-bg);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 26px 20px 36px; width: 100%; max-width: 480px;
+        }
+        .ios-install-content h3 { text-align: center; font-size: 1.1rem; color: var(--text-primary); margin-bottom: 20px; font-weight: 700; }
+        .ios-step {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px; background: var(--bg-card-2);
+            border-radius: var(--radius-md); margin-bottom: 10px;
+        }
+        .ios-step-num {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .ios-step p { margin: 0; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.4; }
+        .ios-step strong { color: var(--brand-primary); }
+        .btn-ios-kapat {
+            width: 100%; margin-top: 15px; padding: 14px;
+            background: var(--btn-close-bg); color: var(--btn-close-color);
+            border: none; border-radius: var(--radius-md);
+            font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer;
+        }
+
+        /* ═══════════════════════════════════════════════
+           DIVIDER
+        ═══════════════════════════════════════════════ */
+        .form-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 16px 0;
+        }
     </style>
 <base target="_blank">
 </head>
@@ -380,7 +966,7 @@
     <!-- Header -->
     <div class="header">
         <div class="header-buttons">
-            <button class="header-btn" onclick="openArchive()">
+            <button class="header-btn" onclick="openArchive()" title="Hafta Arşivi">
                 <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.35C18 2.53 15.84.5 13.27.5c-1.3 0-2.49.55-3.27 1.44C9.22 1.05 8.03.5 6.73.5 4.16.5 2 2.53 2 4.65c0 .47.11.91.18 1.35H0v14c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM9.96 2.8a1.93 1.93 0 0 1 1.37-.51c1.09 0 2.18.82 2.18 1.87C13.5 5.43 12.68 6 12 6H8.5c.04-1.05.56-2.36 1.46-3.2zM6.73 2.79C7.38 2.79 7.98 3 8.5 3.35V6H6.73C5.64 6 4.5 5.16 4.5 4.15c0-1.06 1.09-1.36 2.23-1.36zm-.73 16V12h14v6H6z"/></svg>
                 <span class="header-btn-label">Hafta Arşivi</span>
             </button>
@@ -388,12 +974,17 @@
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05 1.18 1.91 2.53 1.91 1.29 0 2.13-.62 2.13-1.56 0-.64-.44-1.1-1.77-1.52-1.89-.6-3.16-.98-3.16-2.73 0-1.64 1.31-2.75 3.08-3.08V6h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.04 0-1.73.52-1.73 1.49 0 .78.56 1.09 1.85 1.48 1.95.62 3.18 1.05 3.18 2.78 0 1.73-1.39 2.82-3.17 3.17z"/></svg>
                 <span class="header-btn-label">Fiyat Tarifesi</span>
             </button>
+            <button class="header-btn dark-mode-btn" onclick="toggleDarkMode()" id="darkModeBtn">
+                <svg id="darkModeIcon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                <span class="header-btn-label" id="darkModeTip">Karanlık Mod</span>
+            </button>
             <button class="header-btn" onclick="openSettings()">
-                <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
                 <span class="header-btn-label">Ayarlar</span>
             </button>
         </div>
-        <h1>🚛 Konteyner Harcırah Takip</h1>
+        <h1>🚛 Harcırah Takip</h1>
+        <p class="header-sub">Öner Lojistik</p>
         <div class="week-badge">
             <span class="week-badge-pill" id="weekBadge">Hafta yükleniyor...</span>
         </div>
@@ -410,6 +1001,10 @@
 
     <!-- Giriş Formu -->
     <div class="form-card">
+        <div class="form-section-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            Yeni Kayıt
+        </div>
         <div class="form-group">
             <label for="date">Tarih</label>
             <input type="date" id="date" required>
@@ -421,7 +1016,7 @@
         <div class="row">
             <div class="form-group">
                 <label for="factory">Fabrika</label>
-                <input type="text" id="factory" placeholder="Öner Depo" required>
+                <input type="text" id="factory" placeholder="Argon Kimya" required>
             </div>
             <div class="form-group">
                 <label for="location">Dönüş</label>
@@ -430,22 +1025,24 @@
         </div>
         <div class="form-group">
             <label for="pickup">Boş &amp; Dolu Alım Yeri</label>
-            <input type="text" id="pickup" placeholder="Ambarlı, Evyap, Kumport...">
+            <input type="text" id="pickup" placeholder="Marport, 6.Etap, KLM">
         </div>
-        <div class="form-group">
-            <label for="time">Giriş - Çıkış</label>
-            <input type="text" id="time" placeholder="15:45 17:45" required>
-        </div>
-        <div class="form-group">
-            <label for="description">Açıklama</label>
-            <input type="text" id="description" placeholder="kolcu, bekleme, vs.">
+        <div class="row">
+            <div class="form-group">
+                <label for="time">Giriş - Çıkış</label>
+                <input type="text" id="time" placeholder="15:45 17:45" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Açıklama</label>
+                <input type="text" id="description" placeholder="kolcu, bekleme...">
+            </div>
         </div>
         <div class="form-group">
             <label for="amount">Harcırah (₺)</label>
             <input type="number" id="amount" placeholder="600" required>
             <button type="button" class="fiyat-hesapla-btn" onclick="openHesapModal()">🧮 Fiyat Hesapla</button>
         </div>
-        <button class="btn-primary" onclick="addEntry()"><span style="color:white;font-size:1.2rem;font-weight:bold;">+</span> Kaydet</button>
+        <button class="btn-primary" onclick="addEntry()">+ Kaydet</button>
     </div>
 
     <!-- Arama -->
@@ -471,7 +1068,7 @@
     <div style="height:80px;"></div>
 </div>
 
-<!-- PDF FAB Butonu -->
+<!-- PDF FAB -->
 <button class="fab" onclick="generatePDF()">
     <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
 </button>
@@ -479,26 +1076,22 @@
 <!-- Loading -->
 <div class="loading" id="loading">
     <div class="spinner"></div>
-    <div>PDF hazırlanıyor...</div>
+    <div style="font-size:0.88rem;font-weight:600;">PDF hazırlanıyor...</div>
 </div>
 
 <!-- PDF Modal -->
 <div class="modal" id="pdfModal">
     <div class="modal-content">
-        <div class="modal-icon" style="background:#e3f2fd;">
-            <svg viewBox="0 0 24 24" style="fill:#1976d2;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        <div class="modal-icon" style="background:#dbeafe;">
+            <svg viewBox="0 0 24 24" style="fill:#1d4ed8;"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
         </div>
-        <h3>PDF İndirildi!</h3>
-        <p style="margin-bottom:20px;line-height:1.6;font-size:0.9rem;">
-            <strong>WhatsApp'ta PDF göndermek için:</strong><br>
-            1. "WhatsApp'tan Gönder" butonuna tıkla<br>
-            2. Kişiyi seç<br>
-            3. <strong>📎 Ekle &gt; Belge/Dosya</strong> ile PDF'i seç
-        </p>
+        <h3>PDF İndirildi! 🎉</h3>
+        <p>PDF'iniz hazır. Aşağıdaki seçeneklerden biriyle iletebilirsiniz.</p>
         <button class="btn-modal btn-whatsapp" onclick="shareWhatsApp()">📱 WhatsApp'tan Gönder</button>
+        <button class="btn-modal btn-email" onclick="shareEmail()">✉️ E-posta ile Gönder</button>
         <button class="btn-modal btn-close" onclick="closeModal('pdfModal')">Kapat</button>
-        <div style="background:#f5f5f5;padding:12px;border-radius:8px;margin-top:10px;font-size:0.8rem;color:#666;line-height:1.4;">
-            💡 PDF "İndirilenler" klasöründe.
+        <div style="background:var(--bg-card-2);padding:12px;border-radius:var(--radius-md);margin-top:8px;font-size:0.78rem;color:var(--text-muted);line-height:1.5;border:1px solid var(--border-color);">
+            💡 PDF "İndirilenler" klasöründe. E-posta gönderirken eke manuel ekleyin.
         </div>
     </div>
 </div>
@@ -511,13 +1104,11 @@
             <p>Kayıtlar arşive taşınacak, yeni haftaya geçilecek</p>
         </div>
         <div class="cw-body">
-            <div class="cw-summary" id="cwSummary">
-                <!-- JS ile doldurulacak -->
-            </div>
+            <div class="cw-summary" id="cwSummary"></div>
         </div>
         <div class="cw-footer">
             <button class="btn-modal" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;" onclick="closeWeekWithPDF()">📄 PDF Al ve Arşivle</button>
-            <button class="btn-modal" style="background:#f3f0ff;color:#5b21b6;" onclick="closeWeekOnly()">Sadece Arşivle (PDF'siz)</button>
+            <button class="btn-modal" style="background:var(--accent-purple-light);color:#5b21b6;" onclick="closeWeekOnly()">Sadece Arşivle (PDF'siz)</button>
             <button class="btn-modal btn-close" onclick="closeModal('closeWeekModal')">İptal</button>
         </div>
     </div>
@@ -587,16 +1178,16 @@
 </div>
 
 <!-- Fiyat Hesaplama Modal -->
-<div class="modal hesap-modal" id="hesapModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:200;align-items:flex-end;justify-content:center;padding:0;margin:0;">
-    <div class="modal-content" style="background:white;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;margin:0 auto;animation:slideUp 0.3s ease-out;">
-        <div style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:white;padding:20px;text-align:center;flex-shrink:0;border-radius:20px 20px 0 0;">
-            <h3 style="margin:0;font-size:1.3rem;font-weight:700;">🧮 Fiyat Hesapla</h3>
-            <p style="margin:5px 0 0;opacity:.9;font-size:.9rem;">Bölge ve ek hizmetleri seçin</p>
+<div class="modal hesap-modal" id="hesapModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.65);z-index:200;align-items:flex-end;justify-content:center;padding:0;margin:0;">
+    <div style="background:var(--modal-bg);border-radius:var(--radius-xl) var(--radius-xl) 0 0;width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;margin:0 auto;animation:slideUp 0.3s ease-out;border:1px solid var(--border-color);">
+        <div style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:white;padding:22px;text-align:center;flex-shrink:0;border-radius:var(--radius-xl) var(--radius-xl) 0 0;">
+            <h3 style="margin:0;font-size:1.25rem;font-weight:800;">🧮 Fiyat Hesapla</h3>
+            <p style="margin:5px 0 0;opacity:.85;font-size:.88rem;">Bölge ve ek hizmetleri seçin</p>
         </div>
-        <div style="overflow-y:auto;flex:1;padding:20px;background:#f8fafc;">
+        <div style="overflow-y:auto;flex:1;padding:20px;background:var(--bg-card-2);">
             <div style="margin-bottom:15px;">
-                <label style="display:block;font-size:.85rem;color:#475569;margin-bottom:6px;font-weight:600;">📍 Gidilecek Bölge</label>
-                <select id="bolgeSelect" onchange="updateTotalPrice()" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;font-size:.95rem;background:white;color:#334155;cursor:pointer;">
+                <label style="display:block;font-size:.78rem;color:var(--text-secondary);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">📍 Gidilecek Bölge</label>
+                <select id="bolgeSelect" onchange="updateTotalPrice()" style="width:100%;padding:12px;border:1.5px solid var(--border-color);border-radius:var(--radius-md);font-size:.95rem;background:var(--bg-input);color:var(--text-primary);cursor:pointer;font-family:inherit;">
                     <option value="0">Bölge seçin...</option>
                     <option value="700" data-name="Acıbadem-Göztepe-Kadıköy ve civarı">Acıbadem-Göztepe-Kadıköy (₺700)</option>
                     <option value="500" data-name="Avcılar-Esenyurt-Beylikdüzü ve civarı">Avcılar-Esenyurt-Beylikdüzü (₺500)</option>
@@ -608,67 +1199,94 @@
                     <option value="750" data-name="Tuzla-Gebze ve civarı">Tuzla-Gebze (₺750)</option>
                 </select>
             </div>
-            <div style="background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 100%);border:2px solid #0ea5e9;border-radius:12px;padding:15px;margin-bottom:15px;">
-                <label style="display:block;font-size:.85rem;color:#0369a1;margin-bottom:10px;font-weight:700;">⏱️ Bekleme Süresi Hesapla</label>
+            <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1.5px solid #7dd3fc;border-radius:var(--radius-md);padding:15px;margin-bottom:15px;">
+                <label style="display:block;font-size:.8rem;color:#0369a1;margin-bottom:10px;font-weight:700;">⏱️ Bekleme Süresi Hesapla</label>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
                     <div>
-                        <label style="font-size:.75rem;color:#475569;margin-bottom:3px;display:block;font-weight:500;">Giriş Tarihi</label>
-                        <input type="date" id="girisTarih" onchange="calculateWaitingTime()" style="width:100%;padding:10px;border:2px solid #bae6fd;border-radius:8px;font-size:.9rem;background:white;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Giriş Tarihi</label>
+                        <input type="date" id="girisTarih" onchange="calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;">
                     </div>
                     <div>
-                        <label style="font-size:.75rem;color:#475569;margin-bottom:3px;display:block;font-weight:500;">Giriş Saati (24h)</label>
-                        <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="width:100%;padding:10px;border:2px solid #bae6fd;border-radius:8px;font-size:.9rem;text-align:center;font-family:monospace;background:white;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Giriş Saati (24h)</label>
+                        <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;text-align:center;font-family:monospace;">
                     </div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
                     <div>
-                        <label style="font-size:.75rem;color:#475569;margin-bottom:3px;display:block;font-weight:500;">Çıkış Tarihi</label>
-                        <input type="date" id="cikisTarih" onchange="calculateWaitingTime()" style="width:100%;padding:10px;border:2px solid #bae6fd;border-radius:8px;font-size:.9rem;background:white;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Çıkış Tarihi</label>
+                        <input type="date" id="cikisTarih" onchange="calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;">
                     </div>
                     <div>
-                        <label style="font-size:.75rem;color:#475569;margin-bottom:3px;display:block;font-weight:500;">Çıkış Saati (24h)</label>
-                        <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="width:100%;padding:10px;border:2px solid #bae6fd;border-radius:8px;font-size:.9rem;text-align:center;font-family:monospace;background:white;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Çıkış Saati (24h)</label>
+                        <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;text-align:center;font-family:monospace;">
                     </div>
                 </div>
-                <div style="font-size:.75rem;color:#0284c7;margin-bottom:10px;text-align:center;font-weight:500;">💡 Format: SS:DD (örnek: 09:00, 16:30)</div>
-                <div id="beklemeSonuc" style="background:white;padding:12px;border-radius:8px;text-align:center;display:none;border:2px solid #0ea5e9;">
-                    <div style="font-size:1.1rem;font-weight:800;color:#0284c7;" id="beklemeText">0 bekleme</div>
-                    <div style="font-size:.8rem;color:#64748b;margin-top:4px;" id="toplamSaatText">Toplam: 0 saat</div>
+                <div style="font-size:.73rem;color:#0284c7;margin-bottom:10px;text-align:center;font-weight:500;">💡 Format: SS:DD (örnek: 09:00, 16:30)</div>
+                <div id="beklemeSonuc" style="background:white;padding:12px;border-radius:var(--radius-sm);text-align:center;display:none;border:1.5px solid #7dd3fc;">
+                    <div style="font-size:1.05rem;font-weight:800;color:#0284c7;" id="beklemeText">0 bekleme</div>
+                    <div style="font-size:.78rem;color:#64748b;margin-top:4px;" id="toplamSaatText">Toplam: 0 saat</div>
                 </div>
             </div>
             <div style="margin-bottom:15px;">
-                <label style="display:block;font-size:.85rem;color:#475569;margin-bottom:8px;font-weight:600;">➕ Ek Hizmetler</label>
-                <label style="display:flex;align-items:center;padding:12px;background:white;border-radius:10px;margin-bottom:8px;cursor:pointer;border:2px solid #e2e8f0;">
-                    <input type="checkbox" id="aktarmaCheck" onchange="updateTotalPrice()" style="width:20px;height:20px;margin-right:12px;cursor:pointer;accent-color:#0ea5e9;">
-                    <span style="display:flex;flex-direction:column;flex:1;"><span style="font-size:.95rem;font-weight:600;color:#334155;">Boş/Dolu Aktarma</span><span style="font-size:.85rem;color:#0ea5e9;font-weight:700;">+ ₺300</span></span>
+                <label style="display:block;font-size:.78rem;color:var(--text-secondary);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">➕ Ek Hizmetler</label>
+                <label style="display:flex;align-items:center;padding:12px;background:var(--bg-card);border-radius:var(--radius-md);margin-bottom:8px;cursor:pointer;border:1.5px solid var(--border-color);">
+                    <input type="checkbox" id="aktarmaCheck" onchange="updateTotalPrice()" style="width:20px;height:20px;margin-right:12px;cursor:pointer;accent-color:#0ea5e9;border:none;background:none;">
+                    <span style="display:flex;flex-direction:column;flex:1;"><span style="font-size:.92rem;font-weight:600;color:var(--text-primary);">Boş/Dolu Aktarma</span><span style="font-size:.82rem;color:var(--brand-primary);font-weight:700;">+ ₺300</span></span>
                 </label>
-                <label style="display:flex;align-items:center;padding:12px;background:white;border-radius:10px;cursor:pointer;border:2px solid #e2e8f0;">
-                    <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()" style="width:20px;height:20px;margin-right:12px;cursor:pointer;accent-color:#0ea5e9;">
-                    <span style="display:flex;flex-direction:column;flex:1;"><span style="font-size:.95rem;font-weight:600;color:#334155;">ATS & Kolcu Farkı</span><span style="font-size:.85rem;color:#0ea5e9;font-weight:700;">+ ₺100</span></span>
+                <label style="display:flex;align-items:center;padding:12px;background:var(--bg-card);border-radius:var(--radius-md);cursor:pointer;border:1.5px solid var(--border-color);">
+                    <input type="checkbox" id="atsCheck" onchange="updateTotalPrice()" style="width:20px;height:20px;margin-right:12px;cursor:pointer;accent-color:#0ea5e9;border:none;background:none;">
+                    <span style="display:flex;flex-direction:column;flex:1;"><span style="font-size:.92rem;font-weight:600;color:var(--text-primary);">ATS & Kolcu Farkı</span><span style="font-size:.82rem;color:var(--brand-primary);font-weight:700;">+ ₺100</span></span>
                 </label>
             </div>
-            <div style="background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:white;padding:20px;border-radius:15px;text-align:center;margin-bottom:10px;">
-                <div style="font-size:.9rem;opacity:.9;margin-bottom:5px;">Hesaplanan Tutar</div>
-                <div style="font-size:2rem;font-weight:800;" id="hesapSonuc">₺0</div>
-                <div style="background:rgba(255,255,255,.2);padding:8px;border-radius:6px;margin-top:10px;font-size:.8rem;" id="hesapDetay">Bölge seçin</div>
+            <div style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;padding:20px;border-radius:var(--radius-lg);text-align:center;">
+                <div style="font-size:.85rem;opacity:.85;margin-bottom:4px;font-weight:500;">Hesaplanan Tutar</div>
+                <div style="font-size:2rem;font-weight:800;letter-spacing:-1px;" id="hesapSonuc">₺0</div>
+                <div style="background:rgba(255,255,255,.18);padding:8px;border-radius:var(--radius-sm);margin-top:10px;font-size:.78rem;" id="hesapDetay">Bölge seçin</div>
             </div>
         </div>
-        <div style="flex-shrink:0;padding:20px;background:white;border-top:1px solid #e2e8f0;display:flex;gap:10px;">
-            <button onclick="useCalculatedPrice()" style="flex:2;background:linear-gradient(135deg,#0ea5e9 0%,#0284c7 100%);color:white;border:none;padding:16px;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;">💰 Bu Fiyatı Kullan</button>
-            <button onclick="closeModal('hesapModal')" style="flex:1;background:#f1f5f9;color:#475569;border:none;padding:16px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;">Kapat</button>
+        <div style="flex-shrink:0;padding:18px 20px;background:var(--modal-bg);border-top:1px solid var(--border-color);display:flex;gap:10px;">
+            <button onclick="useCalculatedPrice()" style="flex:2;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;padding:15px;border-radius:var(--radius-md);font-size:.98rem;font-weight:700;cursor:pointer;font-family:inherit;">💰 Bu Fiyatı Kullan</button>
+            <button onclick="closeModal('hesapModal')" style="flex:1;background:var(--btn-close-bg);color:var(--btn-close-color);border:none;padding:15px;border-radius:var(--radius-md);font-size:.98rem;font-weight:700;cursor:pointer;font-family:inherit;">Kapat</button>
         </div>
     </div>
 </div>
 
 <!-- Ayarlar Modal -->
 <div class="modal" id="settingsModal">
-    <div class="modal-content">
-        <h3>⚙️ Ayarlar</h3>
-        <p style="margin:15px 0;font-size:.9rem;">Aktif kayıt sayısı: <strong id="entryCount">0</strong></p>
-        <p style="margin-bottom:15px;font-size:.9rem;">Arşivlenmiş hafta: <strong id="weekCount">0</strong></p>
-        <button class="btn-modal" id="settingsInstallBtn" onclick="triggerInstallFromSettings()" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;margin-bottom:10px;">📲 Ana Ekrana Ekle</button>
-        <button class="btn-modal btn-danger" onclick="clearAllData()">🗑️ Tüm Verileri Sil (Arşiv Dahil)</button>
-        <button class="btn-modal btn-close" onclick="closeModal('settingsModal')">Kapat</button>
+    <div class="modal-content" style="max-height:85vh;overflow-y:auto;text-align:left;">
+        <h3 style="text-align:center;margin-bottom:16px;">⚙️ Ayarlar</h3>
+
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+            <div style="background:var(--bg-card-2);border-radius:var(--radius-md);padding:14px;text-align:center;border:1px solid var(--border-color);">
+                <div style="font-size:1.5rem;font-weight:800;color:var(--brand-primary);" id="entryCount">0</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);font-weight:600;margin-top:2px;">aktif kayıt</div>
+            </div>
+            <div style="background:var(--bg-card-2);border-radius:var(--radius-md);padding:14px;text-align:center;border:1px solid var(--border-color);">
+                <div style="font-size:1.5rem;font-weight:800;color:#7c3aed;" id="weekCount">0</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);font-weight:600;margin-top:2px;">arşivlenmiş hafta</div>
+            </div>
+        </div>
+
+        <!-- E-posta Ayarı -->
+        <div style="background:var(--brand-xlight);border:1.5px solid #bae6fd;border-radius:var(--radius-md);padding:16px;margin-bottom:14px;">
+            <label style="display:block;font-size:0.78rem;color:#0369a1;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">✉️ E-posta Adresi</label>
+            <input type="email" id="emailAdresInput" placeholder="ornek@sirket.com.tr" style="margin-bottom:10px;">
+            <button onclick="saveEmailAdres()" style="width:100%;padding:11px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;border-radius:var(--radius-md);font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;">💾 Kaydet</button>
+        </div>
+
+        <!-- Karanlık Mod -->
+        <div style="background:var(--bg-card-2);border:1.5px solid var(--border-color);border-radius:var(--radius-md);padding:16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+                <div style="font-size:0.88rem;font-weight:700;color:var(--text-primary);">🌙 Karanlık Mod</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Koyu renk teması</div>
+            </div>
+            <button onclick="toggleDarkMode()" id="darkModeToggleBtn" style="padding:8px 18px;border:none;border-radius:var(--radius-full);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#1e293b,#334155);color:#f1f5f9;">Aç/Kapat</button>
+        </div>
+
+        <button class="btn-modal" id="settingsInstallBtn" onclick="triggerInstallFromSettings()" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;margin-bottom:10px;text-align:center;">📲 Ana Ekrana Ekle</button>
+        <button class="btn-modal btn-danger" onclick="clearAllData()" style="text-align:center;">🗑️ Tüm Verileri Sil (Arşiv Dahil)</button>
+        <button class="btn-modal btn-close" onclick="closeModal('settingsModal')" style="text-align:center;">Kapat</button>
     </div>
 </div>
 
@@ -708,17 +1326,43 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ==================== GLOBAL STATE ====================
-let entries = [];        // Aktif hafta kayıtları
-let weeks = [];          // Arşivlenmiş haftalar
-let currentWeekNum = 1;  // Aktif hafta numarası
+let entries = [];
+let weeks = [];
+let currentWeekNum = 1;
 let editingIndex = -1;
 let currentCalculatedPrice = 0;
 let currentWaitingCount = 0;
 let currentWaitingPrice = 0;
-let viewingWeekIndex = -1; // Detayda görüntülenen arşiv haftası
+let viewingWeekIndex = -1;
 
-// Hafta renkleri
 const WEEK_COLORS = ['#0284c7','#7c3aed','#0F6E56','#c2410c','#0369a1','#6d28d9','#065f46','#9a3412'];
+
+// ==================== DARK MODE ====================
+function initDarkMode() {
+    const saved = localStorage.getItem('harcirahTheme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    applyTheme(theme);
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('harcirahTheme', theme);
+    const icon = document.getElementById('darkModeIcon');
+    const tip = document.getElementById('darkModeTip');
+    if (theme === 'dark') {
+        if (icon) icon.innerHTML = '<path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/>';
+        if (tip) tip.textContent = 'Aydınlık Mod';
+    } else {
+        if (icon) icon.innerHTML = '<path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>';
+        if (tip) tip.textContent = 'Karanlık Mod';
+    }
+}
+
+function toggleDarkMode() {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+}
 
 // ==================== UTILS ====================
 function toEnglishChars(text) {
@@ -739,7 +1383,9 @@ function formatTimeString(ts) {
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
+    initDarkMode();
     loadAll();
+    loadEmailAdres();
     const d = document.getElementById('date');
     if (d) d.valueAsDate = new Date();
     updateWeekBadge();
@@ -756,9 +1402,7 @@ function loadAll() {
     updateWeekBadge();
 }
 
-function saveEntries() {
-    localStorage.setItem('harcirah_entries', JSON.stringify(entries));
-}
+function saveEntries() { localStorage.setItem('harcirah_entries', JSON.stringify(entries)); }
 function saveWeeks() {
     localStorage.setItem('harcirah_weeks', JSON.stringify(weeks));
     localStorage.setItem('harcirah_week_num', String(currentWeekNum));
@@ -793,7 +1437,7 @@ function addEntry() {
         entries[editingIndex] = { ...entries[editingIndex], ...entry };
         editingIndex = -1;
         const btn = document.querySelector('.btn-primary');
-        if (btn) btn.innerHTML = '<span style="color:white;font-size:1.2rem;font-weight:bold;">+</span> Kaydet';
+        if (btn) btn.textContent = '+ Kaydet';
         showNotification('Kayıt güncellendi!');
     } else {
         entries.unshift(entry);
@@ -832,7 +1476,7 @@ function renderEntries(filteredEntries = null) {
         const i = entries.indexOf(entry);
         return `<div class="entry-card">
             <div class="entry-header">
-                <span class="entry-date">${formatDate(entry.date)}</span>
+                <span class="entry-date">📅 ${formatDate(entry.date)}</span>
                 <span class="entry-amount">${(entry.amount||0).toLocaleString('tr-TR')}₺</span>
             </div>
             <div class="entry-details">
@@ -842,7 +1486,7 @@ function renderEntries(filteredEntries = null) {
                 <div class="entry-detail"><span>Saat</span>${entry.time}</div>
                 ${entry.pickup ? '<div class="entry-detail" style="grid-column:1/-1"><span>Boş &amp; Dolu Alım Yeri</span>'+entry.pickup+'</div>' : ''}
             </div>
-            ${entry.description ? `<div class="entry-desc">${entry.description}</div>` : ''}
+            ${entry.description ? `<div class="entry-desc">💬 ${entry.description}</div>` : ''}
             <div class="entry-actions">
                 <button class="btn-small btn-edit" onclick="editEntry(${i})">✏️ Düzenle</button>
                 <button class="btn-small btn-delete" onclick="deleteEntry(${i})">🗑️ Sil</button>
@@ -861,7 +1505,7 @@ function editEntry(i) {
     });
     editingIndex = i;
     const btn = document.querySelector('.btn-primary');
-    if (btn) btn.innerHTML = '<span style="color:white;font-size:1.2rem;">💾</span> Güncelle';
+    if (btn) btn.textContent = '💾 Güncelle';
     document.querySelector('.form-card').scrollIntoView({behavior:'smooth'});
 }
 
@@ -900,15 +1544,11 @@ function clearAllData() {
 
 // ==================== WEEK ARCHIVE SYSTEM ====================
 function openCloseWeekModal() {
-    if (entries.length === 0) {
-        showNotification('Kapatmak için en az bir kayıt olmalı', 'error');
-        return;
-    }
+    if (entries.length === 0) { showNotification('Kapatmak için en az bir kayıt olmalı', 'error'); return; }
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
     const dates = entries.map(e=>e.date).sort();
     const firstDate = dates[0] ? formatDate(dates[0]) : '-';
     const lastDate = dates[dates.length-1] ? formatDate(dates[dates.length-1]) : '-';
-
     document.getElementById('cwSummary').innerHTML = `
         <div class="cw-sum-row"><span class="cw-sum-label">Hafta</span><span>${currentWeekNum}. Hafta</span></div>
         <div class="cw-sum-row"><span class="cw-sum-label">Tarih Aralığı</span><span>${firstDate} – ${lastDate}</span></div>
@@ -921,31 +1561,17 @@ function openCloseWeekModal() {
 function archiveCurrentWeek() {
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
     const dates = entries.map(e=>e.date).sort();
-    const week = {
-        id: 'week_' + Date.now(),
-        weekNumber: currentWeekNum,
-        startDate: dates[0] || '',
-        endDate: dates[dates.length-1] || '',
-        closedAt: new Date().toISOString(),
-        entries: JSON.parse(JSON.stringify(entries)),
-        totalAmount: total
-    };
+    const week = { id:'week_'+Date.now(), weekNumber:currentWeekNum, startDate:dates[0]||'', endDate:dates[dates.length-1]||'', closedAt:new Date().toISOString(), entries:JSON.parse(JSON.stringify(entries)), totalAmount:total };
     weeks.unshift(week);
     currentWeekNum++;
     entries = [];
-    saveEntries();
-    saveWeeks();
-    renderEntries();
-    updateWeekBadge();
+    saveEntries(); saveWeeks(); renderEntries(); updateWeekBadge();
     return week;
 }
 
 function closeWeekWithPDF() {
     closeModal('closeWeekModal');
-    generatePDF(true, () => {
-        archiveCurrentWeek();
-        showNotification('Hafta arşivlendi ve PDF indirildi! 🎉');
-    });
+    generatePDF(true, () => { archiveCurrentWeek(); showNotification('Hafta arşivlendi ve PDF indirildi! 🎉'); });
 }
 
 function closeWeekOnly() {
@@ -957,37 +1583,30 @@ function closeWeekOnly() {
 // ==================== ARCHIVE VIEW ====================
 function openArchive() {
     const allWeeks = [
-        { isCurrent: true, weekNumber: currentWeekNum, entries: entries, totalAmount: entries.reduce((a,b)=>a+(b.amount||0),0), startDate: '', endDate: '' },
+        { isCurrent:true, weekNumber:currentWeekNum, entries, totalAmount:entries.reduce((a,b)=>a+(b.amount||0),0), startDate:'', endDate:'' },
         ...weeks
     ];
-
     const totalAllTime = weeks.reduce((a,w)=>a+w.totalAmount,0) + entries.reduce((a,b)=>a+(b.amount||0),0);
     const totalEntries = weeks.reduce((a,w)=>a+w.entries.length,0) + entries.length;
-
-    document.getElementById('archiveHeaderSub').textContent = (weeks.length) + ' arşivlenmiş hafta · ' + allWeeks.length + ' hafta toplam';
-
+    document.getElementById('archiveHeaderSub').textContent = weeks.length + ' arşivlenmiş hafta · ' + allWeeks.length + ' hafta toplam';
     document.getElementById('archiveTotalsRow').innerHTML = `
         <div class="archive-stat"><div class="archive-stat-num">${allWeeks.length}</div><div class="archive-stat-lbl">toplam hafta</div></div>
         <div class="archive-stat"><div class="archive-stat-num">${totalEntries}</div><div class="archive-stat-lbl">toplam sefer</div></div>
-        <div class="archive-stat"><div class="archive-stat-num" style="font-size:1rem;">${totalAllTime.toLocaleString('tr-TR')}₺</div><div class="archive-stat-lbl">toplam kazanç</div></div>
+        <div class="archive-stat"><div class="archive-stat-num" style="font-size:0.95rem;">${totalAllTime.toLocaleString('tr-TR')}₺</div><div class="archive-stat-lbl">toplam kazanç</div></div>
     `;
-
     document.getElementById('archiveList').innerHTML = allWeeks.map((w, idx) => {
         const color = WEEK_COLORS[(w.weekNumber-1) % WEEK_COLORS.length];
-        const dateRange = w.isCurrent
-            ? 'Aktif hafta · ' + w.entries.length + ' kayıt'
-            : (w.startDate ? formatDate(w.startDate) : '') + ' – ' + (w.endDate ? formatDate(w.endDate) : '') + ' · ' + w.entries.length + ' kayıt';
-        return `<div class="archive-week-item ${w.isCurrent?'current-week':''}" onclick="${w.isCurrent ? "closeModal('archiveModal')" : 'openWeekDetail('+(idx-1)+')'}">
+        const dateRange = w.isCurrent ? 'Aktif hafta · '+w.entries.length+' kayıt' : (w.startDate?formatDate(w.startDate):'')+' – '+(w.endDate?formatDate(w.endDate):'')+' · '+w.entries.length+' kayıt';
+        return `<div class="archive-week-item ${w.isCurrent?'current-week':''}" onclick="${w.isCurrent?"closeModal('archiveModal')":'openWeekDetail('+(idx-1)+')'}">
             <div class="week-color-dot" style="background:${color};"></div>
             <div class="week-item-info">
-                <div class="week-item-name">${w.weekNumber}. Hafta ${w.isCurrent ? '<span class="current-tag">aktif</span>' : ''}</div>
+                <div class="week-item-name">${w.weekNumber}. Hafta ${w.isCurrent?'<span class="current-tag">aktif</span>':''}</div>
                 <div class="week-item-sub">${dateRange}</div>
             </div>
             <div class="week-item-amount">${w.totalAmount.toLocaleString('tr-TR')}₺</div>
-            ${!w.isCurrent ? '<div class="week-item-arrow">›</div>' : ''}
+            ${!w.isCurrent?'<div class="week-item-arrow">›</div>':''}
         </div>`;
     }).join('');
-
     document.getElementById('archiveModal').classList.add('active');
 }
 
@@ -995,38 +1614,31 @@ function openWeekDetail(weekArrayIndex) {
     const week = weeks[weekArrayIndex];
     if (!week) return;
     viewingWeekIndex = weekArrayIndex;
-
     closeModal('archiveModal');
-
     const color = WEEK_COLORS[(week.weekNumber-1) % WEEK_COLORS.length];
     const hdr = document.getElementById('weekDetailHeader');
     hdr.style.background = color;
     document.getElementById('weekDetailTitle').textContent = week.weekNumber + '. Hafta';
-    document.getElementById('weekDetailSub').textContent =
-        (week.startDate ? formatDate(week.startDate) : '') + ' – ' + (week.endDate ? formatDate(week.endDate) : '') +
-        ' · ' + new Date(week.closedAt).toLocaleDateString('tr-TR') + ' tarihinde kapatıldı';
-
+    document.getElementById('weekDetailSub').textContent = (week.startDate?formatDate(week.startDate):'')+' – '+(week.endDate?formatDate(week.endDate):'')+' · '+new Date(week.closedAt).toLocaleDateString('tr-TR')+' tarihinde kapatıldı';
     const avg = week.entries.length > 0 ? Math.round(week.totalAmount / week.entries.length) : 0;
     document.getElementById('weekDetailStats').innerHTML = `
         <div class="wds-box"><div class="wds-num" style="color:${color};">${week.entries.length}</div><div class="wds-lbl">sefer</div></div>
-        <div class="wds-box"><div class="wds-num" style="color:${color};">${week.totalAmount.toLocaleString('tr-TR')}₺</div><div class="wds-lbl">toplam</div></div>
-        <div class="wds-box"><div class="wds-num" style="color:${color};">${avg.toLocaleString('tr-TR')}₺</div><div class="wds-lbl">ortalama</div></div>
+        <div class="wds-box"><div class="wds-num" style="color:${color};font-size:0.95rem;">${week.totalAmount.toLocaleString('tr-TR')}₺</div><div class="wds-lbl">toplam</div></div>
+        <div class="wds-box"><div class="wds-num" style="color:${color};font-size:0.95rem;">${avg.toLocaleString('tr-TR')}₺</div><div class="wds-lbl">ortalama</div></div>
     `;
-
     const sorted = [...week.entries].sort((a,b)=>new Date(b.date)-new Date(a.date));
     document.getElementById('weekDetailBody').innerHTML = `
-        <p style="font-size:0.8rem;color:#999;margin-bottom:10px;">Kayıtlar (tarihe göre sıralı)</p>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">Kayıtlar</p>
         ${sorted.map(e=>`
         <div class="week-detail-entry" style="border-left-color:${color};">
             <div class="wde-top">
                 <span class="wde-date" style="color:${color};">${formatDate(e.date)}</span>
                 <span class="wde-amount" style="color:${color};">${(e.amount||0).toLocaleString('tr-TR')}₺</span>
             </div>
-            <div class="wde-detail">${e.container} · ${e.factory} → ${e.location}${e.pickup ? ' · <span style="color:#7c3aed;">Alım: '+e.pickup+'</span>' : ''}</div>
-            ${e.description ? `<div class="wde-detail" style="margin-top:2px;color:#aaa;">${e.description}</div>` : ''}
+            <div class="wde-detail">${e.container} · ${e.factory} → ${e.location}${e.pickup?' · <span style="color:#7c3aed;">'+e.pickup+'</span>':''}</div>
+            ${e.description?`<div class="wde-detail" style="margin-top:2px;color:var(--text-muted);">${e.description}</div>`:''}
         </div>`).join('')}
     `;
-
     document.getElementById('weekDetailPdfBtn').style.background = color;
     document.getElementById('weekDetailModal').classList.add('active');
 }
@@ -1040,25 +1652,16 @@ function redownloadWeekPDF() {
 
 // ==================== PDF GENERATION ====================
 async function generatePDF(isWeekClose = false, callback = null) {
-    if (entries.length === 0 && !isWeekClose) {
-        showNotification('Önce en az bir kayıt ekleyin', 'error');
-        return;
-    }
-
+    if (entries.length === 0 && !isWeekClose) { showNotification('Önce en az bir kayıt ekleyin', 'error'); return; }
     const loading = document.getElementById('loading');
     if (loading) loading.classList.add('active');
-
     try {
         const dates = entries.map(e=>e.date).sort();
         await generatePDFForEntries(entries, currentWeekNum, dates[0], dates[dates.length-1]);
-
         setTimeout(() => {
             if (loading) loading.classList.remove('active');
-            if (callback) {
-                callback();
-            } else {
-                document.getElementById('pdfModal').classList.add('active');
-            }
+            if (callback) callback();
+            else document.getElementById('pdfModal').classList.add('active');
         }, 800);
     } catch(err) {
         if (loading) loading.classList.remove('active');
@@ -1070,42 +1673,21 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
     doc.setFont('helvetica','normal');
-
-    // Başlık
-    doc.setFontSize(18);
-    doc.setTextColor(14,165,233);
+    doc.setFontSize(18); doc.setTextColor(14,165,233);
     doc.text(toEnglishChars('HARCIRAH LISTESI - ' + weekNum + '. HAFTA'), 105, 18, {align:'center'});
-    doc.setDrawColor(2,132,199);
-    doc.line(20,23,190,23);
-    doc.setFontSize(9);
-    doc.setTextColor(100);
+    doc.setDrawColor(2,132,199); doc.line(20,23,190,23);
+    doc.setFontSize(9); doc.setTextColor(100);
     const dateLabel = startDate && endDate ? formatDate(startDate) + ' - ' + formatDate(endDate) : '';
     doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR') + (dateLabel ? '   |   Hafta: ' + dateLabel : ''), 105, 30, {align:'center'});
-
-    // Tablo Başlığı
     let y = 43;
-    doc.setFillColor(14,165,233);
-    doc.rect(10,y-6,190,10,'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(8);
-    doc.setFont('helvetica','bold');
+    doc.setFillColor(14,165,233); doc.rect(10,y-6,190,10,'F');
+    doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont('helvetica','bold');
     const cols = {tarih:12,konteyner:30,fabrika:56,donus:86,alim:114,saat:138,aciklama:158,tutar:195};
-    doc.text('TARIH',cols.tarih,y);
-    doc.text('KONTEYNER',cols.konteyner,y);
-    doc.text('FABRIKA',cols.fabrika,y);
-    doc.text('DONUS',cols.donus,y);
-    doc.text('ALIM',cols.alim,y);
-    doc.text('SAAT',cols.saat,y);
-    doc.text('ACIKLAMA',cols.aciklama,y);
-    doc.text('TUTAR',cols.tutar,y,{align:'right'});
-
-    y += 10;
-    doc.setTextColor(50);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(7);
-
+    doc.text('TARIH',cols.tarih,y); doc.text('KONTEYNER',cols.konteyner,y); doc.text('FABRIKA',cols.fabrika,y);
+    doc.text('DONUS',cols.donus,y); doc.text('ALIM',cols.alim,y); doc.text('SAAT',cols.saat,y);
+    doc.text('ACIKLAMA',cols.aciklama,y); doc.text('TUTAR',cols.tutar,y,{align:'right'});
+    y += 10; doc.setTextColor(50); doc.setFont('helvetica','normal'); doc.setFontSize(7);
     function trunc(t,max) { if(!t||t.length<=max) return t||''; return t.substring(0,max-2)+'..'; }
-
     let total = 0;
     const sorted = [...ents].sort((a,b)=>new Date(b.date)-new Date(a.date));
     sorted.forEach((e,i) => {
@@ -1119,39 +1701,57 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
         doc.text(trunc(e.time||'',14),cols.saat,y);
         doc.text(trunc(toEnglishChars(e.description||''),16),cols.aciklama,y);
         doc.text((e.amount||0).toLocaleString('tr-TR')+' TL',cols.tutar,y,{align:'right'});
-        y += 8;
-        total += (e.amount||0);
+        y += 8; total += (e.amount||0);
     });
-
-    y += 5;
-    doc.setFillColor(2,132,199);
-    doc.rect(130,y-6,70,10,'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(10);
-    doc.setFont('helvetica','bold');
+    y += 5; doc.setFillColor(2,132,199); doc.rect(130,y-6,70,10,'F');
+    doc.setTextColor(255,255,255); doc.setFontSize(10); doc.setFont('helvetica','bold');
     doc.text(toEnglishChars('TOPLAM: ')+total.toLocaleString('tr-TR')+' TL',165,y,{align:'center'});
-
     const pages = doc.internal.getNumberOfPages();
-    for(let i=1;i<=pages;i++) {
-        doc.setPage(i);
-        doc.setFont('helvetica','normal');
-        doc.setFontSize(8);
-        doc.setTextColor(150);
-        doc.text(toEnglishChars('Konteyner Harcirah Takip Uygulamasi'),105,287,{align:'center'});
-    }
-
-    const fn = 'Harcirah_Hafta' + weekNum + '_' + new Date().toISOString().split('T')[0] + '.pdf';
+    for(let i=1;i<=pages;i++) { doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(150); doc.text(toEnglishChars('Konteyner Harcirah Takip · Oner Lojistik'),105,287,{align:'center'}); }
+    const fn = 'Harcirah_Hafta'+weekNum+'_'+new Date().toISOString().split('T')[0]+'.pdf';
     doc.save(fn);
 }
 
+// ==================== EMAIL ====================
+function shareEmail() {
+    const total = entries.reduce((a,b)=>a+(b.amount||0),0);
+    const savedEmail = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
+    let subject = toEnglishChars('Harcirah Listesi - ' + currentWeekNum + '. Hafta - ') + new Date().toLocaleDateString('tr-TR');
+    let body = toEnglishChars('HARCIRAH LISTESI - ' + currentWeekNum + '. HAFTA\n\n');
+    body += toEnglishChars('Toplam Tutar: ') + total.toLocaleString('tr-TR') + ' TL\n';
+    body += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
+    body += toEnglishChars('Detaylar:\n') + '-----------------------------\n';
+    entries.forEach((e,i) => { body += (i+1)+'. '+formatDate(e.date)+' - '+toEnglishChars(e.container)+' - '+toEnglishChars(e.factory)+' - '+(e.amount||0).toLocaleString('tr-TR')+' TL\n'; });
+    body += '-----------------------------\n' + toEnglishChars('TOPLAM: ') + total.toLocaleString('tr-TR') + ' TL\n\n';
+    body += toEnglishChars('Not: PDF dosyasi ayri olarak indirildi. Lutfen eki ekleyin.\n');
+    body += toEnglishChars('Olusturulma: ') + new Date().toLocaleString('tr-TR');
+    window.location.href = 'mailto:' + savedEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    closeModal('pdfModal');
+    setTimeout(() => showNotification(toEnglishChars("E-posta uygulamasi acildi! PDF'i eke ekleyip gonderin.")), 800);
+}
+
+function saveEmailAdres() {
+    const input = document.getElementById('emailAdresInput');
+    const email = input.value.trim();
+    if (!email || !email.includes('@')) { showNotification(toEnglishChars('Gecerli bir e-posta adresi girin!'), 'error'); return; }
+    localStorage.setItem('harcirahEmail', email);
+    showNotification(toEnglishChars('E-posta adresi kaydedildi!'));
+    closeModal('settingsModal');
+}
+
+function loadEmailAdres() {
+    const saved = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
+    const input = document.getElementById('emailAdresInput');
+    if (input) input.value = saved;
+}
+
+// ==================== WHATSAPP ====================
 function shareWhatsApp() {
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
     let msg = toEnglishChars('*HARCIRAH LISTESI - ' + currentWeekNum + '. HAFTA*\n\n');
     msg += toEnglishChars('Toplam: ') + total.toLocaleString('tr-TR') + ' TL\n';
     msg += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
-    entries.slice(0,5).forEach((e,i) => {
-        msg += (i+1)+'. '+formatDate(e.date)+' - '+toEnglishChars(e.container)+' - '+(e.amount||0).toLocaleString('tr-TR')+' TL\n';
-    });
+    entries.slice(0,5).forEach((e,i) => { msg += (i+1)+'. '+formatDate(e.date)+' - '+toEnglishChars(e.container)+' - '+(e.amount||0).toLocaleString('tr-TR')+' TL\n'; });
     if (entries.length > 5) msg += '... ve '+(entries.length-5)+toEnglishChars(' kayit daha\n');
     msg += '\n📎 PDF dosyasi indirildi.';
     window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
@@ -1187,9 +1787,7 @@ function formatTimeInput(input) {
         if (parseInt(h)>23) h='23';
         if (m && parseInt(m)>59) m='59';
         input.value = v.length>=3 ? h+':'+m : h;
-    } else {
-        input.value = v;
-    }
+    } else { input.value = v; }
 }
 
 function calculateWaitingTime() {
@@ -1198,25 +1796,14 @@ function calculateWaitingTime() {
     const bSonuc=document.getElementById('beklemeSonuc'), bText=document.getElementById('beklemeText'), tText=document.getElementById('toplamSaatText');
     if (!gT||!gS||!cT||!cS) return;
     const gs=formatTimeString(gS.value), cs=formatTimeString(cS.value);
-    if (!gT.value||!gs||!cT.value||!cs) {
-        if(bSonuc) bSonuc.style.display='none';
-        currentWaitingCount=0; currentWaitingPrice=0; updateTotalPrice(); return;
-    }
+    if (!gT.value||!gs||!cT.value||!cs) { if(bSonuc) bSonuc.style.display='none'; currentWaitingCount=0; currentWaitingPrice=0; updateTotalPrice(); return; }
     const gi=new Date(gT.value+'T'+String(gs.hours).padStart(2,'0')+':'+String(gs.minutes).padStart(2,'0')+':00');
     const ci=new Date(cT.value+'T'+String(cs.hours).padStart(2,'0')+':'+String(cs.minutes).padStart(2,'0')+':00');
     const diff=ci-gi;
-    if (diff<0) {
-        if(bText){bText.textContent='⚠️ Çıkış girişten önce';bText.style.color='#ef4444';}
-        if(tText) tText.textContent='Lütfen tarihleri kontrol edin';
-        if(bSonuc) bSonuc.style.display='block';
-        currentWaitingCount=0; currentWaitingPrice=0; updateTotalPrice(); return;
-    }
+    if (diff<0) { if(bText){bText.textContent='⚠️ Çıkış girişten önce';bText.style.color='#ef4444';} if(tText) tText.textContent='Lütfen tarihleri kontrol edin'; if(bSonuc) bSonuc.style.display='block'; currentWaitingCount=0; currentWaitingPrice=0; updateTotalPrice(); return; }
     const diffH=diff/(1000*60*60), diffD=Math.floor(diffH/24), remH=Math.floor(diffH%24);
     currentWaitingCount=Math.floor(diffH/7); currentWaitingPrice=currentWaitingCount*350;
-    if(bText){
-        bText.textContent=(currentWaitingCount===0?'Bekleme yok':currentWaitingCount+' bekleme')+' = ₺'+currentWaitingPrice.toLocaleString('tr-TR');
-        bText.style.color=currentWaitingCount>0?'#10b981':'#666';
-    }
+    if(bText){ bText.textContent=(currentWaitingCount===0?'Bekleme yok':currentWaitingCount+' bekleme')+' = ₺'+currentWaitingPrice.toLocaleString('tr-TR'); bText.style.color=currentWaitingCount>0?'#10b981':'#64748b'; }
     if(tText) tText.textContent='Toplam: '+(diffD>0?diffD+' gün ':'')+remH+' saat ('+Math.floor(diffH)+' saat)';
     if(bSonuc) bSonuc.style.display='block';
     updateTotalPrice();
@@ -1239,6 +1826,7 @@ function openTarife() { document.getElementById('tarifeModal').classList.add('ac
 function openSettings() {
     document.getElementById('entryCount').textContent = entries.length;
     document.getElementById('weekCount').textContent = weeks.length;
+    loadEmailAdres();
     document.getElementById('settingsModal').classList.add('active');
 }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
@@ -1249,30 +1837,17 @@ function useCalculatedPrice() {
     if(ai) ai.value=currentCalculatedPrice;
     closeModal('hesapModal');
     showNotification('Fiyat formaya aktarıldı: ₺'+currentCalculatedPrice.toLocaleString('tr-TR'));
-
     const di=document.getElementById('description');
     const ak=document.getElementById('aktarmaCheck'), at=document.getElementById('atsCheck');
     const ekler=[];
     if(ak&&ak.checked) ekler.push('aktarma');
     if(currentWaitingCount>0) ekler.push(currentWaitingCount+' bekleme');
     if(at&&at.checked) ekler.push('ATS');
-    if(ekler.length>0&&di) {
-        const cur=di.value ? di.value+', ' : '';
-        const str=ekler.join(', ');
-        if(!di.value.includes(str)) di.value=cur+str;
-    }
-
+    if(ekler.length>0&&di) { const cur=di.value?di.value+', ':''; const str=ekler.join(', '); if(!di.value.includes(str)) di.value=cur+str; }
     const gT=document.getElementById('girisTarih'),gS=document.getElementById('girisSaat');
     const cT=document.getElementById('cikisTarih'),cS=document.getElementById('cikisSaat');
     const ti=document.getElementById('time');
-    if(gT&&gS&&cT&&cS&&ti) {
-        const gs=formatTimeString(gS.value), cs=formatTimeString(cS.value);
-        if(gs&&cs) {
-            const fd=d=>{const[y,m,day]=d.split('-');return day+'.'+m+'.'+y;};
-            const ft=t=>String(t.hours).padStart(2,'0')+':'+String(t.minutes).padStart(2,'0');
-            ti.value=fd(gT.value)+' '+ft(gs)+' - '+fd(cT.value)+' '+ft(cs);
-        }
-    }
+    if(gT&&gS&&cT&&cS&&ti) { const gs=formatTimeString(gS.value), cs=formatTimeString(cS.value); if(gs&&cs) { const fd=d=>{const[y,m,day]=d.split('-');return day+'.'+m+'.'+y;}; const ft=t=>String(t.hours).padStart(2,'0')+':'+String(t.minutes).padStart(2,'0'); ti.value=fd(gT.value)+' '+ft(gs)+' - '+fd(cT.value)+' '+ft(cs); } }
 }
 
 // ==================== NOTIFICATION ====================
@@ -1280,14 +1855,14 @@ function showNotification(text, type='success') {
     const n=document.getElementById('notification'), t=document.getElementById('notificationText');
     if(!n||!t) return;
     t.textContent=text;
-    n.style.background=type==='error'?'#f44336':'#4caf50';
+    n.style.background=type==='error'?'#ef4444':'#22c55e';
     n.classList.add('show');
-    setTimeout(()=>n.classList.remove('show'),2500);
+    setTimeout(()=>n.classList.remove('show'),2800);
 }
 
-// ==================== CLOSE MODAL ON BACKDROP ====================
+// ==================== BACKDROP CLOSE ====================
 document.querySelectorAll('.modal').forEach(m => {
-    m.addEventListener('click', function(e){if(e.target===this) this.classList.remove('active');});
+    m.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
 });
 
 // ==================== PWA ====================
@@ -1296,9 +1871,7 @@ const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
 
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', ()=>{
-        navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    });
+    window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
 }
 
 window.addEventListener('beforeinstallprompt', e=>{
@@ -1318,13 +1891,7 @@ function showInstallBanner() { const b=document.getElementById('pwaBanner'); if(
 function dismissInstallBanner() { const b=document.getElementById('pwaBanner'); if(b) b.classList.remove('show'); sessionStorage.setItem('pwa_dismissed','1'); }
 function installPWA() {
     if(isIOS){ dismissInstallBanner(); document.getElementById('iosInstallModal').classList.add('active'); }
-    else if(deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(r=>{
-            if(r.outcome==='accepted') showNotification('Uygulama ana ekrana eklendi! 🎉');
-            deferredPrompt=null; dismissInstallBanner();
-        });
-    }
+    else if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r=>{ if(r.outcome==='accepted') showNotification('Uygulama ana ekrana eklendi! 🎉'); deferredPrompt=null; dismissInstallBanner(); }); }
 }
 function triggerInstallFromSettings() {
     closeModal('settingsModal');
