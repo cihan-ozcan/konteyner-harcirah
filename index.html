@@ -2290,7 +2290,7 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
 // ==================== EMAIL ====================
 function shareEmail() {
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
-    const savedEmail = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
+    const savedEmail = localStorage.getItem('harcirahEmail') || 'Erişime Kapalı Özellik';
     const soforIsim = toEnglishChars(localStorage.getItem('soforIsim') || '');
     const dorsePlaka = toEnglishChars(localStorage.getItem('dorsePlaka') || '');
     let subject = toEnglishChars('Harcirah Listesi - ') + new Date().toLocaleDateString('tr-TR');
