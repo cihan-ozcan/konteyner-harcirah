@@ -28,9 +28,9 @@
             --brand-light: #e0f2fe;
             --brand-xlight: #f0f9ff;
 
-            --accent-purple: #7c3aed;
-            --accent-purple-dark: #5b21b6;
-            --accent-purple-light: #f3f0ff;
+            --accent-purple: #0284c7;
+            --accent-purple-dark: #0369a1;
+            --accent-purple-light: #e0f2fe;
 
             --bg-page: linear-gradient(160deg, #0f172a 0%, #0369a1 45%, #0ea5e9 100%);
             --bg-card: #ffffff;
@@ -70,7 +70,7 @@
             --badge-bg: rgba(255,255,255,0.18);
             --badge-color: #ffffff;
 
-            --week-banner-bg: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            --week-banner-bg: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
 
             --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
         }
@@ -109,7 +109,7 @@
 
             --badge-bg: rgba(255,255,255,0.12);
 
-            --accent-purple-light: #1e1535;
+            --accent-purple-light: #0c1e2e;
         }
 
         /* ═══════════════════════════════════════════════
@@ -654,7 +654,7 @@
             text-align: left;
         }
         .archive-header {
-            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
             color: white;
             padding: 22px;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -676,8 +676,8 @@
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
         }
-        .archive-stat-num { font-size: 1.25rem; font-weight: 800; color: #7c3aed; }
-        [data-theme="dark"] .archive-stat-num { color: #a78bfa; }
+        .archive-stat-num { font-size: 1.25rem; font-weight: 800; color: var(--brand-dark); }
+        [data-theme="dark"] .archive-stat-num { color: #38bdf8; }
         .archive-stat-lbl { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
 
         .archive-list { padding: 14px 20px; }
@@ -691,8 +691,8 @@
             cursor: pointer;
             transition: all var(--transition);
         }
-        .archive-week-item:hover { background: var(--accent-purple-light); transform: translateX(3px); border-color: #7c3aed; }
-        [data-theme="dark"] .archive-week-item:hover { border-color: #a78bfa; }
+        .archive-week-item:hover { background: var(--brand-xlight); transform: translateX(3px); border-color: var(--brand-primary); }
+        [data-theme="dark"] .archive-week-item:hover { border-color: #38bdf8; }
         .archive-week-item.current-week { border-color: var(--brand-primary); background: var(--brand-xlight); }
         [data-theme="dark"] .archive-week-item.current-week { background: rgba(14,165,233,0.08); }
         .week-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -700,8 +700,8 @@
         .week-item-name { font-weight: 700; font-size: 0.92rem; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
         .current-tag { font-size: 0.68rem; background: var(--brand-primary); color: white; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700; }
         .week-item-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .week-item-amount { font-weight: 800; font-size: 0.98rem; color: #7c3aed; white-space: nowrap; }
-        [data-theme="dark"] .week-item-amount { color: #a78bfa; }
+        .week-item-amount { font-weight: 800; font-size: 0.98rem; color: var(--brand-dark); white-space: nowrap; }
+        [data-theme="dark"] .week-item-amount { color: #38bdf8; }
         .week-item-arrow { color: var(--text-muted); font-size: 1.2rem; }
         .archive-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); position: sticky; bottom: 0; background: var(--modal-bg); }
 
@@ -754,7 +754,7 @@
         }
         .btn-redownload {
             flex: 2; padding: 13px;
-            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-dark) 100%);
             color: white; border: none; border-radius: var(--radius-md);
             font-size: 0.92rem; font-weight: 700; font-family: inherit; cursor: pointer;
         }
@@ -772,7 +772,7 @@
             max-width: 400px; text-align: center; padding: 0; overflow: hidden;
         }
         .cw-header {
-            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
             padding: 24px 20px; color: white;
         }
         .cw-header h3 { font-size: 1.25rem; margin-bottom: 5px; font-weight: 800; }
@@ -783,16 +783,16 @@
             border-radius: var(--radius-md);
             padding: 16px;
             margin-bottom: 16px;
-            border: 1.5px solid rgba(124,58,237,0.2);
+            border: 1.5px solid rgba(14,165,233,0.2);
         }
         .cw-sum-row {
             display: flex; justify-content: space-between; align-items: center;
             padding: 7px 0; font-size: 0.88rem;
-            border-bottom: 1px solid rgba(124,58,237,0.1);
+            border-bottom: 1px solid rgba(14,165,233,0.1);
             color: var(--text-primary);
         }
-        .cw-sum-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; color: #7c3aed; }
-        [data-theme="dark"] .cw-sum-row:last-child { color: #a78bfa; }
+        .cw-sum-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; color: var(--brand-dark); }
+        [data-theme="dark"] .cw-sum-row:last-child { color: #38bdf8; }
         .cw-sum-label { color: var(--text-secondary); }
         .cw-footer { padding: 0 20px 20px; }
 
@@ -1433,8 +1433,8 @@
             <div class="cw-summary" id="cwSummary"></div>
         </div>
         <div class="cw-footer">
-            <button class="btn-modal" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;" onclick="closeWeekWithPDF()">📄 PDF Al ve Arşivle</button>
-            <button class="btn-modal" style="background:var(--accent-purple-light);color:#5b21b6;" onclick="closeWeekOnly()">Sadece Arşivle (PDF'siz)</button>
+            <button class="btn-modal" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;" onclick="closeWeekWithPDF()">📄 PDF Al ve Arşivle</button>
+            <button class="btn-modal" style="background:var(--brand-xlight);color:var(--brand-dark);" onclick="closeWeekOnly()">Sadece Arşivle (PDF'siz)</button>
             <button class="btn-modal btn-close" onclick="closeModal('closeWeekModal')">İptal</button>
         </div>
     </div>
@@ -1589,7 +1589,7 @@
                 <div style="font-size:0.72rem;color:var(--text-muted);font-weight:600;margin-top:2px;">aktif kayıt</div>
             </div>
             <div style="background:var(--bg-card-2);border-radius:var(--radius-md);padding:14px;text-align:center;border:1px solid var(--border-color);">
-                <div style="font-size:1.5rem;font-weight:800;color:#7c3aed;" id="weekCount">0</div>
+                <div style="font-size:1.5rem;font-weight:800;color:var(--brand-primary);" id="weekCount">0</div>
                 <div style="font-size:0.72rem;color:var(--text-muted);font-weight:600;margin-top:2px;">arşivlenmiş hafta</div>
             </div>
         </div>
@@ -1699,7 +1699,7 @@ let currentWaitingCount = 0;
 let currentWaitingPrice = 0;
 let viewingWeekIndex = -1;
 
-const WEEK_COLORS = ['#0284c7','#7c3aed','#0F6E56','#c2410c','#0369a1','#6d28d9','#065f46','#9a3412'];
+const WEEK_COLORS = ['#0284c7','#0ea5e9','#0F6E56','#c2410c','#0369a1','#0369a1','#065f46','#9a3412'];
 
 // ==================== DARK MODE ====================
 function initDarkMode() {
@@ -2007,7 +2007,7 @@ function openWeekDetail(weekArrayIndex) {
                 <span class="wde-date" style="color:${color};">${formatDate(e.date)}</span>
                 <span class="wde-amount" style="color:${color};">${(e.amount||0).toLocaleString('tr-TR')}₺</span>
             </div>
-            <div class="wde-detail">${e.container} · ${e.factory} → ${e.location}${e.pickup?' · <span style="color:#7c3aed;">'+e.pickup+'</span>':''}</div>
+            <div class="wde-detail">${e.container} · ${e.factory} → ${e.location}${e.pickup?' · <span style="color:var(--brand-primary);">'+e.pickup+'</span>':''}</div>
             ${e.description?`<div class="wde-detail" style="margin-top:2px;color:var(--text-muted);">${e.description}</div>`:''}
         </div>`).join('')}
     `;
