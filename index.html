@@ -1490,20 +1490,22 @@
         </div>
         <div class="form-group">
             <label for="container">Konteyner No</label>
-            <div style="position:relative; display:flex; align-items:center; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
                 <input type="text" id="container" placeholder="Örn: YMMU752015-1" required style="flex:1;">
-                <button type="button" id="ocrBtn" onclick="triggerOCR()" title="Fotoğraftan oku" style="
+                <!-- label trick: tıklanınca file input açar, JS gerekmez -->
+                <label for="ocrFileInput" id="ocrBtn" title="Fotoğraftan oku" style="
                     flex-shrink:0;
                     width:48px; height:48px;
                     background:linear-gradient(135deg,#0ea5e9,#0284c7);
-                    border:none; border-radius:var(--radius-md);
+                    border-radius:var(--radius-md);
                     display:flex; align-items:center; justify-content:center;
                     cursor:pointer; transition:all var(--transition);
                     box-shadow:0 4px 12px rgba(14,165,233,0.35);
                 ">
                     <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-                </button>
-                <input type="file" id="ocrFileInput" accept="image/*" capture="environment" style="display:none" onchange="handleOCRFile(event)">
+                </label>
+                <!-- capture YOK → hem galeri hem kamera seçeneği çıkar -->
+                <input type="file" id="ocrFileInput" accept="image/*" style="display:none" onchange="handleOCRFile(event)">
             </div>
             <!-- OCR durum mesajı -->
             <div id="ocrStatus" style="display:none; margin-top:6px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600;"></div>
@@ -2932,10 +2934,6 @@ if(isStandalone) { const b=document.getElementById('settingsInstallBtn'); if(b) 
 <!-- Tesseract.js OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
-function triggerOCR() {
-    document.getElementById('ocrFileInput').click();
-}
-
 async function handleOCRFile(event) {
     const file = event.target.files[0];
     if (!file) return;
