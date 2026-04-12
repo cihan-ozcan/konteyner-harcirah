@@ -677,6 +677,7 @@
             border: 1px solid var(--border-color);
         }
         .archive-stat-num { font-size: 1.25rem; font-weight: 800; color: #7c3aed; }
+        [data-theme="dark"] .archive-stat-num { color: #a78bfa; }
         .archive-stat-lbl { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
 
         .archive-list { padding: 14px 20px; }
@@ -691,6 +692,7 @@
             transition: all var(--transition);
         }
         .archive-week-item:hover { background: var(--accent-purple-light); transform: translateX(3px); border-color: #7c3aed; }
+        [data-theme="dark"] .archive-week-item:hover { border-color: #a78bfa; }
         .archive-week-item.current-week { border-color: var(--brand-primary); background: var(--brand-xlight); }
         [data-theme="dark"] .archive-week-item.current-week { background: rgba(14,165,233,0.08); }
         .week-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -699,6 +701,7 @@
         .current-tag { font-size: 0.68rem; background: var(--brand-primary); color: white; padding: 2px 8px; border-radius: var(--radius-full); font-weight: 700; }
         .week-item-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .week-item-amount { font-weight: 800; font-size: 0.98rem; color: #7c3aed; white-space: nowrap; }
+        [data-theme="dark"] .week-item-amount { color: #a78bfa; }
         .week-item-arrow { color: var(--text-muted); font-size: 1.2rem; }
         .archive-footer { padding: 14px 20px; border-top: 1px solid var(--border-color); position: sticky; bottom: 0; background: var(--modal-bg); }
 
@@ -789,6 +792,7 @@
             color: var(--text-primary);
         }
         .cw-sum-row:last-child { border-bottom: none; font-weight: 700; font-size: 1rem; color: #7c3aed; }
+        [data-theme="dark"] .cw-sum-row:last-child { color: #a78bfa; }
         .cw-sum-label { color: var(--text-secondary); }
         .cw-footer { padding: 0 20px 20px; }
 
@@ -1192,6 +1196,46 @@
         [data-theme="dark"] .factory-chip.sure { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.4); color: #93c5fd; }
         [data-theme="dark"] .factory-chip.bekleme { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4); color: #fcd34d; }
 
+        [data-theme="dark"] .email-settings-box { background: rgba(14,165,233,0.08) !important; border-color: rgba(14,165,233,0.3) !important; }
+        [data-theme="dark"] .email-label { color: #38bdf8 !important; }
+
+        /* Bekleme dark mode */
+        [data-theme="dark"] .bekleme-box { background: rgba(14,165,233,0.1) !important; border-color: rgba(14,165,233,0.3) !important; }
+        [data-theme="dark"] .bekleme-title { color: #38bdf8 !important; }
+        [data-theme="dark"] .bekleme-label { color: #38bdf8 !important; }
+        [data-theme="dark"] .bekleme-hint { color: #38bdf8 !important; }
+        [data-theme="dark"] .bekleme-input { background: var(--bg-input) !important; border-color: rgba(14,165,233,0.4) !important; color: var(--text-primary) !important; }
+        [data-theme="dark"] .bekleme-sonuc-box { background: var(--bg-card) !important; border-color: rgba(14,165,233,0.3) !important; }
+
+        /* Şoför Bilgi Modal */
+        .sofor-modal-overlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .sofor-modal-overlay.hidden { display: none; }
+        .sofor-modal-box {
+            background: var(--modal-bg);
+            border-radius: var(--radius-xl);
+            padding: 0;
+            width: 100%; max-width: 380px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: modalIn 0.25s ease-out both;
+        }
+        .sofor-modal-header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            padding: 24px 22px 20px;
+            color: white; text-align: center;
+        }
+        .sofor-modal-header h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 6px; }
+        .sofor-modal-header p { font-size: 0.82rem; opacity: 0.85; }
+        .sofor-modal-body { padding: 22px; }
+        .sofor-modal-footer { padding: 0 22px 22px; }
+
         @keyframes slideUp {
             from { opacity:0; transform: translateY(30px); }
             to { opacity:1; transform: translateY(0); }
@@ -1481,30 +1525,30 @@
                     <option value="750" data-name="Tuzla-Gebze ve civarı">Tuzla-Gebze (₺750)</option>
                 </select>
             </div>
-            <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1.5px solid #7dd3fc;border-radius:var(--radius-md);padding:15px;margin-bottom:15px;">
-                <label style="display:block;font-size:.8rem;color:#0369a1;margin-bottom:10px;font-weight:700;">⏱️ Bekleme Süresi Hesapla</label>
+            <div style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);border:1.5px solid #7dd3fc;border-radius:var(--radius-md);padding:15px;margin-bottom:15px;" class="bekleme-box">
+                <label style="display:block;font-size:.8rem;color:#0369a1;margin-bottom:10px;font-weight:700;" class="bekleme-title">⏱️ Bekleme Süresi Hesapla</label>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
                     <div>
-                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Giriş Tarihi</label>
-                        <input type="date" id="girisTarih" onchange="calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;" class="bekleme-label">Giriş Tarihi</label>
+                        <input type="date" id="girisTarih" onchange="calculateWaitingTime()" class="bekleme-input">
                     </div>
                     <div>
-                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Giriş Saati (24h)</label>
-                        <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;text-align:center;font-family:monospace;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;" class="bekleme-label">Giriş Saati (24h)</label>
+                        <input type="text" id="girisSaat" placeholder="16:30" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" class="bekleme-input" style="text-align:center;font-family:monospace;">
                     </div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
                     <div>
-                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Çıkış Tarihi</label>
-                        <input type="date" id="cikisTarih" onchange="calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;" class="bekleme-label">Çıkış Tarihi</label>
+                        <input type="date" id="cikisTarih" onchange="calculateWaitingTime()" class="bekleme-input">
                     </div>
                     <div>
-                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;">Çıkış Saati (24h)</label>
-                        <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" style="background:white;border-color:#7dd3fc;color:#0f172a;text-align:center;font-family:monospace;">
+                        <label style="font-size:.72rem;color:#0369a1;margin-bottom:3px;display:block;font-weight:600;" class="bekleme-label">Çıkış Saati (24h)</label>
+                        <input type="text" id="cikisSaat" placeholder="08:15" maxlength="5" oninput="formatTimeInput(this);calculateWaitingTime()" class="bekleme-input" style="text-align:center;font-family:monospace;">
                     </div>
                 </div>
-                <div style="font-size:.73rem;color:#0284c7;margin-bottom:10px;text-align:center;font-weight:500;">💡 Format: SS:DD (örnek: 09:00, 16:30)</div>
-                <div id="beklemeSonuc" style="background:white;padding:12px;border-radius:var(--radius-sm);text-align:center;display:none;border:1.5px solid #7dd3fc;">
+                <div style="font-size:.73rem;color:#0284c7;margin-bottom:10px;text-align:center;font-weight:500;" class="bekleme-hint">💡 Format: SS:DD (örnek: 09:00, 16:30)</div>
+                <div id="beklemeSonuc" style="background:white;padding:12px;border-radius:var(--radius-sm);text-align:center;display:none;border:1.5px solid #7dd3fc;" class="bekleme-sonuc-box">
                     <div style="font-size:1.05rem;font-weight:800;color:#0284c7;" id="beklemeText">0 bekleme</div>
                     <div style="font-size:.78rem;color:#64748b;margin-top:4px;" id="toplamSaatText">Toplam: 0 saat</div>
                 </div>
@@ -1551,10 +1595,24 @@
         </div>
 
         <!-- E-posta Ayarı -->
-        <div style="background:var(--brand-xlight);border:1.5px solid #bae6fd;border-radius:var(--radius-md);padding:16px;margin-bottom:14px;">
-            <label style="display:block;font-size:0.78rem;color:#0369a1;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;">✉️ E-posta Adresi</label>
+        <div style="background:var(--brand-xlight);border:1.5px solid #bae6fd;border-radius:var(--radius-md);padding:16px;margin-bottom:14px;" class="email-settings-box">
+            <label style="display:block;font-size:0.78rem;color:#0369a1;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px;" class="email-label">✉️ E-posta Adresi</label>
             <input type="email" id="emailAdresInput" placeholder="ornek@sirket.com.tr" style="margin-bottom:10px;">
             <button onclick="saveEmailAdres()" style="width:100%;padding:11px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;border-radius:var(--radius-md);font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;">💾 Kaydet</button>
+        </div>
+
+        <!-- Şoför Bilgileri -->
+        <div style="background:var(--bg-card-2);border:1.5px solid var(--border-color);border-radius:var(--radius-md);padding:16px;margin-bottom:14px;">
+            <label style="display:block;font-size:0.78rem;color:var(--brand-primary);font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px;">🚛 Şoför & Araç Bilgileri</label>
+            <div class="form-group" style="margin-bottom:10px;">
+                <label>Şoför Adı Soyadı</label>
+                <input type="text" id="settingsSoforIsim" placeholder="Ad Soyad" autocomplete="name">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Çekici / Dorse Plakası</label>
+                <input type="text" id="settingsDorsePlaka" placeholder="34 AB 1234" autocomplete="off" style="text-transform:uppercase;">
+            </div>
+            <button onclick="saveSoforBilgi(false)" style="width:100%;padding:11px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;border-radius:var(--radius-md);font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;">💾 Kaydet</button>
         </div>
 
         <!-- Karanlık Mod -->
@@ -1602,6 +1660,30 @@
         <div class="ios-step"><div class="ios-step-num">2</div><p>Açılan menüden <strong>"Ana Ekrana Ekle"</strong> seçeneğini bul ve dokun</p></div>
         <div class="ios-step"><div class="ios-step-num">3</div><p>Sağ üstteki <strong>"Ekle"</strong> butonuna dokun — uygulama ana ekrana eklendi! 🎉</p></div>
         <button class="btn-ios-kapat" onclick="closeIosModal()">Anladım, Teşekkürler</button>
+    </div>
+</div>
+
+<!-- Şoför Bilgi Modal (İlk Açılış) -->
+<div class="sofor-modal-overlay hidden" id="soforModal">
+    <div class="sofor-modal-box">
+        <div class="sofor-modal-header">
+            <div style="font-size:2.2rem;margin-bottom:8px;">🚛</div>
+            <h3>Hoş Geldiniz!</h3>
+            <p>Uygulamayı kullanmaya başlamak için bilgilerinizi girin</p>
+        </div>
+        <div class="sofor-modal-body">
+            <div class="form-group">
+                <label>Şoför Adı Soyadı</label>
+                <input type="text" id="soforIsimInput" placeholder="Ad Soyad" autocomplete="name">
+            </div>
+            <div class="form-group">
+                <label>Çekici / Dorse Plakası</label>
+                <input type="text" id="dorsePlakasInput" placeholder="34 AB 1234" autocomplete="off" style="text-transform:uppercase;">
+            </div>
+        </div>
+        <div class="sofor-modal-footer">
+            <button onclick="saveSoforBilgi(true)" style="width:100%;padding:15px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;border-radius:var(--radius-md);font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(14,165,233,0.35);">🚀 Başla</button>
+        </div>
     </div>
 </div>
 
@@ -1668,10 +1750,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     loadAll();
     loadEmailAdres();
+    loadSoforBilgi();
     loadFactoryState();
     const d = document.getElementById('date');
     if (d) d.valueAsDate = new Date();
     updateWeekBadge();
+    // İlk açılışta şoför bilgisi yoksa modal aç
+    const soforIsim = localStorage.getItem('soforIsim') || '';
+    const dorsePlaka = localStorage.getItem('dorsePlaka') || '';
+    if (!soforIsim || !dorsePlaka) {
+        document.getElementById('soforModal').classList.remove('hidden');
+    }
 });
 
 function loadAll() {
@@ -1955,6 +2044,8 @@ async function generatePDF(isWeekClose = false, callback = null) {
 async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const soforIsim = toEnglishChars(localStorage.getItem('soforIsim') || '');
+    const dorsePlaka = toEnglishChars(localStorage.getItem('dorsePlaka') || '');
     doc.setFont('helvetica','normal');
     doc.setFontSize(18); doc.setTextColor(14,165,233);
     doc.text(toEnglishChars('HARCIRAH LISTESI - ' + weekNum + '. HAFTA'), 105, 18, {align:'center'});
@@ -1962,7 +2053,15 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
     doc.setFontSize(9); doc.setTextColor(100);
     const dateLabel = startDate && endDate ? formatDate(startDate) + ' - ' + formatDate(endDate) : '';
     doc.text(toEnglishChars('Olusturma Tarihi: ') + new Date().toLocaleDateString('tr-TR') + (dateLabel ? '   |   Hafta: ' + dateLabel : ''), 105, 30, {align:'center'});
-    let y = 43;
+    // Sofor ve plaka bilgisi
+    if (soforIsim || dorsePlaka) {
+        doc.setFontSize(9); doc.setTextColor(50); doc.setFont('helvetica','bold');
+        let infoLine = '';
+        if (soforIsim) infoLine += 'Sofor: ' + soforIsim;
+        if (dorsePlaka) infoLine += (infoLine ? '   |   ' : '') + 'Plaka: ' + dorsePlaka;
+        doc.text(infoLine, 105, 37, {align:'center'});
+    }
+    let y = (soforIsim || dorsePlaka) ? 49 : 43;
     doc.setFillColor(14,165,233); doc.rect(10,y-6,190,10,'F');
     doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont('helvetica','bold');
     const cols = {tarih:12,konteyner:30,fabrika:56,donus:86,alim:114,saat:138,aciklama:158,tutar:195};
@@ -1999,8 +2098,14 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
 function shareEmail() {
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
     const savedEmail = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
+    const soforIsim = toEnglishChars(localStorage.getItem('soforIsim') || '');
+    const dorsePlaka = toEnglishChars(localStorage.getItem('dorsePlaka') || '');
     let subject = toEnglishChars('Harcirah Listesi - ' + currentWeekNum + '. Hafta - ') + new Date().toLocaleDateString('tr-TR');
+    if (soforIsim) subject += toEnglishChars(' - ' + soforIsim);
     let body = toEnglishChars('HARCIRAH LISTESI - ' + currentWeekNum + '. HAFTA\n\n');
+    if (soforIsim) body += toEnglishChars('Sofor: ') + soforIsim + '\n';
+    if (dorsePlaka) body += toEnglishChars('Arac Plakasi: ') + dorsePlaka + '\n';
+    if (soforIsim || dorsePlaka) body += '\n';
     body += toEnglishChars('Toplam Tutar: ') + total.toLocaleString('tr-TR') + ' TL\n';
     body += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
     body += toEnglishChars('Detaylar:\n') + '-----------------------------\n';
@@ -2026,6 +2131,38 @@ function loadEmailAdres() {
     const saved = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
     const input = document.getElementById('emailAdresInput');
     if (input) input.value = saved;
+}
+
+// ==================== SOFOR BILGILERI ====================
+function saveSoforBilgi(fromModal) {
+    var isim, plaka;
+    if (fromModal) {
+        isim = (document.getElementById("soforIsimInput").value || "").trim();
+        plaka = (document.getElementById("dorsePlakasInput").value || "").trim().toUpperCase();
+    } else {
+        isim = (document.getElementById("settingsSoforIsim").value || "").trim();
+        plaka = (document.getElementById("settingsDorsePlaka").value || "").trim().toUpperCase();
+    }
+    if (!isim) { showNotification("Lutfen sofor adini girin", "error"); return; }
+    if (!plaka) { showNotification("Lutfen dorse plakasini girin", "error"); return; }
+    localStorage.setItem("soforIsim", isim);
+    localStorage.setItem("dorsePlaka", plaka);
+    if (fromModal) {
+        document.getElementById("soforModal").classList.add("hidden");
+        showNotification("Bilgiler kaydedildi! Hos geldiniz");
+    } else {
+        showNotification("Sofor bilgileri guncellendi!");
+        closeModal("settingsModal");
+    }
+}
+
+function loadSoforBilgi() {
+    var isim = localStorage.getItem("soforIsim") || "";
+    var plaka = localStorage.getItem("dorsePlaka") || "";
+    var si = document.getElementById("settingsSoforIsim");
+    var sp = document.getElementById("settingsDorsePlaka");
+    if (si) si.value = isim;
+    if (sp) sp.value = plaka;
 }
 
 // ==================== WHATSAPP ====================
@@ -2110,6 +2247,7 @@ function openSettings() {
     document.getElementById('entryCount').textContent = entries.length;
     document.getElementById('weekCount').textContent = weeks.length;
     loadEmailAdres();
+    loadSoforBilgi();
     document.getElementById('settingsModal').classList.add('active');
 }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
