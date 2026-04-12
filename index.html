@@ -1386,25 +1386,6 @@
             flex-shrink: 0; box-shadow: 0 0 4px #4ade80;
         }
 
-        /* Bildirim izin butonu */
-        .notif-permission-bar {
-            background: rgba(234,179,8,0.15);
-            border-bottom: 1px solid rgba(234,179,8,0.25);
-            padding: 8px 14px;
-            display: flex; align-items: center; gap: 10px;
-            flex-shrink: 0;
-        }
-        .notif-permission-bar p {
-            flex: 1; font-size: 0.74rem; color: rgba(255,255,255,0.8); margin: 0; line-height: 1.4;
-        }
-        .notif-permission-btn {
-            background: #eab308; color: #0f172a;
-            border: none; border-radius: 20px; padding: 6px 14px;
-            font-size: 0.74rem; font-weight: 700; cursor: pointer;
-            font-family: inherit; flex-shrink: 0; white-space: nowrap;
-        }
-        .notif-permission-bar.hidden { display: none; }
-
         .telsiz-messages {
             flex: 1; overflow-y: auto; padding: 14px 12px;
             display: flex; flex-direction: column; gap: 10px;
@@ -3453,13 +3434,6 @@ function cropIptal() {
         <button class="telsiz-close" onclick="closeTelsizcisi()">✕</button>
     </div>
 
-    <!-- Bildirim izin çubuğu -->
-    <div class="notif-permission-bar hidden" id="notifPermissionBar">
-        <p>🔔 Yeni mesajlarda bildirim almak ister misin?</p>
-        <button class="notif-permission-btn" onclick="bildirimIzniAl()">Bildirimleri Aç</button>
-        <button onclick="document.getElementById('notifPermissionBar').classList.add('hidden')" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>
-    </div>
-
     <!-- Çevrimiçi şoförler -->
     <div class="telsiz-online-panel" id="telsizOnlinePanel">
         <div class="telsiz-online-label">🟢 Çevrimiçi Şoförler</div>
@@ -3654,116 +3628,10 @@ function telsizBaglan() {
     bildirimIzniKontrol();
 }
 
-// ==================== FCM WEB PUSH BİLDİRİM ====================
-var VAPID_KEY = 'BFKRdLc3LhAdj_QxtlOEMbe1pDQM5gAHunuSDrqbQdy_Gxy5GF14wic4PEU8-jcJkSEIbNZ64sGUOwLroxykH1Q';
-var fcmMessaging = null;
-var fcmToken = null;
-
-// FCM başlat — Firebase Messaging SDK'yı yükle
-function fcmBaslat() {
-    // firebase-messaging-sw.js service worker'ı kaydet
-    if (!('serviceWorker' in navigator)) return;
-    navigator.serviceWorker.register('firebase-messaging-sw.js')
-        .then(function(reg) {
-            // Firebase Messaging nesnesi oluştur
-            if (typeof firebase.messaging !== 'function') return;
-            fcmMessaging = firebase.messaging();
-
-            // Ön planda gelen mesajları yakala
-            fcmMessaging.onMessage(function(payload) {
-                // Uygulama açıkken sadece telsiz kapalıysa bildirim göster
-                if (!telsizAcik && payload.notification) {
-                    yerelBildirimGoster(
-                        payload.notification.title || 'Şoför Telsizi',
-                        payload.notification.body || ''
-                    );
-                }
-            });
-        })
-        .catch(function(err) { console.warn('SW kayıt hatası:', err); });
-}
-
-function bildirimIzniKontrol() {
-    if (!('Notification' in window)) return;
-    var bar = document.getElementById('notifPermissionBar');
-    if (!bar) return;
-    if (Notification.permission === 'default') {
-        bar.classList.remove('hidden');
-    } else {
-        bar.classList.add('hidden');
-        // İzin verilmişse FCM token al
-        if (Notification.permission === 'granted') fcmTokenAl();
-    }
-}
-
-function bildirimIzniAl() {
-    if (!('Notification' in window)) {
-        showNotification('Bu tarayıcı bildirimleri desteklemiyor', 'error');
-        return;
-    }
-    Notification.requestPermission().then(function(perm) {
-        var bar = document.getElementById('notifPermissionBar');
-        if (bar) bar.classList.add('hidden');
-        if (perm === 'granted') {
-            showNotification('🔔 Bildirimler açıldı!');
-            fcmTokenAl();
-        } else {
-            showNotification('Bildirimler reddedildi', 'error');
-        }
-    });
-}
-
-function fcmTokenAl() {
-    if (!fcmMessaging) { fcmBaslat(); return; }
-    fcmMessaging.getToken({ vapidKey: VAPID_KEY })
-        .then(function(token) {
-            if (!token) return;
-            fcmToken = token;
-            // Token'ı Firebase'e kaydet — kendi şoför adıyla ilişkilendir
-            var benimIsim = localStorage.getItem('soforIsim') || 'Sofor';
-            var safeKey = benimIsim.replace(/[^a-zA-Z0-9]/g, '_');
-            telsizDB.ref('fcmTokens/' + safeKey).set({
-                token: token,
-                isim: benimIsim,
-                zaman: Date.now()
-            });
-        })
-        .catch(function(err) { console.warn('FCM token hatası:', err); });
-}
-
-// Ön planda bildirim göster (uygulama açıkken arka plan sekme)
-function yerelBildirimGoster(baslik, metin) {
-    if (!('Notification' in window) || Notification.permission !== 'granted') return;
-    try {
-        var n = new Notification(baslik, {
-            body: metin,
-            icon: 'icon-192.png',
-            badge: 'icon-72.png',
-            tag: 'telsiz-mesaj',
-            renotify: true
-        });
-        n.onclick = function() { window.focus(); openTelsizcisi(); n.close(); };
-        setTimeout(function() { n.close(); }, 6000);
-    } catch(e) {}
-}
-
-// Yeni mesaj geldiğinde çağrılır (realtime listener'dan)
-function yerelBildirimGonder(kimden, metin) {
-    // Sayfa tamamen gizliyse (arka plan/telefon kilitli) SW + FCM halleder
-    // Sayfa görünür ama telsiz kapalıysa biz gösteririz
-    if (document.hidden) return; // SW halleder
-    if (telsizAcik) return;      // Telsiz açık, gerek yok
-    yerelBildirimGoster('📻 ' + kimden, metin || '(Yeni mesaj)');
-}
-
-// Sayfa yüklenince FCM'i başlat
-window.addEventListener('load', function() {
-    // Firebase Messaging SDK'yı dinamik yükle
-    var script = document.createElement('script');
-    script.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js';
-    script.onload = function() { fcmBaslat(); };
-    document.head.appendChild(script);
-});
+// ==================== BİLDİRİM (basit — sadece badge) ====================
+function bildirimIzniKontrol() { /* bildirim özelliği devre dışı */ }
+function bildirimIzniAl() { /* bildirim özelliği devre dışı */ }
+function yerelBildirimGonder(kimden, metin) { /* bildirim özelliği devre dışı */ }
 
 var DUZENLE_SURE = 3 * 60 * 1000; // 3 dakika
 
