@@ -2750,7 +2750,7 @@ function saveEmailAdres() {
 }
 
 function loadEmailAdres() {
-    const saved = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
+    const saved = localStorage.getItem('harcirahEmail') || '';
     const input = document.getElementById('emailAdresInput');
     if (input) input.value = saved;
 }
