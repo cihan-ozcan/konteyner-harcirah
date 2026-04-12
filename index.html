@@ -1323,6 +1323,132 @@
         .selam-emoji { font-size: 1.05rem; line-height: 1; }
         .selam-text { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.88); letter-spacing: 0.1px; }
         .selam-text strong { color: #ffffff; font-weight: 800; }
+
+        /* ═══════════════════════════════════════════════
+           ŞOFÖR TELSİZİ CHAT
+        ═══════════════════════════════════════════════ */
+        #telsizcisiModal {
+            position: fixed; inset: 0; z-index: 500;
+            background: var(--bg-page);
+            display: none; flex-direction: column;
+        }
+        #telsizcisiModal.open { display: flex; }
+        .telsiz-header {
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            padding: 16px 16px 14px;
+            display: flex; align-items: center; gap: 12px;
+            flex-shrink: 0;
+            padding-top: max(16px, env(safe-area-inset-top));
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        .telsiz-header-info { flex: 1; }
+        .telsiz-header-title { color: white; font-size: 1rem; font-weight: 800; }
+        .telsiz-header-sub { color: rgba(255,255,255,0.7); font-size: 0.72rem; font-weight: 500; margin-top: 1px; }
+        .telsiz-close {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.2rem; flex-shrink: 0;
+        }
+        .telsiz-online-dot {
+            width: 8px; height: 8px; background: #4ade80;
+            border-radius: 50%; display: inline-block; margin-right: 5px;
+            box-shadow: 0 0 6px #4ade80;
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        .telsiz-messages {
+            flex: 1; overflow-y: auto; padding: 14px 12px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .telsiz-messages::-webkit-scrollbar { width: 3px; }
+        .telsiz-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+        .msg-wrap { display: flex; flex-direction: column; max-width: 82%; }
+        .msg-wrap.mine { align-self: flex-end; align-items: flex-end; }
+        .msg-wrap.theirs { align-self: flex-start; align-items: flex-start; }
+        .msg-sender {
+            font-size: 0.67rem; font-weight: 700;
+            color: rgba(255,255,255,0.55); margin-bottom: 3px;
+            padding: 0 6px;
+        }
+        .msg-bubble {
+            padding: 9px 13px;
+            border-radius: 18px;
+            font-size: 0.88rem; font-weight: 500;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+        .msg-wrap.mine .msg-bubble {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .msg-wrap.theirs .msg-bubble {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-bottom-left-radius: 5px;
+            box-shadow: var(--shadow-sm);
+        }
+        .msg-time {
+            font-size: 0.62rem; color: rgba(255,255,255,0.38);
+            margin-top: 3px; padding: 0 6px;
+        }
+        .msg-system {
+            align-self: center; text-align: center;
+            font-size: 0.68rem; color: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            padding: 4px 12px; border-radius: 20px;
+            font-weight: 500;
+        }
+        .telsiz-templates {
+            display: flex; gap: 7px; padding: 8px 12px 4px;
+            overflow-x: auto; flex-shrink: 0;
+        }
+        .telsiz-templates::-webkit-scrollbar { display: none; }
+        .tpl-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.85); border-radius: 20px;
+            padding: 5px 12px; font-size: 0.74rem; font-weight: 600;
+            white-space: nowrap; cursor: pointer; font-family: inherit;
+            transition: all 0.18s; flex-shrink: 0;
+        }
+        .tpl-btn:hover { background: rgba(255,255,255,0.2); }
+        .tpl-btn:active { transform: scale(0.95); }
+        .telsiz-input-area {
+            padding: 10px 12px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            display: flex; gap: 9px; align-items: flex-end;
+            background: rgba(0,0,0,0.15);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .telsiz-input {
+            flex: 1; background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: 22px; padding: 11px 16px;
+            font-size: 0.92rem; color: var(--text-primary);
+            font-family: inherit; resize: none; max-height: 120px;
+            line-height: 1.4; transition: border-color 0.18s;
+        }
+        .telsiz-input:focus { outline: none; border-color: #0ea5e9; }
+        .telsiz-send {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border: none; cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 10px rgba(14,165,233,0.4);
+            transition: all 0.18s;
+        }
+        .telsiz-send:hover { transform: scale(1.08); }
+        .telsiz-send:active { transform: scale(0.94); }
+        .telsiz-send svg { width: 20px; height: 20px; fill: white; }
+        .telsiz-empty {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+            opacity: 0.45;
+        }
+        .telsiz-empty svg { width: 48px; height: 48px; fill: white; }
+        .telsiz-empty p { color: white; font-size: 0.82rem; font-weight: 500; text-align: center; }
     </style>
 <base target="_blank">
 </head>
@@ -1355,6 +1481,11 @@
     <!-- Header -->
     <div class="header">
         <div class="header-buttons">
+            <button class="header-btn" onclick="openTelsizcisi()" id="telsizcisiBtn" title="Şoför Telsizi">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/><path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+                <span class="header-btn-label">Şoför Telsizi</span>
+                <span id="telsizciBadge" style="display:none;position:absolute;top:6px;right:6px;width:9px;height:9px;background:#ef4444;border-radius:50%;border:1.5px solid rgba(255,255,255,0.8);"></span>
+            </button>
             <button class="header-btn" onclick="openArchive()" title="Hafta Arşivi">
                 <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.35C18 2.53 15.84.5 13.27.5c-1.3 0-2.49.55-3.27 1.44C9.22 1.05 8.03.5 6.73.5 4.16.5 2 2.53 2 4.65c0 .47.11.91.18 1.35H0v14c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM9.96 2.8a1.93 1.93 0 0 1 1.37-.51c1.09 0 2.18.82 2.18 1.87C13.5 5.43 12.68 6 12 6H8.5c.04-1.05.56-2.36 1.46-3.2zM6.73 2.79C7.38 2.79 7.98 3 8.5 3.35V6H6.73C5.64 6 4.5 5.16 4.5 4.15c0-1.06 1.09-1.36 2.23-1.36zm-.73 16V12h14v6H6z"/></svg>
                 <span class="header-btn-label">Hafta Arşivi</span>
@@ -2525,7 +2656,7 @@ function saveEmailAdres() {
 }
 
 function loadEmailAdres() {
-    const saved = localStorage.getItem('harcirahEmail') || '';
+    const saved = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
     const input = document.getElementById('emailAdresInput');
     if (input) input.value = saved;
 }
@@ -3201,6 +3332,229 @@ function cropIptal() {
     document.getElementById('cropModal').style.display = 'none';
 }
 </script>
+<!-- ═══ ŞOFÖR TELSİZİ MODAL ═══ -->
+<div id="telsizcisiModal">
+    <div class="telsiz-header">
+        <div style="width:42px;height:42px;background:rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+        <div class="telsiz-header-info">
+            <div class="telsiz-header-title">🚛 Şoför Telsizi</div>
+            <div class="telsiz-header-sub"><span class="telsiz-online-dot"></span><span id="telsizOnlineText">Bağlanıyor...</span></div>
+        </div>
+        <button class="telsiz-close" onclick="closeTelsizcisi()">✕</button>
+    </div>
+
+    <div class="telsiz-messages" id="telsizMessages">
+        <div class="telsiz-empty" id="telsizEmpty">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+            <p>Henüz mesaj yok.<br>İlk mesajı sen gönder!</p>
+        </div>
+    </div>
+
+    <div class="telsiz-templates">
+        <button class="tpl-btn" onclick="sendTemplate('🏭 Fabrikadayım, sıra bekliyorum')">🏭 Fabrikadayım</button>
+        <button class="tpl-btn" onclick="sendTemplate('📦 Yükleme tamamlandı, yola çıkıyorum')">📦 Yükleme tamam</button>
+        <button class="tpl-btn" onclick="sendTemplate('🚪 Kapıda bekliyorum, içeri almıyorlar')">🚪 Kapıda bekliyorum</button>
+        <button class="tpl-btn" onclick="sendTemplate('⛽ Yakıt molası veriyorum')">⛽ Yakıt molası</button>
+        <button class="tpl-btn" onclick="sendTemplate('🚦 Trafik çok yoğun, geç kalacağım')">🚦 Trafik yoğun</button>
+        <button class="tpl-btn" onclick="sendTemplate('✅ Teslimat tamam, boşaltıldım')">✅ Teslimat tamam</button>
+        <button class="tpl-btn" onclick="sendTemplate('☕ Mola veriyorum, 15 dk')">☕ Mola</button>
+        <button class="tpl-btn" onclick="sendTemplate('🆘 Yardım lazım, sorun var!')">🆘 Yardım lazım</button>
+    </div>
+
+    <div class="telsiz-input-area">
+        <textarea class="telsiz-input" id="telsizInput" placeholder="Mesaj yaz..." rows="1"
+            onkeydown="telsizKeydown(event)" oninput="autoResizeTextarea(this)"></textarea>
+        <button class="telsiz-send" onclick="sendTelsizMessage()">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+    </div>
+</div>
+
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// ==================== FIREBASE CONFIG ====================
+const firebaseConfig = {
+    apiKey: "AIzaSyCB0E5sAY1dzLRlWphro9LybPg8NGyei4s",
+    authDomain: "harcirah-telsizcisi.firebaseapp.com",
+    databaseURL: "https://harcirah-telsizcisi-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "harcirah-telsizcisi",
+    storageBucket: "harcirah-telsizcisi.firebasestorage.app",
+    messagingSenderId: "907518170666",
+    appId: "1:907518170666:web:d92be647b375618afdd553"
+};
+firebase.initializeApp(firebaseConfig);
+const telsizDB = firebase.database();
+
+// ==================== TELSİZCİ ====================
+var telsizListener = null;
+var telsizAcik = false;
+var sonGorülenMesajKey = null;
+var okunmamisSayisi = 0;
+
+function openTelsizcisi() {
+    var soforIsim = localStorage.getItem('soforIsim') || '';
+    if (!soforIsim) {
+        showNotification('Önce şoför bilgilerini gir!', 'error');
+        return;
+    }
+    document.getElementById('telsizcisiModal').classList.add('open');
+    telsizAcik = true;
+    okunmamisSayisi = 0;
+    guncelleBadge();
+    telsizBaglan();
+    setTimeout(() => document.getElementById('telsizInput').focus(), 300);
+}
+
+function closeTelsizcisi() {
+    document.getElementById('telsizcisiModal').classList.remove('open');
+    telsizAcik = false;
+}
+
+function telsizBaglan() {
+    var messagesRef = telsizDB.ref('mesajlar');
+    document.getElementById('telsizOnlineText').textContent = 'Bağlanıyor...';
+
+    // Son 50 mesajı dinle
+    if (telsizListener) messagesRef.off('child_added', telsizListener);
+
+    var container = document.getElementById('telsizMessages');
+    container.innerHTML = '<div class="telsiz-empty" id="telsizEmpty"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg><p>Henüz mesaj yok.<br>İlk mesajı sen gönder!</p></div>';
+
+    var query = messagesRef.orderByChild('zaman').limitToLast(80);
+    var ilkYukleme = true;
+    var mesajBuffer = [];
+
+    query.once('value', function(snap) {
+        snap.forEach(function(child) {
+            mesajBuffer.push({ key: child.key, val: child.val() });
+        });
+        mesajBuffer.forEach(function(m) { mesajEkle(m.key, m.val, false); });
+        scrollToBottom();
+        ilkYukleme = false;
+        document.getElementById('telsizOnlineText').textContent = 'Canlı • Tüm şoförler';
+    });
+
+    telsizListener = messagesRef.limitToLast(1).on('child_added', function(snap) {
+        if (!ilkYukleme) {
+            mesajEkle(snap.key, snap.val(), true);
+            if (!telsizAcik) {
+                okunmamisSayisi++;
+                guncelleBadge();
+            }
+        }
+    });
+
+    // Online sayısını göster (basit presence)
+    var benimId = localStorage.getItem('soforIsim') + '_' + Date.now();
+    var onlineRef = telsizDB.ref('online/' + benimId.replace(/[^a-zA-Z0-9_]/g, '_'));
+    onlineRef.set({ isim: localStorage.getItem('soforIsim'), zaman: Date.now() });
+    onlineRef.onDisconnect().remove();
+
+    telsizDB.ref('online').on('value', function(snap) {
+        var sayi = snap.numChildren();
+        var txt = sayi > 1 ? sayi + ' şoför çevrimiçi' : 'Canlı • Bekliyor';
+        document.getElementById('telsizOnlineText').textContent = txt;
+    });
+}
+
+function mesajEkle(key, data, animate) {
+    var empty = document.getElementById('telsizEmpty');
+    if (empty) empty.remove();
+
+    var benimIsim = localStorage.getItem('soforIsim') || '';
+    var benim = data.isim === benimIsim;
+    var container = document.getElementById('telsizMessages');
+
+    if (data.tip === 'sistem') {
+        var sDiv = document.createElement('div');
+        sDiv.className = 'msg-system';
+        sDiv.textContent = data.metin;
+        container.appendChild(sDiv);
+        return;
+    }
+
+    var wrap = document.createElement('div');
+    wrap.className = 'msg-wrap ' + (benim ? 'mine' : 'theirs');
+    if (animate) wrap.style.animation = 'cardIn 0.25s ease-out';
+
+    var zaman = data.zaman ? new Date(data.zaman) : new Date();
+    var saatStr = zaman.getHours().toString().padStart(2,'0') + ':' + zaman.getMinutes().toString().padStart(2,'0');
+
+    if (!benim) {
+        var sender = document.createElement('div');
+        sender.className = 'msg-sender';
+        sender.textContent = data.isim || 'Şoför';
+        wrap.appendChild(sender);
+    }
+
+    var bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = data.metin;
+    wrap.appendChild(bubble);
+
+    var timeEl = document.createElement('div');
+    timeEl.className = 'msg-time';
+    timeEl.textContent = saatStr;
+    wrap.appendChild(timeEl);
+
+    container.appendChild(wrap);
+    if (animate) scrollToBottom();
+}
+
+function scrollToBottom() {
+    var c = document.getElementById('telsizMessages');
+    c.scrollTop = c.scrollHeight;
+}
+
+function sendTelsizMessage() {
+    var input = document.getElementById('telsizInput');
+    var metin = input.value.trim();
+    if (!metin) return;
+    var isim = localStorage.getItem('soforIsim') || 'Şoför';
+    telsizDB.ref('mesajlar').push({
+        isim: isim,
+        metin: metin,
+        zaman: Date.now(),
+        tip: 'mesaj'
+    });
+    input.value = '';
+    input.style.height = 'auto';
+}
+
+function sendTemplate(metin) {
+    var isim = localStorage.getItem('soforIsim') || 'Şoför';
+    telsizDB.ref('mesajlar').push({
+        isim: isim,
+        metin: metin,
+        zaman: Date.now(),
+        tip: 'mesaj'
+    });
+}
+
+function telsizKeydown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendTelsizMessage();
+    }
+}
+
+function autoResizeTextarea(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function guncelleBadge() {
+    var badge = document.getElementById('telsizciBadge');
+    if (!badge) return;
+    badge.style.display = okunmamisSayisi > 0 ? 'block' : 'none';
+}
+</script>
+
 <!-- Analytics -->
 <script async src="https://plausible.io/js/pa-Z_X3ayUwGzf2_kHeRNLPl.js"></script>
 <script>
