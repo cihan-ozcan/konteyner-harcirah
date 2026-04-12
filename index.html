@@ -1449,6 +1449,64 @@
         }
         .telsiz-empty svg { width: 48px; height: 48px; fill: white; }
         .telsiz-empty p { color: white; font-size: 0.82rem; font-weight: 500; text-align: center; }
+
+        /* Mesaj Context Menu */
+        .msg-ctx-menu {
+            position: fixed; z-index: 9999;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            overflow: hidden;
+            animation: ctxIn 0.15s ease-out;
+            min-width: 180px;
+        }
+        @keyframes ctxIn { from{opacity:0;transform:scale(0.92)} to{opacity:1;transform:scale(1)} }
+        .msg-ctx-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 13px 18px; font-size: 0.88rem; font-weight: 600;
+            color: #f1f5f9; cursor: pointer; transition: background 0.15s;
+            font-family: inherit;
+            border: none; background: none; width: 100%; text-align: left;
+        }
+        .msg-ctx-item:hover { background: rgba(255,255,255,0.08); }
+        .msg-ctx-item.danger { color: #f87171; }
+        .msg-ctx-item span.ctx-icon { font-size: 1rem; }
+        .msg-ctx-timer {
+            font-size: 0.68rem; color: rgba(255,255,255,0.35);
+            padding: 6px 18px 10px; border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .msg-ctx-overlay {
+            position: fixed; inset: 0; z-index: 9998;
+        }
+
+        /* Düzenleme modu */
+        .msg-bubble.editing {
+            background: transparent !important;
+            padding: 0 !important;
+        }
+        .msg-edit-input {
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 8px 12px;
+            color: white; font-size: 0.88rem;
+            font-family: inherit; width: 100%;
+            resize: none; line-height: 1.4;
+        }
+        .msg-edit-input:focus { outline: none; }
+        .msg-edit-actions {
+            display: flex; gap: 6px; margin-top: 5px;
+        }
+        .msg-edit-btn {
+            padding: 5px 14px; border-radius: 20px; border: none;
+            font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            font-family: inherit;
+        }
+        .msg-edit-btn.confirm { background: #0ea5e9; color: white; }
+        .msg-edit-btn.cancel { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+        .msg-deleted { color: rgba(255,255,255,0.35) !important; font-style: italic; font-size: 0.8rem !important; }
+        [data-theme="dark"] .msg-deleted { color: rgba(255,255,255,0.25) !important; }
     </style>
 <base target="_blank">
 </head>
@@ -3439,6 +3497,11 @@ function telsizBaglan() {
         document.getElementById('telsizOnlineText').textContent = 'Canlı • Tüm şoförler';
     });
 
+    // Düzenleme/silme dinle
+    messagesRef.on('child_changed', function(snap) {
+        mesajEkle(snap.key, snap.val(), false);
+    });
+
     telsizListener = messagesRef.limitToLast(1).on('child_added', function(snap) {
         if (!ilkYukleme) {
             mesajEkle(snap.key, snap.val(), true);
@@ -3462,6 +3525,8 @@ function telsizBaglan() {
     });
 }
 
+var DUZENLE_SURE = 3 * 60 * 1000; // 3 dakika
+
 function mesajEkle(key, data, animate) {
     var empty = document.getElementById('telsizEmpty');
     if (empty) empty.remove();
@@ -3469,6 +3534,24 @@ function mesajEkle(key, data, animate) {
     var benimIsim = localStorage.getItem('soforIsim') || '';
     var benim = data.isim === benimIsim;
     var container = document.getElementById('telsizMessages');
+
+    // Silinmiş mesajı güncelle (zaten DOM'da varsa)
+    var mevcutWrap = container.querySelector('[data-key="' + key + '"]');
+    if (mevcutWrap) {
+        var mevcutBubble = mevcutWrap.querySelector('.msg-bubble');
+        if (mevcutBubble) {
+            if (data.silindi) {
+                mevcutBubble.textContent = '🚫 Bu mesaj geri alındı';
+                mevcutBubble.classList.add('msg-deleted');
+            } else {
+                mevcutBubble.textContent = data.metin;
+                mevcutBubble.classList.remove('msg-deleted');
+                var timeEl2 = mevcutWrap.querySelector('.msg-time');
+                if (timeEl2 && data.duzenlendi) timeEl2.textContent = timeEl2.textContent.split(' ✏️')[0] + ' ✏️';
+            }
+        }
+        return;
+    }
 
     if (data.tip === 'sistem') {
         var sDiv = document.createElement('div');
@@ -3480,6 +3563,9 @@ function mesajEkle(key, data, animate) {
 
     var wrap = document.createElement('div');
     wrap.className = 'msg-wrap ' + (benim ? 'mine' : 'theirs');
+    wrap.setAttribute('data-key', key);
+    wrap.setAttribute('data-zaman', data.zaman || Date.now());
+    wrap.setAttribute('data-isim', data.isim || '');
     if (animate) wrap.style.animation = 'cardIn 0.25s ease-out';
 
     var zaman = data.zaman ? new Date(data.zaman) : new Date();
@@ -3494,16 +3580,177 @@ function mesajEkle(key, data, animate) {
 
     var bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
-    bubble.textContent = data.metin;
+    if (data.silindi) {
+        bubble.textContent = '🚫 Bu mesaj geri alındı';
+        bubble.classList.add('msg-deleted');
+    } else {
+        bubble.textContent = data.metin;
+    }
     wrap.appendChild(bubble);
 
     var timeEl = document.createElement('div');
     timeEl.className = 'msg-time';
-    timeEl.textContent = saatStr;
+    timeEl.textContent = saatStr + (data.duzenlendi ? ' ✏️' : '');
     wrap.appendChild(timeEl);
+
+    // Uzun bas — sadece kendi mesajı ve silinmemiş
+    if (benim && !data.silindi) {
+        var pressTimer;
+        var startX, startY;
+
+        function longPressBasla(e) {
+            startX = e.touches ? e.touches[0].clientX : e.clientX;
+            startY = e.touches ? e.touches[0].clientY : e.clientY;
+            pressTimer = setTimeout(function() {
+                var rect = bubble.getBoundingClientRect();
+                mesajMenuAc(key, data, rect, bubble, wrap, timeEl);
+            }, 500);
+        }
+        function longPressBirak(e) {
+            clearTimeout(pressTimer);
+        }
+        function longPressHareket(e) {
+            var x = e.touches ? e.touches[0].clientX : e.clientX;
+            var y = e.touches ? e.touches[0].clientY : e.clientY;
+            if (Math.abs(x - startX) > 8 || Math.abs(y - startY) > 8) clearTimeout(pressTimer);
+        }
+        bubble.addEventListener('touchstart', longPressBasla, {passive:true});
+        bubble.addEventListener('touchend', longPressBirak);
+        bubble.addEventListener('touchmove', longPressHareket, {passive:true});
+        bubble.addEventListener('mousedown', longPressBasla);
+        bubble.addEventListener('mouseup', longPressBirak);
+        bubble.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    }
 
     container.appendChild(wrap);
     if (animate) scrollToBottom();
+}
+
+function mesajMenuAc(key, data, rect, bubble, wrap, timeEl) {
+    // Overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'msg-ctx-overlay';
+    document.body.appendChild(overlay);
+
+    var menu = document.createElement('div');
+    menu.className = 'msg-ctx-menu';
+
+    var gecenSure = Date.now() - (data.zaman || 0);
+    var kalanMs = DUZENLE_SURE - gecenSure;
+    var kalanSn = Math.max(0, Math.floor(kalanMs / 1000));
+    var sureDoldu = kalanMs <= 0;
+
+    function kapat() { menu.remove(); overlay.remove(); }
+    overlay.addEventListener('click', kapat);
+
+    if (!sureDoldu) {
+        // Düzenle butonu
+        var btnDuzenle = document.createElement('button');
+        btnDuzenle.className = 'msg-ctx-item';
+        btnDuzenle.innerHTML = '<span class="ctx-icon">✏️</span> Düzenle';
+        btnDuzenle.onclick = function() {
+            kapat();
+            mesajDuzenle(key, data, bubble, timeEl);
+        };
+        menu.appendChild(btnDuzenle);
+
+        // Geri al butonu
+        var btnGeriAl = document.createElement('button');
+        btnGeriAl.className = 'msg-ctx-item danger';
+        btnGeriAl.innerHTML = '<span class="ctx-icon">🗑️</span> Geri Al (Sil)';
+        btnGeriAl.onclick = function() {
+            kapat();
+            mesajGeriAl(key, bubble);
+        };
+        menu.appendChild(btnGeriAl);
+
+        // Kalan süre
+        var timerDiv = document.createElement('div');
+        timerDiv.className = 'msg-ctx-timer';
+        timerDiv.textContent = '⏱ ' + Math.floor(kalanSn / 60) + ':' + (kalanSn % 60).toString().padStart(2,'0') + ' içinde değiştirilebilir';
+        menu.appendChild(timerDiv);
+
+        // Canlı sayaç
+        var sayacInterval = setInterval(function() {
+            var kalan = Math.max(0, Math.floor((DUZENLE_SURE - (Date.now() - data.zaman)) / 1000));
+            timerDiv.textContent = '⏱ ' + Math.floor(kalan / 60) + ':' + (kalan % 60).toString().padStart(2,'0') + ' içinde değiştirilebilir';
+            if (kalan <= 0) { clearInterval(sayacInterval); kapat(); }
+        }, 1000);
+        overlay.addEventListener('click', function() { clearInterval(sayacInterval); });
+    } else {
+        var sureDolduDiv = document.createElement('div');
+        sureDolduDiv.className = 'msg-ctx-timer';
+        sureDolduDiv.style.padding = '14px 18px';
+        sureDolduDiv.textContent = '⏱ Düzenleme süresi doldu';
+        menu.appendChild(sureDolduDiv);
+    }
+
+    // Pozisyon
+    var top = rect.top + window.scrollY - 10;
+    var left = rect.right + window.scrollX - 190;
+    if (left < 10) left = 10;
+    if (top + 120 > window.innerHeight) top = rect.top + window.scrollY - 120;
+    menu.style.top = top + 'px';
+    menu.style.left = left + 'px';
+    document.body.appendChild(menu);
+}
+
+function mesajDuzenle(key, data, bubble, timeEl) {
+    bubble.classList.add('editing');
+    var eskiMetin = data.metin;
+
+    var editInput = document.createElement('textarea');
+    editInput.className = 'msg-edit-input';
+    editInput.value = eskiMetin;
+    editInput.rows = 2;
+
+    var actions = document.createElement('div');
+    actions.className = 'msg-edit-actions';
+
+    var btnOnayla = document.createElement('button');
+    btnOnayla.className = 'msg-edit-btn confirm';
+    btnOnayla.textContent = '✓ Kaydet';
+    btnOnayla.onclick = function() {
+        var yeniMetin = editInput.value.trim();
+        if (!yeniMetin || yeniMetin === eskiMetin) { iptalEt(); return; }
+        telsizDB.ref('mesajlar/' + key).update({
+            metin: yeniMetin,
+            duzenlendi: true,
+            duzenlemZaman: Date.now()
+        });
+        bubble.textContent = yeniMetin;
+        bubble.classList.remove('editing');
+        timeEl.textContent = timeEl.textContent.split(' ✏️')[0] + ' ✏️';
+        actions.remove();
+        editInput.remove();
+        data.metin = yeniMetin;
+    };
+
+    var btnIptal = document.createElement('button');
+    btnIptal.className = 'msg-edit-btn cancel';
+    btnIptal.textContent = 'İptal';
+    function iptalEt() {
+        bubble.classList.remove('editing');
+        bubble.textContent = eskiMetin;
+        editInput.remove();
+        actions.remove();
+    }
+    btnIptal.onclick = iptalEt;
+
+    actions.appendChild(btnOnayla);
+    actions.appendChild(btnIptal);
+
+    bubble.textContent = '';
+    bubble.appendChild(editInput);
+    bubble.parentNode.appendChild(actions);
+    editInput.focus();
+    editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+}
+
+function mesajGeriAl(key, bubble) {
+    telsizDB.ref('mesajlar/' + key).update({ silindi: true, metin: '' });
+    bubble.textContent = '🚫 Bu mesaj geri alındı';
+    bubble.classList.add('msg-deleted');
 }
 
 function scrollToBottom() {
