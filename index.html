@@ -2936,6 +2936,75 @@ if(isStandalone) { const b=document.getElementById('settingsInstallBtn'); if(b) 
 <script>
 var ocrCalisiyor = false;
 
+// Görüntüyü canvas ile ön işle: büyüt, kontrast artır, gri yap
+function gorselOnIsle(file) {
+    return new Promise(function(resolve) {
+        var img = new Image();
+        var url = URL.createObjectURL(file);
+        img.onload = function() {
+            var canvas = document.createElement('canvas');
+            // 2x büyüt, max 2400px
+            var scale = Math.min(2, 2400 / Math.max(img.width, img.height));
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            var ctx = canvas.getContext('2d');
+            // Gri arka plan
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            // Kontrast & parlaklık filtresi
+            ctx.filter = 'contrast(1.6) brightness(1.1) grayscale(1)';
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            canvas.toBlob(function(blob) { resolve(blob); }, 'image/png');
+        };
+        img.src = url;
+    });
+}
+
+// Konteyner no regex — tüm varyasyonları yakala
+function konteynerBul(text) {
+    // Ham metni temizle
+    var temiz = text.toUpperCase()
+        .replace(/0/g, '0').replace(/O(?=\d)/g, '0')  // O → 0 (rakam önünde)
+        .replace(/I(?=\d)/g, '1').replace(/L(?=\d)/g, '1') // I,L → 1
+        .replace(/[^A-Z0-9\n]/g, ' ');
+
+    // Strateji 1: 4 harf + boşluk + 6-7 rakam (aynı satırda)
+    var m = temiz.match(/([A-Z]{4})\s{0,3}(\d{6,7})/);
+    if (m) {
+        var prefix = m[1];
+        var nums = m[2];
+        // Kontrol hanesi: hemen arkasında veya bir sonraki satırda tek rakam
+        var sonrasi = temiz.slice(temiz.indexOf(m[0]) + m[0].length, temiz.indexOf(m[0]) + m[0].length + 10);
+        var kontrol = sonrasi.match(/^\s*(\d)\b/);
+        if (kontrol) {
+            return prefix + nums + '-' + kontrol[1];
+        }
+        return prefix + nums;
+    }
+
+    // Strateji 2: 4 harf + rakamlar farklı satırlarda olabilir
+    var satirlar = temiz.split('\n').map(function(s){ return s.trim(); });
+    var harfSatir = -1, rakamSatir = -1, harfMatch, rakamMatch;
+    for (var i = 0; i < satirlar.length; i++) {
+        var hm = satirlar[i].match(/\b([A-Z]{4})\b/);
+        if (hm && !harfMatch) { harfMatch = hm; harfSatir = i; }
+        var rm = satirlar[i].match(/\b(\d{6,7})\b/);
+        if (rm && !rakamMatch) { rakamMatch = rm; rakamSatir = i; }
+    }
+    if (harfMatch && rakamMatch) {
+        var no = harfMatch[1] + rakamMatch[1];
+        // Kontrol hanesi bir sonraki satırda mı?
+        if (rakamSatir + 1 < satirlar.length) {
+            var sonrakiSatir = satirlar[rakamSatir + 1].match(/^(\d)\b/);
+            if (sonrakiSatir) no += '-' + sonrakiSatir[1];
+        }
+        return no;
+    }
+    return null;
+}
+
 async function handleOCRFile(event) {
     if (ocrCalisiyor) return;
     var file = event.target.files[0];
@@ -2953,18 +3022,21 @@ async function handleOCRFile(event) {
     status.style.background = '#f1f5f9';
     status.style.color = '#475569';
     status.style.border = '1px solid #e2e8f0';
-    status.textContent = '🔍 Fotoğraf yükleniyor...';
+    status.textContent = '🔍 Görsel işleniyor...';
 
     try {
-        var result = await Tesseract.recognize(file, 'eng');
+        // Görüntüyü ön işle
+        var islenmis = await gorselOnIsle(file);
+        status.textContent = '🔍 Metin okunuyor...';
+
+        var result = await Tesseract.recognize(islenmis, 'eng', {
+            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n'
+        });
         var text = result.data.text;
-        var temiz = text.toUpperCase().replace(/[^A-Z0-9\s\-]/g, ' ');
 
-        // Konteyner no formatı: XXXX + 6-7 rakam (örn: CAXU966979 veya ARKU 254059)
-        var match = temiz.match(/([A-Z]{4})\s*(\d{6,7})/);
+        var konteynerNo = konteynerBul(text);
 
-        if (match) {
-            var konteynerNo = match[1] + match[2];
+        if (konteynerNo) {
             input.value = konteynerNo;
             input.focus();
             status.style.background = '#f0fdf4';
@@ -2972,11 +3044,11 @@ async function handleOCRFile(event) {
             status.style.border = '1px solid #bbf7d0';
             status.textContent = '✅ Bulundu: ' + konteynerNo;
         } else {
-            var ozet = text.replace(/\n/g, ' ').substring(0, 80).trim();
+            var ozet = text.replace(/\s+/g, ' ').substring(0, 100).trim();
             status.style.background = '#fef9c3';
             status.style.color = '#854d0e';
             status.style.border = '1px solid #fde68a';
-            status.textContent = '⚠️ Numara okunamadı. OCR gördü: "' + ozet + '"';
+            status.textContent = '⚠️ Numara bulunamadı. Lütfen manuel girin. OCR: "' + ozet + '"';
         }
     } catch (err) {
         status.style.background = '#fef2f2';
