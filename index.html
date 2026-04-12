@@ -1346,8 +1346,7 @@
             <label for="container">Konteyner No</label>
             <div style="display:flex; align-items:center; gap:8px;">
                 <input type="text" id="container" placeholder="Örn: YMMU752015-1" required style="flex:1;">
-                <!-- label trick: tıklanınca file input açar, JS gerekmez -->
-                <label for="ocrFileInput" id="ocrBtn" title="Fotoğraftan oku" style="
+                <label for="ocrFileInput" title="Fotoğraftan seç" style="
                     flex-shrink:0;
                     width:48px; height:48px;
                     background:linear-gradient(135deg,#0ea5e9,#0284c7);
@@ -1358,11 +1357,8 @@
                 ">
                     <svg viewBox="0 0 24 24" fill="white" width="22" height="22"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
                 </label>
-                <!-- capture YOK → hem galeri hem kamera seçeneği çıkar -->
-                <input type="file" id="ocrFileInput" accept="image/*" style="display:none" onchange="handleOCRFile(event)">
+                <input type="file" id="ocrFileInput" accept="image/*" style="display:none" onchange="cropFotoAc(event)">
             </div>
-            <!-- OCR durum mesajı -->
-            <div id="ocrStatus" style="display:none; margin-top:6px; padding:8px 12px; border-radius:var(--radius-sm); font-size:0.82rem; font-weight:600;"></div>
         </div>
         <div class="row">
             <div class="form-group">
@@ -2774,135 +2770,165 @@ function triggerInstallFromSettings() {
 function closeIosModal() { document.getElementById('iosInstallModal').classList.remove('active'); }
 if(isStandalone) { const b=document.getElementById('settingsInstallBtn'); if(b) b.style.display='none'; }
 </script>
-<!-- Tesseract.js OCR -->
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<!-- Fotoğraf Kırpma Modalı -->
+<div id="cropModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.92); flex-direction:column;">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; flex-shrink:0;">
+        <span style="color:white; font-size:0.9rem; font-weight:600;">Konteyner numarasını seç</span>
+        <button onclick="cropIptal()" style="background:rgba(255,255,255,0.15); border:none; color:white; width:36px; height:36px; border-radius:50%; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <p style="color:rgba(255,255,255,0.6); font-size:0.78rem; text-align:center; margin:0 0 10px; padding:0 16px; flex-shrink:0;">Parmağınızı sürükleyerek numara bölgesini seçin</p>
+
+    <!-- Canvas alanı -->
+    <div style="flex:1; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center;">
+        <canvas id="cropCanvas" style="max-width:100%; max-height:100%; touch-action:none; cursor:crosshair;"></canvas>
+        <!-- Seçim kutusu -->
+        <div id="selBox" style="display:none; position:absolute; border:2px solid #0ea5e9; background:rgba(14,165,233,0.12); pointer-events:none; box-shadow:0 0 0 9999px rgba(0,0,0,0.45);"></div>
+    </div>
+
+    <!-- Önizleme + onay -->
+    <div id="cropOnay" style="display:none; flex-direction:column; align-items:center; gap:12px; padding:16px; flex-shrink:0; background:rgba(0,0,0,0.5);">
+        <img id="cropPreview" style="max-height:80px; border-radius:8px; border:2px solid #0ea5e9;">
+        <p style="color:rgba(255,255,255,0.7); font-size:0.78rem; margin:0;">Bu bölgede konteyner numarası var mı?</p>
+        <div style="display:flex; gap:10px;">
+            <button onclick="cropTekrar()" style="padding:10px 20px; border-radius:8px; border:1.5px solid rgba(255,255,255,0.3); background:transparent; color:white; font-size:0.88rem; cursor:pointer;">Tekrar seç</button>
+            <button onclick="cropKaydet()" style="padding:10px 24px; border-radius:8px; border:none; background:#0ea5e9; color:white; font-size:0.88rem; font-weight:700; cursor:pointer;">✓ Tamam, ekle</button>
+        </div>
+    </div>
+</div>
+
 <script>
-var ocrCalisiyor = false;
+var _cropImg = new Image();
+var _cropScaleX = 1, _cropScaleY = 1;
+var _sel = {active:false, x1:0, y1:0, x2:0, y2:0};
+var _canvasRect = null;
 
-// Görüntüyü canvas ile ön işle: büyüt, kontrast artır, gri yap
-function gorselOnIsle(file) {
-    return new Promise(function(resolve) {
-        var img = new Image();
-        var url = URL.createObjectURL(file);
-        img.onload = function() {
-            var canvas = document.createElement('canvas');
-            // 2x büyüt, max 2400px
-            var scale = Math.min(2, 2400 / Math.max(img.width, img.height));
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            var ctx = canvas.getContext('2d');
-            // Gri arka plan
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            // Kontrast & parlaklık filtresi
-            ctx.filter = 'contrast(1.6) brightness(1.1) grayscale(1)';
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            URL.revokeObjectURL(url);
-            canvas.toBlob(function(blob) { resolve(blob); }, 'image/png');
-        };
-        img.src = url;
-    });
-}
-
-// Konteyner no regex — tüm varyasyonları yakala
-function konteynerBul(text) {
-    // Ham metni temizle
-    var temiz = text.toUpperCase()
-        .replace(/0/g, '0').replace(/O(?=\d)/g, '0')  // O → 0 (rakam önünde)
-        .replace(/I(?=\d)/g, '1').replace(/L(?=\d)/g, '1') // I,L → 1
-        .replace(/[^A-Z0-9\n]/g, ' ');
-
-    // Strateji 1: 4 harf + boşluk + 6-7 rakam (aynı satırda)
-    var m = temiz.match(/([A-Z]{4})\s{0,3}(\d{6,7})/);
-    if (m) {
-        var prefix = m[1];
-        var nums = m[2];
-        // Kontrol hanesi: hemen arkasında veya bir sonraki satırda tek rakam
-        var sonrasi = temiz.slice(temiz.indexOf(m[0]) + m[0].length, temiz.indexOf(m[0]) + m[0].length + 10);
-        var kontrol = sonrasi.match(/^\s*(\d)\b/);
-        if (kontrol) {
-            return prefix + nums + '-' + kontrol[1];
-        }
-        return prefix + nums;
-    }
-
-    // Strateji 2: 4 harf + rakamlar farklı satırlarda olabilir
-    var satirlar = temiz.split('\n').map(function(s){ return s.trim(); });
-    var harfSatir = -1, rakamSatir = -1, harfMatch, rakamMatch;
-    for (var i = 0; i < satirlar.length; i++) {
-        var hm = satirlar[i].match(/\b([A-Z]{4})\b/);
-        if (hm && !harfMatch) { harfMatch = hm; harfSatir = i; }
-        var rm = satirlar[i].match(/\b(\d{6,7})\b/);
-        if (rm && !rakamMatch) { rakamMatch = rm; rakamSatir = i; }
-    }
-    if (harfMatch && rakamMatch) {
-        var no = harfMatch[1] + rakamMatch[1];
-        // Kontrol hanesi bir sonraki satırda mı?
-        if (rakamSatir + 1 < satirlar.length) {
-            var sonrakiSatir = satirlar[rakamSatir + 1].match(/^(\d)\b/);
-            if (sonrakiSatir) no += '-' + sonrakiSatir[1];
-        }
-        return no;
-    }
-    return null;
-}
-
-async function handleOCRFile(event) {
-    if (ocrCalisiyor) return;
+function cropFotoAc(event) {
     var file = event.target.files[0];
     event.target.value = '';
     if (!file) return;
+    var url = URL.createObjectURL(file);
+    _cropImg.onload = function() {
+        URL.revokeObjectURL(url);
+        var modal = document.getElementById('cropModal');
+        modal.style.display = 'flex';
+        setTimeout(cropCiz, 50);
+    };
+    _cropImg.src = url;
+}
 
-    var btn = document.getElementById('ocrBtn');
-    var status = document.getElementById('ocrStatus');
-    var input = document.getElementById('container');
+function cropCiz() {
+    var canvas = document.getElementById('cropCanvas');
+    var container = canvas.parentElement;
+    var maxW = container.clientWidth;
+    var maxH = container.clientHeight;
+    var scale = Math.min(maxW / _cropImg.width, maxH / _cropImg.height, 1);
+    canvas.width  = Math.round(_cropImg.width  * scale);
+    canvas.height = Math.round(_cropImg.height * scale);
+    _cropScaleX = _cropImg.width  / canvas.width;
+    _cropScaleY = _cropImg.height / canvas.height;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(_cropImg, 0, 0, canvas.width, canvas.height);
+    _canvasRect = canvas.getBoundingClientRect();
+    _sel = {active:false, x1:0, y1:0, x2:0, y2:0};
+    document.getElementById('selBox').style.display = 'none';
+    document.getElementById('cropOnay').style.display = 'none';
+}
 
-    ocrCalisiyor = true;
-    btn.style.opacity = '0.5';
-    btn.style.pointerEvents = 'none';
-    status.style.display = 'block';
-    status.style.background = '#f1f5f9';
-    status.style.color = '#475569';
-    status.style.border = '1px solid #e2e8f0';
-    status.textContent = '🔍 Görsel işleniyor...';
+function pointerXY(e, rect) {
+    var src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
 
-    try {
-        // Görüntüyü ön işle
-        var islenmis = await gorselOnIsle(file);
-        status.textContent = '🔍 Metin okunuyor...';
+function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
 
-        var result = await Tesseract.recognize(islenmis, 'eng', {
-            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \n'
-        });
-        var text = result.data.text;
+function selUpdate() {
+    var canvas = document.getElementById('cropCanvas');
+    var box = document.getElementById('selBox');
+    var rect = canvas.getBoundingClientRect();
+    var x = Math.min(_sel.x1, _sel.x2), y = Math.min(_sel.y1, _sel.y2);
+    var w = Math.abs(_sel.x2 - _sel.x1), h = Math.abs(_sel.y2 - _sel.y1);
+    box.style.left   = (rect.left + x) + 'px';
+    box.style.top    = (rect.top  + y) + 'px';
+    box.style.width  = w + 'px';
+    box.style.height = h + 'px';
+    box.style.display = w > 5 ? 'block' : 'none';
+}
 
-        var konteynerNo = konteynerBul(text);
+var canvas = null;
+window.addEventListener('DOMContentLoaded', function() {
+    canvas = document.getElementById('cropCanvas');
 
-        if (konteynerNo) {
-            input.value = konteynerNo;
-            input.focus();
-            status.style.background = '#f0fdf4';
-            status.style.color = '#15803d';
-            status.style.border = '1px solid #bbf7d0';
-            status.textContent = '✅ Bulundu: ' + konteynerNo;
-        } else {
-            var ozet = text.replace(/\s+/g, ' ').substring(0, 100).trim();
-            status.style.background = '#fef9c3';
-            status.style.color = '#854d0e';
-            status.style.border = '1px solid #fde68a';
-            status.textContent = '⚠️ Numara bulunamadı. Lütfen manuel girin. OCR: "' + ozet + '"';
-        }
-    } catch (err) {
-        status.style.background = '#fef2f2';
-        status.style.color = '#b91c1c';
-        status.style.border = '1px solid #fecaca';
-        status.textContent = '❌ Hata: ' + (err.message || 'Bilinmeyen hata');
+    function onStart(e) {
+        if (document.getElementById('cropModal').style.display === 'none') return;
+        e.preventDefault();
+        _canvasRect = canvas.getBoundingClientRect();
+        var p = pointerXY(e, _canvasRect);
+        _sel.x1 = clamp(p.x, 0, canvas.width);
+        _sel.y1 = clamp(p.y, 0, canvas.height);
+        _sel.x2 = _sel.x1; _sel.y2 = _sel.y1;
+        _sel.active = true;
+        document.getElementById('cropOnay').style.display = 'none';
+    }
+    function onMove(e) {
+        if (!_sel.active) return;
+        e.preventDefault();
+        var p = pointerXY(e, _canvasRect);
+        _sel.x2 = clamp(p.x, 0, canvas.width);
+        _sel.y2 = clamp(p.y, 0, canvas.height);
+        selUpdate();
+    }
+    function onEnd(e) {
+        if (!_sel.active) return;
+        _sel.active = false;
+        var w = Math.abs(_sel.x2 - _sel.x1), h = Math.abs(_sel.y2 - _sel.y1);
+        if (w < 20 || h < 10) { document.getElementById('selBox').style.display='none'; return; }
+        // Önizleme kırpmasını göster
+        var tmpCanvas = document.createElement('canvas');
+        var sx = Math.min(_sel.x1,_sel.x2) * _cropScaleX;
+        var sy = Math.min(_sel.y1,_sel.y2) * _cropScaleY;
+        var sw = w * _cropScaleX, sh = h * _cropScaleY;
+        tmpCanvas.width = sw; tmpCanvas.height = sh;
+        tmpCanvas.getContext('2d').drawImage(_cropImg, sx, sy, sw, sh, 0, 0, sw, sh);
+        document.getElementById('cropPreview').src = tmpCanvas.toDataURL();
+        document.getElementById('cropOnay').style.display = 'flex';
     }
 
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
-    ocrCalisiyor = false;
+    canvas.addEventListener('mousedown',  onStart);
+    canvas.addEventListener('mousemove',  onMove);
+    canvas.addEventListener('mouseup',    onEnd);
+    canvas.addEventListener('touchstart', onStart, {passive:false});
+    canvas.addEventListener('touchmove',  onMove,  {passive:false});
+    canvas.addEventListener('touchend',   onEnd);
+});
+
+function cropTekrar() {
+    document.getElementById('cropOnay').style.display = 'none';
+    document.getElementById('selBox').style.display = 'none';
+}
+
+function cropKaydet() {
+    // Kırpılan görseli data URL olarak input'a göster — kullanıcı numara görseli görür
+    var preview = document.getElementById('cropPreview').src;
+    // Küçük önizleme görseli form-group altında göster
+    var existing = document.getElementById('cropThumb');
+    if (!existing) {
+        existing = document.createElement('div');
+        existing.id = 'cropThumb';
+        existing.style.cssText = 'margin-top:8px; display:flex; align-items:center; gap:8px; padding:8px 10px; background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:8px;';
+        document.getElementById('container').closest('.form-group').appendChild(existing);
+    }
+    existing.innerHTML = '<img src="' + preview + '" style="height:48px; border-radius:4px; border:1px solid #bae6fd;">'
+        + '<div style="flex:1;"><div style="font-size:0.75rem; color:#0369a1; font-weight:600; margin-bottom:2px;">Seçilen bölge</div>'
+        + '<div style="font-size:0.72rem; color:#0284c7;">Konteyner numarasını aşağıya girin 👇</div></div>'
+        + '<button onclick="document.getElementById(\'cropThumb\').remove()" style="background:none;border:none;font-size:1rem;cursor:pointer;color:#94a3b8;">✕</button>';
+    // Input'u odakla, kullanıcı numarayı yazsın
+    document.getElementById('container').focus();
+    document.getElementById('container').placeholder = 'Numara girin...';
+    cropIptal();
+}
+
+function cropIptal() {
+    document.getElementById('cropModal').style.display = 'none';
 }
 </script>
 <!-- Analytics -->
