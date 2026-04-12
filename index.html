@@ -1341,7 +1341,7 @@
             padding-top: max(16px, env(safe-area-inset-top));
             box-shadow: 0 2px 12px rgba(0,0,0,0.2);
         }
-        .telsiz-header-info { flex: 1; }
+        .telsiz-header-info { flex: 1; min-width: 0; }
         .telsiz-header-title { color: white; font-size: 1rem; font-weight: 800; }
         .telsiz-header-sub { color: rgba(255,255,255,0.7); font-size: 0.72rem; font-weight: 500; margin-top: 1px; }
         .telsiz-close {
@@ -1357,9 +1357,59 @@
             animation: pulse-green 2s infinite;
         }
         @keyframes pulse-green { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+        /* Çevrimiçi şoförler paneli */
+        .telsiz-online-panel {
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 8px 14px;
+            flex-shrink: 0;
+            display: none;
+        }
+        .telsiz-online-panel.visible { display: block; }
+        .telsiz-online-label {
+            font-size: 0.62rem; font-weight: 700; color: rgba(255,255,255,0.45);
+            text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
+        }
+        .telsiz-online-chips {
+            display: flex; flex-wrap: wrap; gap: 5px;
+        }
+        .telsiz-online-chip {
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(74,222,128,0.12);
+            border: 1px solid rgba(74,222,128,0.3);
+            border-radius: 20px; padding: 3px 10px 3px 7px;
+            font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.85);
+        }
+        .telsiz-online-chip-dot {
+            width: 6px; height: 6px; background: #4ade80; border-radius: 50%;
+            flex-shrink: 0; box-shadow: 0 0 4px #4ade80;
+        }
+
+        /* Bildirim izin butonu */
+        .notif-permission-bar {
+            background: rgba(234,179,8,0.15);
+            border-bottom: 1px solid rgba(234,179,8,0.25);
+            padding: 8px 14px;
+            display: flex; align-items: center; gap: 10px;
+            flex-shrink: 0;
+        }
+        .notif-permission-bar p {
+            flex: 1; font-size: 0.74rem; color: rgba(255,255,255,0.8); margin: 0; line-height: 1.4;
+        }
+        .notif-permission-btn {
+            background: #eab308; color: #0f172a;
+            border: none; border-radius: 20px; padding: 6px 14px;
+            font-size: 0.74rem; font-weight: 700; cursor: pointer;
+            font-family: inherit; flex-shrink: 0; white-space: nowrap;
+        }
+        .notif-permission-bar.hidden { display: none; }
+
         .telsiz-messages {
             flex: 1; overflow-y: auto; padding: 14px 12px;
             display: flex; flex-direction: column; gap: 10px;
+            /* Klavye açıldığında düzgün scroll için */
+            scroll-behavior: smooth;
         }
         .telsiz-messages::-webkit-scrollbar { width: 3px; }
         .telsiz-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
@@ -3403,6 +3453,19 @@ function cropIptal() {
         <button class="telsiz-close" onclick="closeTelsizcisi()">✕</button>
     </div>
 
+    <!-- Bildirim izin çubuğu -->
+    <div class="notif-permission-bar hidden" id="notifPermissionBar">
+        <p>🔔 Yeni mesajlarda bildirim almak ister misin?</p>
+        <button class="notif-permission-btn" onclick="bildirimIzniAl()">Bildirimleri Aç</button>
+        <button onclick="document.getElementById('notifPermissionBar').classList.add('hidden')" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>
+    </div>
+
+    <!-- Çevrimiçi şoförler -->
+    <div class="telsiz-online-panel" id="telsizOnlinePanel">
+        <div class="telsiz-online-label">🟢 Çevrimiçi Şoförler</div>
+        <div class="telsiz-online-chips" id="telsizOnlineChips"></div>
+    </div>
+
     <div class="telsiz-messages" id="telsizMessages">
         <div class="telsiz-empty" id="telsizEmpty">
             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
@@ -3465,19 +3528,56 @@ function openTelsizcisi() {
     okunmamisSayisi = 0;
     guncelleBadge();
     telsizBaglan();
+    klavyeScrollDuzelt();
+    setTimeout(() => scrollToBottom(), 400);
     setTimeout(() => document.getElementById('telsizInput').focus(), 300);
 }
 
+function klavyeScrollDuzelt() {
+    var modal = document.getElementById('telsizcisiModal');
+    var messages = document.getElementById('telsizMessages');
+
+    // visualViewport API — klavye açıldığında modal yüksekliğini ayarla
+    if (window.visualViewport) {
+        function onViewportResize() {
+            if (!telsizAcik) return;
+            var vh = window.visualViewport.height;
+            modal.style.height = vh + 'px';
+            // Her zaman en alta scroll et
+            setTimeout(function() {
+                messages.scrollTop = messages.scrollHeight;
+            }, 80);
+        }
+        window.visualViewport.addEventListener('resize', onViewportResize);
+        window.visualViewport.addEventListener('scroll', onViewportResize);
+        modal._vpCleanup = function() {
+            window.visualViewport.removeEventListener('resize', onViewportResize);
+            window.visualViewport.removeEventListener('scroll', onViewportResize);
+            modal.style.height = '';
+        };
+    }
+
+    // Input focus olunca da scroll
+    var input = document.getElementById('telsizInput');
+    input.addEventListener('focus', function() {
+        setTimeout(function() {
+            messages.scrollTop = messages.scrollHeight;
+        }, 350);
+    });
+}
+
 function closeTelsizcisi() {
-    document.getElementById('telsizcisiModal').classList.remove('open');
+    var modal = document.getElementById('telsizcisiModal');
+    modal.classList.remove('open');
     telsizAcik = false;
+    if (modal._vpCleanup) { modal._vpCleanup(); modal._vpCleanup = null; }
 }
 
 function telsizBaglan() {
     var messagesRef = telsizDB.ref('mesajlar');
     document.getElementById('telsizOnlineText').textContent = 'Bağlanıyor...';
 
-    // Son 50 mesajı dinle
+    // Son 80 mesajı dinle
     if (telsizListener) messagesRef.off('child_added', telsizListener);
 
     var container = document.getElementById('telsizMessages');
@@ -3504,25 +3604,113 @@ function telsizBaglan() {
 
     telsizListener = messagesRef.limitToLast(1).on('child_added', function(snap) {
         if (!ilkYukleme) {
-            mesajEkle(snap.key, snap.val(), true);
+            var d = snap.val();
+            mesajEkle(snap.key, d, true);
             if (!telsizAcik) {
                 okunmamisSayisi++;
                 guncelleBadge();
+                // Uygulama kapalıyken yerel bildirim gönder
+                yerelBildirimGonder(d.isim || 'Şoför', d.metin || '');
             }
         }
     });
 
-    // Online sayısını göster (basit presence)
-    var benimId = localStorage.getItem('soforIsim') + '_' + Date.now();
-    var onlineRef = telsizDB.ref('online/' + benimId.replace(/[^a-zA-Z0-9_]/g, '_'));
-    onlineRef.set({ isim: localStorage.getItem('soforIsim'), zaman: Date.now() });
+    // Online presence — benzersiz key ile kayıt
+    var benimIsim = localStorage.getItem('soforIsim') || 'Şoför';
+    var safeKey = benimIsim.replace(/[^a-zA-Z0-9]/g, '_') + '_' + Math.random().toString(36).substr(2,6);
+    var onlineRef = telsizDB.ref('online/' + safeKey);
+    onlineRef.set({ isim: benimIsim, zaman: Date.now() });
     onlineRef.onDisconnect().remove();
 
+    // Çevrimiçi şoförleri dinle — isim listesi göster
     telsizDB.ref('online').on('value', function(snap) {
-        var sayi = snap.numChildren();
-        var txt = sayi > 1 ? sayi + ' şoför çevrimiçi' : 'Canlı • Bekliyor';
+        var isimler = [];
+        snap.forEach(function(child) {
+            var d = child.val();
+            if (d && d.isim) isimler.push(d.isim);
+        });
+        var sayi = isimler.length;
+        var txt = sayi > 0 ? sayi + ' şoför çevrimiçi' : 'Canlı • Bekliyor';
         document.getElementById('telsizOnlineText').textContent = txt;
+
+        // Chip listesini güncelle
+        var panel = document.getElementById('telsizOnlinePanel');
+        var chips = document.getElementById('telsizOnlineChips');
+        if (sayi > 0) {
+            panel.classList.add('visible');
+            chips.innerHTML = '';
+            isimler.forEach(function(isim) {
+                var chip = document.createElement('div');
+                chip.className = 'telsiz-online-chip';
+                chip.innerHTML = '<div class="telsiz-online-chip-dot"></div>' + isim;
+                chips.appendChild(chip);
+            });
+        } else {
+            panel.classList.remove('visible');
+        }
     });
+
+    // Bildirim izni kontrol et
+    bildirimIzniKontrol();
+}
+
+// ==================== BİLDİRİM ====================
+function bildirimIzniKontrol() {
+    if (!('Notification' in window)) return;
+    var bar = document.getElementById('notifPermissionBar');
+    if (!bar) return;
+    if (Notification.permission === 'default') {
+        bar.classList.remove('hidden');
+    } else {
+        bar.classList.add('hidden');
+    }
+}
+
+function bildirimIzniAl() {
+    if (!('Notification' in window)) {
+        showNotification('Bu tarayıcı bildirimleri desteklemiyor', 'error');
+        return;
+    }
+    Notification.requestPermission().then(function(perm) {
+        var bar = document.getElementById('notifPermissionBar');
+        if (bar) bar.classList.add('hidden');
+        if (perm === 'granted') {
+            showNotification('🔔 Bildirimler açıldı!', 'success');
+            // Test bildirimi
+            new Notification('Şoför Telsizi', {
+                body: 'Yeni mesajlarda bildirim alacaksın!',
+                icon: 'icon-192.png',
+                badge: 'icon-72.png',
+                tag: 'test-bildirim',
+                silent: false
+            });
+        } else {
+            showNotification('Bildirimler kapalı kaldı', 'error');
+        }
+    });
+}
+
+function yerelBildirimGonder(kimden, metin) {
+    if (!('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+    // Uygulama aktif değilse (sayfa gizliyse) bildirim gönder
+    if (!document.hidden) return;
+    try {
+        var n = new Notification('📻 ' + kimden, {
+            body: metin || '(Yeni mesaj)',
+            icon: 'icon-192.png',
+            badge: 'icon-72.png',
+            tag: 'telsiz-mesaj',
+            renotify: true,
+            silent: false
+        });
+        n.onclick = function() {
+            window.focus();
+            openTelsizcisi();
+            n.close();
+        };
+        setTimeout(function() { n.close(); }, 5000);
+    } catch(e) {}
 }
 
 var DUZENLE_SURE = 3 * 60 * 1000; // 3 dakika
