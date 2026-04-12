@@ -1310,6 +1310,19 @@
         }
         .splash-dot:nth-child(2){animation-delay:0.2s} .splash-dot:nth-child(3){animation-delay:0.4s}
         @keyframes splashDotPulse { 0%,100%{background:rgba(255,255,255,0.25);transform:scale(1)} 50%{background:rgba(255,255,255,0.9);transform:scale(1.3)} }
+
+        /* GREETING */
+        .selam-greeting {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 9999px; padding: 6px 16px 6px 10px; margin-top: 10px;
+            backdrop-filter: blur(12px);
+            animation: selamIn 0.7s 0.2s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes selamIn { from{opacity:0;transform:translateY(8px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+        .selam-emoji { font-size: 1.05rem; line-height: 1; }
+        .selam-text { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.88); letter-spacing: 0.1px; }
+        .selam-text strong { color: #ffffff; font-weight: 800; }
     </style>
 <base target="_blank">
 </head>
@@ -1317,17 +1330,7 @@
 
 <!-- PWA Splash Screen -->
 <div id="splashScreen">
-    <div class="splash-icon-wrap">
-        <div class="splash-ring"></div>
-        <div class="splash-ring splash-ring-2"></div>
-        <div class="splash-icon-circle">
-            <svg class="splash-truck-anim" viewBox="0 0 24 24">
-                <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-            </svg>
-        </div>
-    </div>
-    <div class="splash-title">Harcırah Takip</div>
-    <div class="splash-subtitle">ÖNER LOJİSTİK</div>
+
     <div class="splash-bar-wrap"><div class="splash-bar-fill"></div></div>
     <div class="splash-dots">
         <div class="splash-dot"></div>
@@ -1361,6 +1364,7 @@
         </div>
         <h1>🚛 Harcırah Takip</h1>
         <p class="header-sub">Öner Lojistik</p>
+        <div id="selamDiv" style="text-align:center;"></div>
         <div class="week-badge">
             <span class="week-badge-pill" id="weekBadge">Hafta yükleniyor...</span>
         </div>
@@ -1855,6 +1859,75 @@ function formatTimeString(ts) {
     return {hours:h, minutes:min};
 }
 
+// ==================== GREETING ====================
+function updateGreeting() {
+    var div = document.getElementById('selamDiv');
+    if (!div) return;
+    var isim = (localStorage.getItem('soforIsim') || '').trim();
+    var ad = isim ? isim.split(' ')[0] : '';
+    var now = new Date();
+    var saat = now.getHours();
+    var gun = now.getDay(); // 0=Paz, 6=Cmt
+
+    // Her dilim için birden fazla mesaj — rastgele seçilir
+    var mesajlar;
+
+    if (saat >= 5 && saat < 8) {
+        mesajlar = [
+            { e: '🌅', b: 'Günaydın', a: 'Erken kalkan yola erken düşer. Bugün de şans seninle olsun!' },
+            { e: '☕', b: 'Günaydın', a: 'Motor ısınırken bir çay iç, sonra yola koy!' },
+            { e: '🌄', b: 'Günaydın', a: 'Sabahın erinde çıkmak yarı yol demek. Hayırlı seferler!' }
+        ];
+    } else if (saat >= 8 && saat < 12) {
+        mesajlar = [
+            { e: '☀️', b: 'Günaydın', a: 'Yollar açık, trafik sakin olsun. Kazançlı bir gün dileriz!' },
+            { e: '🚛', b: 'Günaydın', a: 'Konteynerler dolsun, harcırahlar artsın. Hayırlı işler!' },
+            { e: '💪', b: 'Günaydın', a: 'Yeni bir gün, yeni bir sefer. Sağlıklı ve kazançlı bir gün!' }
+        ];
+    } else if (saat >= 12 && saat < 14) {
+        mesajlar = [
+            { e: '🥙', b: 'Öğle vakti', a: 'Yol üstünde de olsan bir şeyler atıştır, açken direksiyon zor!' },
+            { e: '⛽', b: 'Öğle molası', a: 'Araç yakıt ister, sen de mola. Bir şeyler ye, dinlen!' },
+            { e: '🛣️', b: 'Öğle vakti', a: 'Ekmek arası da olsa atla, yolun uzun — enerjin tükenmeden!' }
+        ];
+    } else if (saat >= 14 && saat < 17) {
+        mesajlar = [
+            { e: '🚛', b: 'Hayırlı işler', a: 'Öğleden sonra trafiğe dikkat, sabırlı ol. Yollar açık olsun!' },
+            { e: '📦', b: 'Hayırlı işler', a: 'Konteyner teslim, harcırah kazan. Akşam eve kazançlı dön!' },
+            { e: '💨', b: 'Hayırlı işler', a: 'Rüzgar arkandan essin, trafik önünden çekilsin!' }
+        ];
+    } else if (saat >= 17 && saat < 20) {
+        mesajlar = [
+            { e: '🌇', b: 'İyi akşamlar', a: 'Günün son seferi mi? Dikkatli ol, akşam trafiği yoğun olur.' },
+            { e: '🏠', b: 'İyi akşamlar', a: 'Güneş iniyor, eve yaklaşıyorsun. Bugünkü emek hak edildi!' },
+            { e: '🌆', b: 'İyi akşamlar', a: 'Uzun gündü ama atlattın. Ailene güzel bir akşam!' }
+        ];
+    } else if (saat >= 20 && saat < 23) {
+        mesajlar = [
+            { e: '🌙', b: 'İyi akşamlar', a: 'Gece seferi mi? Uyku bastırırsa kenara çek, yol kaçmaz!' },
+            { e: '🌃', b: 'Geç saatler', a: 'Bu saatte hâlâ çalışıyorsan emek büyük. Dikkatli ol!' },
+            { e: '☕', b: 'İyi akşamlar', a: 'Geceleri çay-kahve dostun. Ama molayı da ihmal etme!' }
+        ];
+    } else {
+        mesajlar = [
+            { e: '🌙', b: 'Gece yarısı', a: 'Gözlerin kapanıyorsa dur, dinlen. Hiçbir sefer uykundan değmez!' },
+            { e: '⭐', b: 'Gece seferi', a: 'Yıldızlar seninle. Güvende ol, kalan yol az!' },
+            { e: '🛌', b: 'Gece vakti', a: 'Fırsat buldunda mutlaka biraz uzan. Dinlenmiş şoför güvenli şoför!' }
+        ];
+    }
+
+    // Haftasonu özel mesajı ara sıra göster
+    var secilen;
+    if ((gun === 0 || gun === 6) && Math.random() < 0.5) {
+        secilen = { e: '📅', b: (gun === 6 ? 'Cumartesi' : 'Pazar'), a: 'Haftasonu da direksiyon başındasın. Emeğine sağlık, ' + (ad || 'usta') + '!' };
+    } else {
+        secilen = mesajlar[Math.floor(Math.random() * mesajlar.length)];
+    }
+
+    var isimHtml = ad ? ', <strong>' + ad + '</strong>' : '';
+    div.innerHTML = '<div class="selam-greeting"><span class="selam-emoji">' + secilen.e + '</span><span class="selam-text">' + secilen.b + isimHtml + '! <span style="opacity:0.75;font-weight:500;">' + secilen.a + '</span></span></div>';
+}
+
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
@@ -1865,6 +1938,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const d = document.getElementById('date');
     if (d) d.valueAsDate = new Date();
     updateWeekBadge();
+    updateGreeting();
 
     // Splash screen dismiss
     const splash = document.getElementById('splashScreen');
@@ -2460,6 +2534,7 @@ function saveSoforBilgi(fromModal) {
     if (!plaka) { showNotification("Lutfen dorse plakasini girin", "error"); return; }
     localStorage.setItem("soforIsim", isim);
     localStorage.setItem("dorsePlaka", plaka);
+    updateGreeting();
     if (fromModal) {
         document.getElementById("soforModal").classList.add("hidden");
         showNotification("Bilgiler kaydedildi! Hos geldiniz");
