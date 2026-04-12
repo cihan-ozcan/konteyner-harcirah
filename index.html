@@ -2072,7 +2072,7 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(15);
     doc.setTextColor(255, 255, 255);
-    doc.text('HARCIRAH LISTESI  -  ' + weekNum + '. HAFTA', PAGE_W / 2, 13, { align: 'center' });
+    doc.text('HARCIRAH LISTESI', PAGE_W / 2, 13, { align: 'center' });
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
@@ -2131,7 +2131,7 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(9);
             doc.setTextColor(255, 255, 255);
-            doc.text('HARCIRAH LISTESI - ' + weekNum + '. HAFTA  (devam)', PAGE_W / 2, 8, { align: 'center' });
+            doc.text('HARCIRAH LISTESI  (devam)', PAGE_W / 2, 8, { align: 'center' });
             y = 20;
         }
 
@@ -2283,7 +2283,7 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
         doc.text(i + ' / ' + pages, PAGE_W - MARGIN, PAGE_H - 8, { align: 'right' });
     }
 
-    const fn = 'Harcirah_Hafta' + weekNum + '_' + new Date().toISOString().split('T')[0] + '.pdf';
+    const fn = 'Harcirah_' + new Date().toISOString().split('T')[0] + '.pdf';
     doc.save(fn);
 }
 
@@ -2293,9 +2293,9 @@ function shareEmail() {
     const savedEmail = localStorage.getItem('harcirahEmail') || 'ofis@onerlojistik.com.tr';
     const soforIsim = toEnglishChars(localStorage.getItem('soforIsim') || '');
     const dorsePlaka = toEnglishChars(localStorage.getItem('dorsePlaka') || '');
-    let subject = toEnglishChars('Harcirah Listesi - ' + currentWeekNum + '. Hafta - ') + new Date().toLocaleDateString('tr-TR');
+    let subject = toEnglishChars('Harcirah Listesi - ') + new Date().toLocaleDateString('tr-TR');
     if (soforIsim) subject += toEnglishChars(' - ' + soforIsim);
-    let body = toEnglishChars('HARCIRAH LISTESI - ' + currentWeekNum + '. HAFTA\n\n');
+    let body = toEnglishChars('HARCIRAH LISTESI\n\n');
     if (soforIsim) body += toEnglishChars('Sofor: ') + soforIsim + '\n';
     if (dorsePlaka) body += toEnglishChars('Arac Plakasi: ') + dorsePlaka + '\n';
     if (soforIsim || dorsePlaka) body += '\n';
@@ -2361,7 +2361,7 @@ function loadSoforBilgi() {
 // ==================== WHATSAPP ====================
 function shareWhatsApp() {
     const total = entries.reduce((a,b)=>a+(b.amount||0),0);
-    let msg = toEnglishChars('*HARCIRAH LISTESI - ' + currentWeekNum + '. HAFTA*\n\n');
+    let msg = toEnglishChars('*HARCIRAH LISTESI*\n\n');
     msg += toEnglishChars('Toplam: ') + total.toLocaleString('tr-TR') + ' TL\n';
     msg += toEnglishChars('Kayit Sayisi: ') + entries.length + '\n\n';
     entries.slice(0,5).forEach((e,i) => { msg += (i+1)+'. '+formatDate(e.date)+' - '+toEnglishChars(e.container)+' - '+(e.amount||0).toLocaleString('tr-TR')+' TL\n'; });
