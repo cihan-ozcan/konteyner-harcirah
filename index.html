@@ -2101,53 +2101,53 @@ function updateGreeting() {
     // Her dilim için birden fazla mesaj — rastgele seçilir
     var mesajlar;
 
-   if (saat >= 5 && saat < 8) {
+if (saat >= 5 && saat < 8) {
     mesajlar = [
-        { e: '🌅', b: 'Günaydın', a: 'Erken kalkan günün tadını çıkarır. Bugün de güzel bir gün olsun!' },
-        { e: '☕', b: 'Günaydın', a: 'Bir kahve iç, uykuyu at üzerinden. Yeni güne merhaba!' },
-        { e: '🌄', b: 'Sabah Vakti', a: 'Sabahın bu saatinde kalkmak zordur ama değer. Hayırlı sabahlar!' }
+        { e: '🌅', b: 'Günaydın', a: 'Helal olsun, gün senden önce uyanamadı! Bugün senin günün 💪' },
+        { e: '☕', b: 'Günaydın', a: 'Kahveni kap, dünyayı fethetmeye hazır ol. Sabah modu: aktif!' },
+        { e: '🌄', b: 'Sabah Vakti', a: 'Bu saatte uyananlar ayrı bir ligde oynuyor. Tebrikler, kazanan sensin 😎' }
     ];
 } 
 else if (saat >= 8 && saat < 12) {
     mesajlar = [
-        { e: '☀️', b: 'Günaydın', a: 'Güneş yükseldi, sen de kalktın. Günün keyifli geçsin!' },
-        { e: '🚶', b: 'Sabah', a: 'Hareket zamanı! Yavaş yavaş kendine gel, günü yakala 💪' },
-        { e: '🌞', b: 'Günaydın', a: 'Sabah enerjisi başka olur. Bugün de en iyi halinle ol!' }
+        { e: '☀️', b: 'Günaydın', a: 'Güneş görev başında, sen de öyle! Bugün güzel şeyler olacak ☀️' },
+        { e: '🚶', b: 'Sabah', a: 'Hadi bakalım, motorları ısıtma vakti. Gün seni bekliyor!' },
+        { e: '🌞', b: 'Günaydın', a: 'Sabah enerjisi yükleniyor… %100’e ulaştığında durdurmak yok!' }
     ];
 } 
 else if (saat >= 12 && saat < 14) {
     mesajlar = [
-        { e: '🥙', b: 'Öğle Vakti', a: 'Karnın zil çalıyor olabilir, bir şeyler atıştır. Aç durmak yok!' },
-        { e: '🍲', b: 'Öğlen Molası', a: 'Yemek yemeden olmaz. Mola ver, kendine iyi bak.' },
-        { e: '🕛', b: 'Öğle', a: 'Gün ortası… Biraz dinlen, enerjini topla. Yol uzun!' }
+        { e: '🥙', b: 'Öğle Vakti', a: 'Mide “ben buradayım” diye bağırıyor olabilir. Bir şeyler atıştırma zamanı 😄' },
+        { e: '🍲', b: 'Öğlen Molası', a: 'Yemek yemeden kahraman olunmuyor. Mola ver, güç topla!' },
+        { e: '🕛', b: 'Öğle', a: 'Günün ortası… Kısa bir mola, uzun bir performans demek 😉' }
     ];
 } 
 else if (saat >= 14 && saat < 17) {
     mesajlar = [
-        { e: '☕', b: 'İkindi Vakti', a: 'Bir çay molası iyi gelir. Yorulduysan biraz nefes al.' },
-        { e: '🌤️', b: 'Öğleden Sonra', a: 'Gün ilerliyor, sen de tempoyu koru. Her şey yolunda olsun.' },
-        { e: '💪', b: 'Devam', a: 'İkinci yarı başladı. Kendine dikkat et, sabırlı ol.' }
+        { e: '☕', b: 'İkindi Vakti', a: 'Çay mı kahve mi? Hangisi seni hayata döndürüyorsa onu seç 😄' },
+        { e: '🌤️', b: 'Öğleden Sonra', a: 'Biraz yorulmuş olabilirsin ama pes etmek yok. Devam!' },
+        { e: '💪', b: 'Devam', a: 'İkinci yarı başladı. Şampiyonlar şimdi belli olur!' }
     ];
 } 
 else if (saat >= 17 && saat < 20) {
     mesajlar = [
-        { e: '🌇', b: 'İyi Akşamlar', a: 'Akşam oldu, günün yorgunluğu çökmeye başladı. Kendine nazik ol.' },
-        { e: '🏠', b: 'Akşam Vakti', a: 'Eve dönüş yolunda gibi hissediyorsun belki… Rahatla biraz.' },
-        { e: '🌆', b: 'İyi Akşamlar', a: 'Günün son ışıkları… Keyifli ve huzurlu bir akşam olsun.' }
+        { e: '🌇', b: 'İyi Akşamlar', a: 'Günün yükünü sırtından indir, artık rahatlama vakti 😊' },
+        { e: '🏠', b: 'Akşam Vakti', a: 'Eve dönüş hissi… En güzel anlardan biri. Keyfini çıkar!' },
+        { e: '🌆', b: 'İyi Akşamlar', a: 'Gün bitti ama keyif yeni başlıyor. Güzel bir akşam olsun!' }
     ];
 } 
 else if (saat >= 20 && saat < 23) {
     mesajlar = [
-        { e: '🌙', b: 'İyi Akşamlar', a: 'Geceye yaklaşıyoruz. Erken yatarsan kazanırsın, geç yatarsan da keyfini çıkar 😊' },
-        { e: '🌃', b: 'Gece', a: 'Bu saatlerde insan biraz düşünceli olur. Sen de keyfine bak, ama dinlenmeyi unutma.' },
-        { e: '☕', b: 'Akşamüstü', a: 'Bir sıcak şey iç, rahatla. Gün bitti, yarın yeni bir sayfa.' }
+        { e: '🌙', b: 'İyi Akşamlar', a: 'Yarın için erken yatabilirsin… ya da bugünün keyfini uzatabilirsin 😏' },
+        { e: '🌃', b: 'Gece', a: 'Düşünme modu açıldıysa fazla takılma. Biraz chill, biraz dinlenme 😌' },
+        { e: '☕', b: 'Akşam', a: 'Sıcak bir şey al, arkana yaslan. Bugünün hesabı kapandı.' }
     ];
 } 
 else {
     mesajlar = [
-        { e: '🌙', b: 'Gece Yarısı', a: 'Gözlerin kapanıyorsa sakın direnme. Uyku en büyük haklarından biri.' },
-        { e: '⭐', b: 'Derin Gece', a: 'Sessizlik güzel ama uykusuzluk hiç güzel değil. Dinlenmeye öncelik ver.' },
-        { e: '🛌', b: 'Gece Vakti', a: 'Artık yatma zamanı. Yarın daha dinç uyanmak için erken kestir.' }
+        { e: '🌙', b: 'Gece Yarısı', a: 'Herkes uyurken sen buradasın… ama yarın sabahı da unutma 😄' },
+        { e: '⭐', b: 'Derin Gece', a: 'Gece güzel ama uykusuzluk pek değil. Biraz dinlenmek iyi gelir.' },
+        { e: '🛌', b: 'Gece Vakti', a: 'Telefonu bırak, yastığa sarıl. En iyi yatırım: uyku 😴' }
     ];
 }
 
