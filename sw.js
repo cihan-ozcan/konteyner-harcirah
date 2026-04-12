@@ -1,9 +1,11 @@
-const CACHE_NAME = 'harcirah-takip-v3';
+const CACHE_NAME = 'harcirah-takip-v4';
 const STATIC_CACHE = [
   '/konteyner-harcirah/manifest.json',
   '/konteyner-harcirah/icon-192.png',
   '/konteyner-harcirah/icon-512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+  'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js',
+  'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js'
 ];
 
 // Install — sadece statik dosyaları cache'le
