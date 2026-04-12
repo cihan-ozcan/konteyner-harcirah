@@ -225,7 +225,7 @@
            WEEK CLOSE BANNER
         ═══════════════════════════════════════════════ */
         .week-close-banner {
-            background: var(--week-banner-bg);
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 60%, #0ea5e9 100%);
             border-radius: var(--radius-lg);
             padding: 14px 18px;
             margin-bottom: 16px;
@@ -233,16 +233,16 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 6px 24px rgba(124,58,237,0.3);
-            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 6px 24px rgba(14,165,233,0.32);
+            border: 1px solid rgba(255,255,255,0.14);
         }
         .week-close-info { color: white; }
         .week-close-info .wci-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
         .week-close-info .wci-sub { font-size: 0.74rem; opacity: 0.8; }
         .btn-week-close {
-            background: rgba(255,255,255,0.95);
-            color: #5b21b6;
-            border: none;
+            background: rgba(255,255,255,0.18);
+            color: #ffffff;
+            border: 1.5px solid rgba(255,255,255,0.35);
             padding: 10px 16px;
             border-radius: var(--radius-md);
             font-size: 0.82rem;
@@ -252,8 +252,9 @@
             transition: all var(--transition);
             flex-shrink: 0;
             font-family: inherit;
+            backdrop-filter: blur(8px);
         }
-        .btn-week-close:hover { background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-week-close:hover { background: rgba(255,255,255,0.28); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .btn-week-close:active { transform: scale(0.95); }
 
         /* ═══════════════════════════════════════════════
@@ -957,6 +958,244 @@
             background: var(--border-color);
             margin: 16px 0;
         }
+
+        /* ═══════════════════════════════════════════════
+           FABRİKA GİRİŞ/ÇIKIŞ PANEL
+        ═══════════════════════════════════════════════ */
+        .factory-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: background var(--transition);
+        }
+
+        .factory-panel-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #f59e0b;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .factory-status-bar {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1.5px solid #f59e0b;
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.35s ease;
+        }
+        .factory-status-bar.inside {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-color: #10b981;
+        }
+        .factory-status-bar.done {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-color: #3b82f6;
+        }
+        [data-theme="dark"] .factory-status-bar {
+            background: rgba(245,158,11,0.12);
+            border-color: rgba(245,158,11,0.4);
+        }
+        [data-theme="dark"] .factory-status-bar.inside {
+            background: rgba(16,185,129,0.12);
+            border-color: rgba(16,185,129,0.4);
+        }
+        [data-theme="dark"] .factory-status-bar.done {
+            background: rgba(59,130,246,0.12);
+            border-color: rgba(59,130,246,0.4);
+        }
+
+        .factory-status-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: #f59e0b;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 0 rgba(245,158,11,0.5);
+            animation: none;
+        }
+        .factory-status-dot.pulse {
+            background: #10b981;
+            box-shadow: 0 0 0 0 rgba(16,185,129,0.6);
+            animation: factoryPulse 1.6s infinite;
+        }
+        .factory-status-dot.done {
+            background: #3b82f6;
+            animation: none;
+        }
+        @keyframes factoryPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+
+        .factory-status-info { flex: 1; min-width: 0; }
+        .factory-status-main {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .factory-status-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .factory-elapsed {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #10b981;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+        }
+
+        .factory-btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-factory-giris {
+            padding: 14px 10px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 14px rgba(16,185,129,0.35);
+        }
+        .btn-factory-giris:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(16,185,129,0.45); }
+        .btn-factory-giris:active { transform: scale(0.96); }
+        .btn-factory-giris:disabled { opacity: 0.45; transform: none; cursor: not-allowed; box-shadow: none; }
+
+        .btn-factory-cikis {
+            padding: 14px 10px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 14px rgba(239,68,68,0.35);
+        }
+        .btn-factory-cikis:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,68,68,0.45); }
+        .btn-factory-cikis:active { transform: scale(0.96); }
+        .btn-factory-cikis:disabled { opacity: 0.45; transform: none; cursor: not-allowed; box-shadow: none; }
+
+        .factory-btn-icon { font-size: 1.4rem; line-height: 1; }
+        .factory-btn-label { font-size: 0.78rem; font-weight: 700; opacity: 0.9; }
+
+        .btn-factory-aktar {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+        }
+        .btn-factory-aktar.visible { display: flex; }
+        .btn-factory-aktar:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.45); }
+        .btn-factory-aktar:active { transform: scale(0.96); }
+
+        .btn-factory-sifirla {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1.5px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 8px;
+            display: none;
+        }
+        .btn-factory-sifirla.visible { display: block; }
+        .btn-factory-sifirla:hover { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+
+        .factory-time-chips {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .factory-chip {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1.5px solid;
+        }
+        .factory-chip.giris {
+            background: #d1fae5;
+            border-color: #6ee7b7;
+            color: #065f46;
+        }
+        .factory-chip.cikis {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #7f1d1d;
+        }
+        .factory-chip.sure {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            color: #1e3a8a;
+        }
+        .factory-chip.bekleme {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #78350f;
+        }
+        [data-theme="dark"] .factory-chip.giris { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.4); color: #6ee7b7; }
+        [data-theme="dark"] .factory-chip.cikis { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+        [data-theme="dark"] .factory-chip.sure { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.4); color: #93c5fd; }
+        [data-theme="dark"] .factory-chip.bekleme { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4); color: #fcd34d; }
+
+        @keyframes slideUp {
+            from { opacity:0; transform: translateY(30px); }
+            to { opacity:1; transform: translateY(0); }
+        }
     </style>
 <base target="_blank">
 </head>
@@ -999,6 +1238,49 @@
         <button class="btn-week-close" onclick="openCloseWeekModal()">PDF Al & Arşivle</button>
     </div>
 
+    <!-- Fabrika Giriş/Çıkış Paneli -->
+    <div class="factory-panel">
+        <div class="factory-panel-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            🏭 Fabrika Giriş / Çıkış
+        </div>
+
+        <!-- Durum Çubuğu -->
+        <div class="factory-status-bar" id="factoryStatusBar">
+            <div class="factory-status-dot" id="factoryDot"></div>
+            <div class="factory-status-info">
+                <div class="factory-status-main" id="factoryStatusMain">Fabrikaya giriş yapılmadı</div>
+                <div class="factory-status-sub" id="factoryStatusSub">Giriş butonuna basın</div>
+            </div>
+            <div class="factory-elapsed" id="factoryElapsed"></div>
+        </div>
+
+        <!-- Butonlar -->
+        <div class="factory-btn-row">
+            <button class="btn-factory-giris" id="btnFactoryGiris" onclick="factoryGiris()">
+                <span class="factory-btn-icon">🏁</span>
+                <span>Fabrikaya Giriş</span>
+                <span class="factory-btn-label" id="btnGirisLabel">Şimdi giriş yap</span>
+            </button>
+            <button class="btn-factory-cikis" id="btnFactoryCikis" onclick="factoryCikis()" disabled>
+                <span class="factory-btn-icon">🚪</span>
+                <span>Fabrikadan Çıkış</span>
+                <span class="factory-btn-label" id="btnCikisLabel">Önce giriş yapın</span>
+            </button>
+        </div>
+
+        <!-- Süreler (giriş/çıkış yapılınca görünür) -->
+        <div class="factory-time-chips" id="factoryChips" style="display:none;"></div>
+
+        <!-- Kayda Aktar Butonu -->
+        <button class="btn-factory-aktar" id="btnFactoryAktar" onclick="factoryAktarKayda()">
+            📋 Giriş-Çıkış Saatini Kayda Aktar
+        </button>
+
+        <!-- Sıfırla -->
+        <button class="btn-factory-sifirla" id="btnFactorySifirla" onclick="factorySifirla()">🔄 Sıfırla (Yeni Sefer)</button>
+    </div>
+
     <!-- Giriş Formu -->
     <div class="form-card">
         <div class="form-section-title">
@@ -1025,7 +1307,7 @@
         </div>
         <div class="form-group">
             <label for="pickup">Boş &amp; Dolu Alım Yeri</label>
-            <input type="text" id="pickup" placeholder="Marport, 6.Etap, KLM">
+            <input type="text" id="pickup" placeholder="KLM, Marport, 6.Etap">
         </div>
         <div class="row">
             <div class="form-group">
@@ -1386,6 +1668,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     loadAll();
     loadEmailAdres();
+    loadFactoryState();
     const d = document.getElementById('date');
     if (d) d.valueAsDate = new Date();
     updateWeekBadge();
@@ -1848,6 +2131,227 @@ function useCalculatedPrice() {
     const cT=document.getElementById('cikisTarih'),cS=document.getElementById('cikisSaat');
     const ti=document.getElementById('time');
     if(gT&&gS&&cT&&cS&&ti) { const gs=formatTimeString(gS.value), cs=formatTimeString(cS.value); if(gs&&cs) { const fd=d=>{const[y,m,day]=d.split('-');return day+'.'+m+'.'+y;}; const ft=t=>String(t.hours).padStart(2,'0')+':'+String(t.minutes).padStart(2,'0'); ti.value=fd(gT.value)+' '+ft(gs)+' - '+fd(cT.value)+' '+ft(cs); } }
+}
+
+// ==================== FABRİKA GİRİŞ/ÇIKIŞ ====================
+let factoryGirisZamani = null;
+let factoryCikisZamani = null;
+let factoryElapsedTimer = null;
+
+function factoryGiris() {
+    factoryGirisZamani = new Date();
+    factoryCikisZamani = null;
+    
+    // Kaydet
+    localStorage.setItem('factory_giris', factoryGirisZamani.toISOString());
+    localStorage.removeItem('factory_cikis');
+
+    updateFactoryUI();
+    startFactoryTimer();
+    showNotification('🏁 Fabrikaya giriş kaydedildi: ' + formatFactoryTime(factoryGirisZamani));
+}
+
+function factoryCikis() {
+    if (!factoryGirisZamani) return;
+    factoryCikisZamani = new Date();
+    
+    localStorage.setItem('factory_cikis', factoryCikisZamani.toISOString());
+    stopFactoryTimer();
+    updateFactoryUI();
+    showNotification('🚪 Fabrikadan çıkış kaydedildi: ' + formatFactoryTime(factoryCikisZamani));
+}
+
+function factorySifirla() {
+    factoryGirisZamani = null;
+    factoryCikisZamani = null;
+    stopFactoryTimer();
+    localStorage.removeItem('factory_giris');
+    localStorage.removeItem('factory_cikis');
+    updateFactoryUI();
+    showNotification('🔄 Yeni sefer için sıfırlandı');
+}
+
+function factoryAktarKayda() {
+    if (!factoryGirisZamani || !factoryCikisZamani) {
+        showNotification('Önce giriş ve çıkış yapın', 'error');
+        return;
+    }
+
+    // Giriş-Çıkış alanına aktar
+    const timeInput = document.getElementById('time');
+    const descInput = document.getElementById('description');
+    const dateInput = document.getElementById('date');
+
+    const gs = formatFactoryTime(factoryGirisZamani);
+    const cs = formatFactoryTime(factoryCikisZamani);
+    const gd = factoryGirisZamani.toLocaleDateString('tr-TR', {day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
+    const cd = factoryCikisZamani.toLocaleDateString('tr-TR', {day:'2-digit',month:'2-digit',year:'numeric'}).replace(/\//g,'.');
+
+    let timeStr = '';
+    if (gd === cd) {
+        timeStr = gs + ' - ' + cs;
+    } else {
+        timeStr = gd + ' ' + gs + ' - ' + cd + ' ' + cs;
+    }
+    if (timeInput) timeInput.value = timeStr;
+
+    // Tarih alanı boşsa giriş tarihini doldur
+    if (dateInput && !dateInput.value) {
+        dateInput.value = factoryGirisZamani.toISOString().split('T')[0];
+    }
+
+    // Bekleme varsa açıklamaya yaz
+    const diff = factoryCikisZamani - factoryGirisZamani;
+    const diffH = diff / (1000 * 60 * 60);
+    const beklemeSay = Math.floor(diffH / 7);
+
+    if (descInput && beklemeSay > 0) {
+        const beklemeTxt = beklemeSay + ' bekleme';
+        if (!descInput.value.includes('bekleme')) {
+            descInput.value = (descInput.value ? descInput.value + ', ' : '') + beklemeTxt;
+        }
+    }
+
+    // Hesap modalındaki giriş/çıkış alanlarını da doldur
+    const girisTarih = document.getElementById('girisTarih');
+    const girisSaat = document.getElementById('girisSaat');
+    const cikisTarih = document.getElementById('cikisTarih');
+    const cikisSaat = document.getElementById('cikisSaat');
+
+    if (girisTarih) girisTarih.value = factoryGirisZamani.toISOString().split('T')[0];
+    if (girisSaat) girisSaat.value = gs;
+    if (cikisTarih) cikisTarih.value = factoryCikisZamani.toISOString().split('T')[0];
+    if (cikisSaat) cikisSaat.value = cs;
+    if (typeof calculateWaitingTime === 'function') calculateWaitingTime();
+
+    showNotification('✅ Giriş-Çıkış saatleri kayda aktarıldı!' + (beklemeSay > 0 ? ' (' + beklemeSay + ' bekleme eklendi)' : ''));
+}
+
+function formatFactoryTime(d) {
+    return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+
+function factoryElapsedStr(from, to) {
+    const diff = (to || new Date()) - from;
+    if (diff < 0) return '0:00';
+    const totalMin = Math.floor(diff / 60000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return h + ':' + String(m).padStart(2,'0');
+}
+
+function startFactoryTimer() {
+    stopFactoryTimer();
+    factoryElapsedTimer = setInterval(() => {
+        if (factoryGirisZamani && !factoryCikisZamani) {
+            const el = document.getElementById('factoryElapsed');
+            if (el) el.textContent = factoryElapsedStr(factoryGirisZamani);
+        }
+    }, 10000); // her 10sn
+}
+
+function stopFactoryTimer() {
+    if (factoryElapsedTimer) { clearInterval(factoryElapsedTimer); factoryElapsedTimer = null; }
+}
+
+function updateFactoryUI() {
+    const bar = document.getElementById('factoryStatusBar');
+    const dot = document.getElementById('factoryDot');
+    const main = document.getElementById('factoryStatusMain');
+    const sub = document.getElementById('factoryStatusSub');
+    const elapsed = document.getElementById('factoryElapsed');
+    const chips = document.getElementById('factoryChips');
+    const btnGiris = document.getElementById('btnFactoryGiris');
+    const btnCikis = document.getElementById('btnFactoryCikis');
+    const btnGirisLabel = document.getElementById('btnGirisLabel');
+    const btnCikisLabel = document.getElementById('btnCikisLabel');
+    const btnAktar = document.getElementById('btnFactoryAktar');
+    const btnSifirla = document.getElementById('btnFactorySifirla');
+
+    chips.innerHTML = '';
+    chips.style.display = 'none';
+
+    if (!factoryGirisZamani) {
+        // Durum: Bekleniyor
+        bar.className = 'factory-status-bar';
+        dot.className = 'factory-status-dot';
+        main.textContent = 'Fabrikaya giriş yapılmadı';
+        sub.textContent = 'Giriş butonuna basın';
+        elapsed.textContent = '';
+        btnGiris.disabled = false;
+        btnCikis.disabled = true;
+        btnGirisLabel.textContent = 'Şimdi giriş yap';
+        btnCikisLabel.textContent = 'Önce giriş yapın';
+        btnAktar.classList.remove('visible');
+        btnSifirla.classList.remove('visible');
+    } else if (!factoryCikisZamani) {
+        // Durum: İçeride
+        bar.className = 'factory-status-bar inside';
+        dot.className = 'factory-status-dot pulse';
+        main.textContent = '🟢 Fabrikada — Giriş: ' + formatFactoryTime(factoryGirisZamani);
+        const tarih = factoryGirisZamani.toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit', year:'numeric'});
+        sub.textContent = tarih + ' · Süre sayılıyor...';
+        elapsed.textContent = factoryElapsedStr(factoryGirisZamani);
+        btnGiris.disabled = true;
+        btnCikis.disabled = false;
+        btnGirisLabel.textContent = '✓ ' + formatFactoryTime(factoryGirisZamani);
+        btnCikisLabel.textContent = 'Çıkış yap';
+        btnAktar.classList.remove('visible');
+        btnSifirla.classList.remove('visible');
+
+        // Chip
+        chips.style.display = 'flex';
+        chips.innerHTML = `<span class="factory-chip giris">🏁 Giriş: ${formatFactoryTime(factoryGirisZamani)}</span>`;
+    } else {
+        // Durum: Tamamlandı
+        bar.className = 'factory-status-bar done';
+        dot.className = 'factory-status-dot done';
+        
+        const diff = factoryCikisZamani - factoryGirisZamani;
+        const diffH = diff / (1000 * 60 * 60);
+        const diffMin = Math.floor(diff / 60000);
+        const saat = Math.floor(diffMin / 60);
+        const dak = diffMin % 60;
+        const beklemeSay = Math.floor(diffH / 7);
+        const beklemeUcret = beklemeSay * 350;
+
+        main.textContent = '✅ Sefer tamamlandı';
+        sub.textContent = `Toplam süre: ${saat} saat ${dak} dak` + (beklemeSay > 0 ? ` · ${beklemeSay} bekleme` : '');
+        elapsed.textContent = saat + ':' + String(dak).padStart(2,'0');
+        
+        btnGiris.disabled = true;
+        btnCikis.disabled = true;
+        btnGirisLabel.textContent = '✓ ' + formatFactoryTime(factoryGirisZamani);
+        btnCikisLabel.textContent = '✓ ' + formatFactoryTime(factoryCikisZamani);
+        btnAktar.classList.add('visible');
+        btnSifirla.classList.add('visible');
+
+        // Chips
+        chips.style.display = 'flex';
+        let chipsHTML = `
+            <span class="factory-chip giris">🏁 Giriş: ${formatFactoryTime(factoryGirisZamani)}</span>
+            <span class="factory-chip cikis">🚪 Çıkış: ${formatFactoryTime(factoryCikisZamani)}</span>
+            <span class="factory-chip sure">⏱ ${saat}s ${dak}d</span>
+        `;
+        if (beklemeSay > 0) {
+            chipsHTML += `<span class="factory-chip bekleme">⏳ ${beklemeSay} bekleme = ₺${beklemeUcret.toLocaleString('tr-TR')}</span>`;
+        }
+        chips.innerHTML = chipsHTML;
+    }
+}
+
+function loadFactoryState() {
+    const gs = localStorage.getItem('factory_giris');
+    const cs = localStorage.getItem('factory_cikis');
+    if (gs) {
+        factoryGirisZamani = new Date(gs);
+        if (cs) {
+            factoryCikisZamani = new Date(cs);
+        } else {
+            startFactoryTimer();
+        }
+        updateFactoryUI();
+    }
 }
 
 // ==================== NOTIFICATION ====================
