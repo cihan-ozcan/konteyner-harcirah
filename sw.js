@@ -1,4 +1,4 @@
-const CACHE_NAME = 'harcirah-takip-v1';
+const CACHE_NAME = 'harcirah-takip-v2';
 const urlsToCache = [
   '/konteyner-harcirah/',
   '/konteyner-harcirah/index.html',
@@ -48,7 +48,6 @@ self.addEventListener('fetch', event => {
         });
         return networkResponse;
       }).catch(() => {
-        // Offline fallback
         return caches.match('/konteyner-harcirah/') || caches.match('/konteyner-harcirah/index.html');
       });
     })
