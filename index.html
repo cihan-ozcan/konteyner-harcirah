@@ -2247,18 +2247,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Splash screen dismiss
     const splash = document.getElementById('splashScreen');
+    function hideSplash() {
+        if (!splash || splash._hidden) return;
+        splash._hidden = true;
+        splash.classList.add('hide');
+        setTimeout(() => { try { splash.remove(); } catch(e) {} }, 700);
+        const soforIsim = localStorage.getItem('soforIsim') || '';
+        const dorsePlaka = localStorage.getItem('dorsePlaka') || '';
+        if (!soforIsim || !dorsePlaka) {
+            const sm = document.getElementById('soforModal');
+            if (sm) sm.classList.remove('hidden');
+        }
+    }
     if (splash) {
         const isStandalonePWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        const splashDelay = isStandalonePWA ? 2000 : 600;
-        setTimeout(() => {
-            splash.classList.add('hide');
-            setTimeout(() => splash.remove(), 700);
-            const soforIsim = localStorage.getItem('soforIsim') || '';
-            const dorsePlaka = localStorage.getItem('dorsePlaka') || '';
-            if (!soforIsim || !dorsePlaka) {
-                document.getElementById('soforModal').classList.remove('hidden');
-            }
-        }, splashDelay);
+        const splashDelay = isStandalonePWA ? 1800 : 500;
+        setTimeout(hideSplash, splashDelay);
+        // Güvenlik ağı — ne olursa olsun 3 saniyede kapansın
+        setTimeout(hideSplash, 3000);
+        // Sayfaya dokunulursa da kapansın
+        splash.addEventListener('click', hideSplash);
     }
 });
 
@@ -3239,14 +3247,43 @@ function acShow(inputId, listId, key) {
 
     if (filtered.length === 0) { list.classList.remove('open'); return; }
 
-    list.innerHTML = filtered.slice(0, 8).map(function(v) {
+    list.innerHTML = '';
+    filtered.slice(0, 8).forEach(function(v) {
         var freq = data[v];
-        return '<div class="ac-item" onmousedown="acSelect('' + inputId + '', '' + listId + '', '' + v.replace(/'/g, "\'") + '')">' +
-            '<span class="ac-item-text">' + acHighlight(v, query) + '</span>' +
-            (freq > 1 ? '<span class="ac-freq">' + freq + 'x</span>' : '') +
-            '<button class="ac-item-del" onmousedown="event.stopPropagation(); acRemove('' + key + '', '' + v.replace(/'/g, "\'") + '', '' + listId + '', '' + inputId + '')">✕</button>' +
-        '</div>';
-    }).join('');
+        var item = document.createElement('div');
+        item.className = 'ac-item';
+
+        var textSpan = document.createElement('span');
+        textSpan.className = 'ac-item-text';
+        textSpan.innerHTML = acHighlight(v, query);
+        item.appendChild(textSpan);
+
+        if (freq > 1) {
+            var freqSpan = document.createElement('span');
+            freqSpan.className = 'ac-freq';
+            freqSpan.textContent = freq + 'x';
+            item.appendChild(freqSpan);
+        }
+
+        var delBtn = document.createElement('button');
+        delBtn.className = 'ac-item-del';
+        delBtn.textContent = '✕';
+        delBtn.addEventListener('mousedown', function(e) {
+            e.stopPropagation();
+            acDelete(key, v);
+            acShow(inputId, listId, key);
+        });
+        item.appendChild(delBtn);
+
+        item.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            input.value = v;
+            list.classList.remove('open');
+            input.focus();
+        });
+
+        list.appendChild(item);
+    });
 
     list.classList.add('open');
 }
