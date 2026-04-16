@@ -2631,7 +2631,10 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(7.5);
             doc.setTextColor(160, 170, 180);
-            doc.text('Konteyner Harcirah Takip  |  created by cihanozcan', PAGE_W / 2, PAGE_H - 8, { align: 'center' });
+            doc.text('Konteyner Harcirah Takip  |  Oner Lojistik', PAGE_W / 2, PAGE_H - 8, { align: 'center' });
+            doc.setFontSize(6.5);
+            doc.setTextColor(190, 195, 205);
+            doc.text('created by cihanozcan', PAGE_W / 2, PAGE_H - 4, { align: 'center' });
             doc.addPage();
             // Yeni sayfa mini header
             doc.setFillColor(2, 132, 199);
@@ -2762,6 +2765,9 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
         doc.setFontSize(7.5);
         doc.setTextColor(160, 170, 180);
         doc.text('Konteyner Harcirah Takip  |  Oner Lojistik', PAGE_W / 2, PAGE_H - 8, { align: 'center' });
+        doc.setFontSize(6.5);
+        doc.setTextColor(190, 195, 205);
+        doc.text('created by cihanozcan', PAGE_W / 2, PAGE_H - 4, { align: 'center' });
         doc.addPage();
         y = 20;
     }
@@ -2787,6 +2793,9 @@ async function generatePDFForEntries(ents, weekNum, startDate, endDate) {
         doc.setFontSize(7.5);
         doc.setTextColor(160, 170, 180);
         doc.text('Konteyner Harcirah Takip  |  Oner Lojistik', PAGE_W / 2, PAGE_H - 8, { align: 'center' });
+        doc.setFontSize(6.5);
+        doc.setTextColor(190, 195, 205);
+        doc.text('created by cihanozcan', PAGE_W / 2, PAGE_H - 4, { align: 'center' });
         doc.setTextColor(190, 200, 210);
         doc.text(i + ' / ' + pages, PAGE_W - MARGIN, PAGE_H - 8, { align: 'right' });
     }
